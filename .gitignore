@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtualenvs / caches
+.venv/
+.mplcache/
+
+# Pipeline artefacts
+output/
+
+# Overleaf integration (credentials + local mirror)
+.overleaf_mirror/
+configs/overleaf.local.yaml
+
+# Cursor / RAG project state (private)
+.cursor/
+
+# macOS
+.DS_Store
+
+# Large / external data — document provenance, don't commit the blob.
+# (Keep small sample CSVs, ATLAS/CMS PDFs, and PROVENANCE.md.)
+data/atlas-higgs-challenge-2014-v2.csv
+references/HiggsExample20112012/
+references/cms-jupyter-materials-english-1.0/
