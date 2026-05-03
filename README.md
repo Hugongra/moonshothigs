@@ -39,9 +39,41 @@ To silence matplotlib cache warnings:
 export MPLCONFIGDIR="$PWD/.mplcache"
 ```
 
-**Overleaf integration:** the pipeline can push the rendered bundle to an Overleaf project automatically on every run via Overleaf's Git integration — set up `configs/overleaf.local.yaml` (copy from `configs/overleaf.example.yaml`) then pass `--sync-overleaf` (or set `OVERLEAF_SYNC=1`). Read-only inspection via the **OverleafMCP** Node server is also supported. Details in `docs/overleaf-mcp.md`.
+### Overleaf auto-sync (push every run)
 
-**Overleaf upload (manual):** use **`output/overleaf_bundle/`** (`main.tex` + **`figures/`** together). Copy-pasting only `.tex` omits plots.
+The pipeline can push the rendered NeurIPS bundle to an Overleaf project automatically on every run via Overleaf's Git integration. Details: `docs/overleaf-mcp.md`.
+
+One-time setup:
+
+```bash
+cp configs/overleaf.example.yaml configs/overleaf.local.yaml
+# edit configs/overleaf.local.yaml and paste your Overleaf git_token
+# (Overleaf → Account Settings → Git Integration → Create Token).
+# project_id defaults to 69f6848ce638a310664f4c90; override via env
+# OVERLEAF_PROJECT_ID or the YAML if you target a different project.
+```
+
+Then pick one:
+
+```bash
+# full pipeline + push
+OVERLEAF_SYNC=1 scripts/build_rag_and_paper.sh
+
+# or directly
+.venv/bin/python run_neurips_pipeline.py \
+  --reuse-eval-json evals/results/neurips_full.json \
+  --no-compile --sync-overleaf
+
+# kick the tires without committing
+.venv/bin/python run_neurips_pipeline.py --sync-overleaf --overleaf-dry-run
+
+# manual one-off
+.venv/bin/python scripts/sync_overleaf.py
+```
+
+Commits land on Overleaf's `master` with messages like `auto: regenerate from pipeline (<sha10> @ <UTC-iso>)`. If push fails (network, auth), the pipeline logs and continues — the local bundle at `output/neurips_overleaf_bundle/` remains valid. Optional read-only inspection of the Overleaf project from Cursor is provided by the separate [OverleafMCP](https://github.com/mjyoo2/overleafmcp) Node server; see the doc above.
+
+**Overleaf upload (manual, no sync):** use **`output/overleaf_bundle/`** (`main.tex` + **`figures/`** together). Copy-pasting only `.tex` omits plots.
 
 **Local PDF:** run without `--no-compile` if `pdflatex` is installed (PATH or `/Library/TeX/texbin` on macOS).
 

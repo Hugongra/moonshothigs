@@ -1,0 +1,36 @@
+# Copy to configs/overleaf.local.yaml and fill in. Never commit the filled version.
+#
+# The `git_token` is your Overleaf "Git integration" token:
+#   Overleaf -> Account Settings -> Git Integration -> Create Token
+# The `project_id` is the UUID-like segment in the Overleaf URL:
+#   https://www.overleaf.com/project/<PROJECT_ID>
+#
+# The pipeline pushes `output/neurips_overleaf_bundle/` (main.tex + figures/)
+# into the Overleaf project's Git repository on every run when --sync-overleaf
+# is passed (or OVERLEAF_SYNC=1 is set).
+
+project_id: "69f6848ce638a310664f4c90"
+git_token: "REPLACE_WITH_TOKEN"   # or set OVERLEAF_GIT_TOKEN env var instead
+
+# Optional tweaks ------------------------------------------------------------
+
+# Local mirror for the Overleaf git repo; avoids re-cloning on every run.
+# Resolved relative to the project root if not absolute.
+clone_dir: ".overleaf_mirror"
+
+# Which local folder to mirror into the project root of Overleaf.
+# Contents of this directory are copied to the top level of the repo.
+bundle_dir: "output/neurips_overleaf_bundle"
+
+# Name of the main LaTeX file as seen by Overleaf (must match \documentclass-bearing file).
+main_tex_name: "main.tex"
+
+# Git identity for the commits pushed to Overleaf.
+author_name: "RAG AI Scientist Pipeline"
+author_email: "pipeline@local"
+
+# Commit message template. `{sha}` is the short sha256 of main.tex, `{ts}` is UTC timestamp.
+commit_message: "auto: regenerate from pipeline ({sha} @ {ts})"
+
+# If true, skip pushes when the Overleaf repo already has the same tree.
+skip_if_unchanged: true

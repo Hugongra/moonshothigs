@@ -1,0 +1,7 @@
+# Optional: install into the same env you use for rag-ai-scientist indexing (same embedding model).
+# pip install -r evals/requirements-eval.txt
+langchain-core>=0.2
+langchain-chroma>=0.1
+langchain-huggingface>=0.0
+sentence-transformers>=2.2
+chromadb>=0.4
