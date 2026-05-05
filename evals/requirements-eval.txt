@@ -5,3 +5,9 @@ langchain-chroma>=0.1
 langchain-huggingface>=0.0
 sentence-transformers>=2.2
 chromadb>=0.4
+
+# Optional: ``evals/chroma_ingest.py`` / ``evals/run_embedding_sweep.py`` (mirror ``setup-rag`` sources)
+pyyaml>=6.0
+langchain-text-splitters>=0.2
+langchain-community>=0.2
+pymupdf>=1.23

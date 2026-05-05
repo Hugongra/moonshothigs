@@ -1,0 +1,5 @@
+# Optional LLM-judge metrics for ``evals/run_retrieval_eval.py --ragas``.
+# Install on top of ``evals/requirements-eval.txt``.
+ragas>=0.1
+datasets>=2.14
+langchain-openai>=0.1

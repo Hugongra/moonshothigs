@@ -1,0 +1,419 @@
+{
+  "timestamp": "2026-05-04T14:53:05.362973+00:00",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "rag_db": ".cursor/rag_db",
+  "rag_chunk_count": 145,
+  "queries_file": "evals/data/rag_queries.jsonl",
+  "n_queries": 10,
+  "n_with_gold": 10,
+  "n_failures": 0,
+  "difficulty_counts": {
+    "easy": 5,
+    "medium": 5
+  },
+  "k_values": [
+    5,
+    10
+  ],
+  "recall_mean": {
+    "5": 0.9,
+    "10": 1.0
+  },
+  "mrr_mean": 0.8142857142857143,
+  "ndcg_mean": {
+    "5": 0.8314612794571804,
+    "10": 0.8584128195761943
+  },
+  "lexical_grounded_mean": {
+    "5": 0.8,
+    "10": 0.9
+  },
+  "difficulty_breakdown": {
+    "easy": {
+      "n": 5,
+      "recall_mean": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr_mean": 0.9,
+      "ndcg_mean": {
+        "5": 0.91079464526722,
+        "10": 0.904118122315704
+      },
+      "lexical_grounded_mean": {
+        "5": 0.8,
+        "10": 1.0
+      }
+    },
+    "medium": {
+      "n": 5,
+      "recall_mean": {
+        "5": 0.8,
+        "10": 1.0
+      },
+      "mrr_mean": 0.7285714285714285,
+      "ndcg_mean": {
+        "5": 0.7521279136471407,
+        "10": 0.8127075168366847
+      },
+      "lexical_grounded_mean": {
+        "5": 0.8,
+        "10": 0.8
+      }
+    }
+  },
+  "failures": [],
+  "per_query": [
+    {
+      "id": "ams_regulator",
+      "query": "What background regulator value b_r is used in the Approximate Median Significance AMS metric for the ATLAS Higgs machine learning challenge?",
+      "difficulty": "easy",
+      "has_gold": true,
+      "recall": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.5,
+      "ndcg": {
+        "5": 0.6934264036172708,
+        "10": 0.6980646980039836
+      },
+      "lexical_grounded_topk": {
+        "5": true,
+        "10": true
+      },
+      "top_metadata_preview": [
+        "1207.7235v2.pdf /mnt/c/users/hugog/moonshothiggs/references/1207.7235v2.pdf",
+        "atlas_higgs_challenge_scaffolding.md /mnt/c/users/hugog/moonshothiggs/docs/atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf"
+      ],
+      "top_snippets": [
+        "The rates for the dominant backgrounds arising from production of W/Z+jets and top-quark pairs are estimated in data [28], while contributions from single-top and diboson production are estimated from simulation studies. The signal is then searched for as an excess in the BDT score distribution usin",
+        "# ATLAS Higgs Boson Machine Learning Challenge (2014) \u2014 analysis scaffolding  This note ties **`run_atlas_pipeline.py`** to the **ATLAS Higgs Challenge** setup documented on [Kaggle](https://www.kaggle.com/c/higgs-boson-competition-2014) and companion materials (including **`references/atlas-higgs-c"
+      ],
+      "required_terms": [
+        "10"
+      ],
+      "relevant_path_patterns": [
+        "atlas-higgs-challenge-2014.pdf",
+        "atlas_higgs_challenge_scaffolding.md"
+      ],
+      "path_hit_rank": 2
+    },
+    {
+      "id": "event_weights",
+      "query": "Must Monte Carlo event weights be applied when training a classifier on the ATLAS Higgs challenge dataset?",
+      "difficulty": "easy",
+      "has_gold": true,
+      "recall": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "ndcg": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "lexical_grounded_topk": {
+        "5": true,
+        "10": true
+      },
+      "top_metadata_preview": [
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf"
+      ],
+      "top_snippets": [
+        "## **5 The** opendata.cern.ch **dataset**   The dataset made available to Challenge participants on the Kaggle platform (https://www. kaggle.com/c/higgs-boson) during the Challenge can now permanently be obtained from http://opendata.cern.ch/collection/ATLAS-Higgs-Challenge-2014 [5]. The following m",
+        "## **6 Conclusion**   In this note we provided background information for the Higgs boson machine learning challenge. All information for effectively participating in the Challenge is provided by the Kaggle web site and also now the opendata.cern.ch web site mentioned in the preamble; pointers to ad"
+      ],
+      "required_terms": [
+        "weight"
+      ],
+      "relevant_path_patterns": [
+        "atlas-higgs-challenge-2014.pdf",
+        "atlas_higgs_challenge_scaffolding.md"
+      ],
+      "path_hit_rank": 1
+    },
+    {
+      "id": "missing_sentinel",
+      "query": "How are missing or undefined reconstructed quantities encoded as a numeric sentinel in the ATLAS challenge CSV features?",
+      "difficulty": "easy",
+      "has_gold": true,
+      "recall": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "ndcg": {
+        "5": 0.9558295932317544,
+        "10": 0.949671989333555
+      },
+      "lexical_grounded_topk": {
+        "5": true,
+        "10": true
+      },
+      "top_metadata_preview": [
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas_higgs_challenge_scaffolding.md /mnt/c/users/hugog/moonshothiggs/docs/atlas_higgs_challenge_scaffolding.md",
+        "readme.md /mnt/c/users/hugog/moonshothiggs/readme.md"
+      ],
+      "top_snippets": [
+        "## **6 Conclusion**   In this note we provided background information for the Higgs boson machine learning challenge. All information for effectively participating in the Challenge is provided by the Kaggle web site and also now the opendata.cern.ch web site mentioned in the preamble; pointers to ad",
+        "# ATLAS Higgs Boson Machine Learning Challenge (2014) \u2014 analysis scaffolding  This note ties **`run_atlas_pipeline.py`** to the **ATLAS Higgs Challenge** setup documented on [Kaggle](https://www.kaggle.com/c/higgs-boson-competition-2014) and companion materials (including **`references/atlas-higgs-c"
+      ],
+      "required_terms": [
+        "999"
+      ],
+      "relevant_path_patterns": [
+        "atlas-higgs-challenge-2014.pdf",
+        "atlas_higgs_challenge_scaffolding.md"
+      ],
+      "path_hit_rank": 1
+    },
+    {
+      "id": "training_split",
+      "query": "Which value of the KaggleSet column indicates rows meant for public training of the Higgs challenge classifier?",
+      "difficulty": "medium",
+      "has_gold": true,
+      "recall": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "ndcg": {
+        "5": 1.0,
+        "10": 0.9888009031441519
+      },
+      "lexical_grounded_topk": {
+        "5": true,
+        "10": true
+      },
+      "top_metadata_preview": [
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf"
+      ],
+      "top_snippets": [
+        "## **5 The** opendata.cern.ch **dataset**   The dataset made available to Challenge participants on the Kaggle platform (https://www. kaggle.com/c/higgs-boson) during the Challenge can now permanently be obtained from http://opendata.cern.ch/collection/ATLAS-Higgs-Challenge-2014 [5]. The following m",
+        "## **6 Conclusion**   In this note we provided background information for the Higgs boson machine learning challenge. All information for effectively participating in the Challenge is provided by the Kaggle web site and also now the opendata.cern.ch web site mentioned in the preamble; pointers to ad"
+      ],
+      "required_terms": [],
+      "relevant_path_patterns": [
+        "atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf"
+      ],
+      "path_hit_rank": 1
+    },
+    {
+      "id": "mass_discriminant",
+      "query": "What derived collinear mass variable is commonly used to separate Higgs signal from background in the tau-tau ATLAS challenge?",
+      "difficulty": "medium",
+      "has_gold": true,
+      "recall": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "ndcg": {
+        "5": 1.0,
+        "10": 0.983303248698947
+      },
+      "lexical_grounded_topk": {
+        "5": false,
+        "10": false
+      },
+      "top_metadata_preview": [
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas_higgs_challenge_scaffolding.md /mnt/c/users/hugog/moonshothiggs/docs/atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf"
+      ],
+      "top_snippets": [
+        "## **References**   - [1] G. Aad et al., \"Observation of a new particle in the search for the Standard Model Higgs boson with the ATLAS detector at the LHC\", _Phys.Lett._ , vol. B716, pp. 1\u201329, 2012.   - [2] S. Chatrchyan et al., \"Observation of a new boson at a mass of 125 GeV with the CMS experime",
+        "# ATLAS Higgs Boson Machine Learning Challenge (2014) \u2014 analysis scaffolding  This note ties **`run_atlas_pipeline.py`** to the **ATLAS Higgs Challenge** setup documented on [Kaggle](https://www.kaggle.com/c/higgs-boson-competition-2014) and companion materials (including **`references/atlas-higgs-c"
+      ],
+      "required_terms": [
+        "MMC"
+      ],
+      "relevant_path_patterns": [
+        "atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf"
+      ],
+      "path_hit_rank": 1
+    },
+    {
+      "id": "metric_name",
+      "query": "Spell out the full name of the AMS metric used as the evaluation score of the Higgs machine learning challenge.",
+      "difficulty": "easy",
+      "has_gold": true,
+      "recall": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "ndcg": {
+        "5": 1.0,
+        "10": 0.9888009031441519
+      },
+      "lexical_grounded_topk": {
+        "5": false,
+        "10": true
+      },
+      "top_metadata_preview": [
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf"
+      ],
+      "top_snippets": [
+        "## **Learning to discover: the Higgs boson machine learning challenge**   **==> picture [227 x 100] intentionally omitted <==**  ## Claire Adam-Bourdarios[a] , Glen Cowan[b] , C\u00b4ecile Germain[c] , Isabelle Guyon[d] , Bal\u00b4azs K\u00b4egl[a,c] , David Rousseau[a]   a LAL, IN2P3/CNRS & University Paris-Sud, ",
+        "## **6 Conclusion**   In this note we provided background information for the Higgs boson machine learning challenge. All information for effectively participating in the Challenge is provided by the Kaggle web site and also now the opendata.cern.ch web site mentioned in the preamble; pointers to ad"
+      ],
+      "required_terms": [
+        "median"
+      ],
+      "relevant_path_patterns": [
+        "atlas-higgs-challenge-2014.pdf",
+        "atlas_higgs_challenge_scaffolding.md"
+      ],
+      "path_hit_rank": 1
+    },
+    {
+      "id": "label_encoding",
+      "query": "What single characters encode signal and background rows in the Label column of the ATLAS Higgs challenge training CSV?",
+      "difficulty": "easy",
+      "has_gold": true,
+      "recall": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "ndcg": {
+        "5": 0.9047172294870751,
+        "10": 0.8840530210968294
+      },
+      "lexical_grounded_topk": {
+        "5": true,
+        "10": true
+      },
+      "top_metadata_preview": [
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "readme.md /mnt/c/users/hugog/moonshothiggs/readme.md",
+        "atlas_higgs_challenge_scaffolding.md /mnt/c/users/hugog/moonshothiggs/docs/atlas_higgs_challenge_scaffolding.md"
+      ],
+      "top_snippets": [
+        "## **6 Conclusion**   In this note we provided background information for the Higgs boson machine learning challenge. All information for effectively participating in the Challenge is provided by the Kaggle web site and also now the opendata.cern.ch web site mentioned in the preamble; pointers to ad",
+        "## ATLAS Higgs Challenge (2014) \u2014 baseline ML pipeline  Weighted **HistGradientBoosting** + **AMS** metric on `data/atlas-higgs-challenge-2014-v2.csv`. See **`docs/atlas_higgs_challenge_scaffolding.md`**.  ```bash .venv/bin/python run_atlas_pipeline.py # subsample for speed .venv/bin/python run_atla"
+      ],
+      "required_terms": [],
+      "relevant_path_patterns": [
+        "atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf"
+      ],
+      "path_hit_rank": 1
+    },
+    {
+      "id": "pri_der_features",
+      "query": "What do the prefixes PRI and DER mean for columns in the ATLAS Higgs challenge CSV schema?",
+      "difficulty": "medium",
+      "has_gold": true,
+      "recall": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "ndcg": {
+        "5": 1.0,
+        "10": 0.9415771611758031
+      },
+      "lexical_grounded_topk": {
+        "5": true,
+        "10": true
+      },
+      "top_metadata_preview": [
+        "atlas_higgs_challenge_scaffolding.md /mnt/c/users/hugog/moonshothiggs/docs/atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf"
+      ],
+      "top_snippets": [
+        "# ATLAS Higgs Boson Machine Learning Challenge (2014) \u2014 analysis scaffolding  This note ties **`run_atlas_pipeline.py`** to the **ATLAS Higgs Challenge** setup documented on [Kaggle](https://www.kaggle.com/c/higgs-boson-competition-2014) and companion materials (including **`references/atlas-higgs-c",
+        "## **6 Conclusion**   In this note we provided background information for the Higgs boson machine learning challenge. All information for effectively participating in the Challenge is provided by the Kaggle web site and also now the opendata.cern.ch web site mentioned in the preamble; pointers to ad"
+      ],
+      "required_terms": [],
+      "relevant_path_patterns": [
+        "atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf"
+      ],
+      "path_hit_rank": 1
+    },
+    {
+      "id": "cms_higgs_paper",
+      "query": "Which CMS paper reports the 2012 observation of a Higgs-like boson at 125 GeV using diphoton and four-lepton final states?",
+      "difficulty": "medium",
+      "has_gold": true,
+      "recall": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.5,
+      "ndcg": {
+        "5": 0.7606395682357036,
+        "10": 0.8165229378311881
+      },
+      "lexical_grounded_topk": {
+        "5": true,
+        "10": true
+      },
+      "top_metadata_preview": [
+        "atlas-higgs-challenge-2014.pdf /mnt/c/users/hugog/moonshothiggs/references/atlas-higgs-challenge-2014.pdf",
+        "1207.7235v2.pdf /mnt/c/users/hugog/moonshothiggs/references/1207.7235v2.pdf",
+        "1207.7235v2.pdf /mnt/c/users/hugog/moonshothiggs/references/1207.7235v2.pdf"
+      ],
+      "top_snippets": [
+        "## **References**   - [1] G. Aad et al., \"Observation of a new particle in the search for the Standard Model Higgs boson with the ATLAS detector at the LHC\", _Phys.Lett._ , vol. B716, pp. 1\u201329, 2012.   - [2] S. Chatrchyan et al., \"Observation of a new boson at a mass of 125 GeV with the CMS experime",
+        "**22**   **6 Decay modes with low mass resolution**   Higgs boson cross section at mass 125 GeV, respectively. The expected significance for a SM Higgs boson of mass 125 GeV is 1.4 _\u03c3_ , and the observed value is zero."
+      ],
+      "required_terms": [],
+      "relevant_path_patterns": [
+        "1207.7235",
+        "higgs_csv_methodology.md"
+      ],
+      "path_hit_rank": 2
+    },
+    {
+      "id": "higgs_channels_methodology",
+      "query": "How is the sideband toy used to estimate background in the diphoton and four-lepton invariant mass analysis in this repository?",
+      "difficulty": "medium",
+      "has_gold": true,
+      "recall": {
+        "5": 0.0,
+        "10": 1.0
+      },
+      "mrr": 0.14285714285714285,
+      "ndcg": {
+        "5": 0.0,
+        "10": 0.3333333333333333
+      },
+      "lexical_grounded_topk": {
+        "5": true,
+        "10": true
+      },
+      "top_metadata_preview": [
+        "1207.7235v2.pdf /mnt/c/users/hugog/moonshothiggs/references/1207.7235v2.pdf",
+        "1207.7235v2.pdf /mnt/c/users/hugog/moonshothiggs/references/1207.7235v2.pdf",
+        "1207.7235v2.pdf /mnt/c/users/hugog/moonshothiggs/references/1207.7235v2.pdf"
+      ],
+      "top_snippets": [
+        "The event selection requires two pairs of same-flavour, oppositely charged leptons. The pair with invariant mass closest to the Z boson mass is required to have a mass in the range 40\u2013 120 GeV and the other pair is required to have a mass in the range 12\u2013120 GeV. The ZZ background is evaluated from ",
+        "The number of selected ZZ _\u2192_ 4 _\u2113_ candidate events in the mass range 110 _< m_ 4 _\u2113 <_ 160 GeV, in each of the three final states, is given in Table 3, where _m_ 4 _\u2113_ is the four-lepton invariant mass. The number of predicted background events, in each of the three final states, and their uncerta"
+      ],
+      "required_terms": [
+        "sideband"
+      ],
+      "relevant_path_patterns": [
+        "higgs_csv_methodology.md"
+      ],
+      "path_hit_rank": 7
+    }
+  ]
+}

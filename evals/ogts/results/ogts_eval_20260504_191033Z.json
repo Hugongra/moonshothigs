@@ -1,0 +1,166 @@
+{
+  "timestamp": "2026-05-04T19:10:33.287057+00:00",
+  "config": {
+    "generator": "dummy",
+    "model": null,
+    "strategies": [
+      "linear_retry",
+      "ogts"
+    ],
+    "k": 5,
+    "depth": 3,
+    "branch": 3,
+    "temperature": 0.8,
+    "n_tasks": 3,
+    "tasks_file": "evals/ogts/data/ogts_50_tasks.jsonl"
+  },
+  "aggregate": {
+    "linear_retry": {
+      "n_tasks": 3,
+      "n_passed": 0,
+      "pass_rate": 0.0,
+      "total_oracle_calls": 15,
+      "mean_oracle_calls": 5.0,
+      "total_elapsed_s": 0.03,
+      "by_family": {
+        "AMS closed-form": {
+          "n": 3,
+          "passed": 0,
+          "oracle_calls": 15
+        }
+      }
+    },
+    "ogts": {
+      "n_tasks": 3,
+      "n_passed": 0,
+      "pass_rate": 0.0,
+      "total_oracle_calls": 27,
+      "mean_oracle_calls": 9.0,
+      "total_elapsed_s": 0.03,
+      "by_family": {
+        "AMS closed-form": {
+          "n": 3,
+          "passed": 0,
+          "oracle_calls": 27
+        }
+      }
+    }
+  },
+  "wall_time_s": 0.06,
+  "per_task": [
+    {
+      "task_id": "ogts_001",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.0,
+      "best_status": "fail:missing_entrypoint:ams",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 0.011,
+      "result": {
+        "ok": false,
+        "score": 0.0,
+        "status": "fail:missing_entrypoint:ams",
+        "details": {
+          "entrypoint": "ams"
+        }
+      }
+    },
+    {
+      "task_id": "ogts_001",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.0,
+      "best_status": "fail:missing_entrypoint:ams",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 0.01,
+      "result": {
+        "ok": false,
+        "score": 0.0,
+        "status": "fail:missing_entrypoint:ams",
+        "details": {
+          "entrypoint": "ams"
+        }
+      }
+    },
+    {
+      "task_id": "ogts_002",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.0,
+      "best_status": "fail:missing_entrypoint:ams",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 0.015,
+      "result": {
+        "ok": false,
+        "score": 0.0,
+        "status": "fail:missing_entrypoint:ams",
+        "details": {
+          "entrypoint": "ams"
+        }
+      }
+    },
+    {
+      "task_id": "ogts_002",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.0,
+      "best_status": "fail:missing_entrypoint:ams",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 0.011,
+      "result": {
+        "ok": false,
+        "score": 0.0,
+        "status": "fail:missing_entrypoint:ams",
+        "details": {
+          "entrypoint": "ams"
+        }
+      }
+    },
+    {
+      "task_id": "ogts_003",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.0,
+      "best_status": "fail:missing_entrypoint:ams",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 0.009,
+      "result": {
+        "ok": false,
+        "score": 0.0,
+        "status": "fail:missing_entrypoint:ams",
+        "details": {
+          "entrypoint": "ams"
+        }
+      }
+    },
+    {
+      "task_id": "ogts_003",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.0,
+      "best_status": "fail:missing_entrypoint:ams",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 0.008,
+      "result": {
+        "ok": false,
+        "score": 0.0,
+        "status": "fail:missing_entrypoint:ams",
+        "details": {
+          "entrypoint": "ams"
+        }
+      }
+    }
+  ]
+}

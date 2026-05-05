@@ -33,12 +33,35 @@ def _latex_escape_text(s: str) -> str:
 
 def _atlas_metrics_tex(metrics: dict[str, Any]) -> dict[str, str]:
     """Render numeric metrics and escape strings for ``atlas_challenge_template.tex.j2``."""
+    def pm(mean_key: str, std_key: str, legacy_key: str, *, digits: int = 6) -> str:
+        m = float(metrics.get(mean_key, metrics.get(legacy_key, 0.0)))
+        if std_key in metrics and metrics.get(std_key) is not None:
+            s = float(metrics.get(std_key, 0.0))
+            return f"{m:.{digits}f} \\pm {s:.{digits}f}"
+        return f"{m:.{digits}f}"
+
+    # Prefer explicit *_mean/*_std keys when present (K-fold outputs), else fall back to legacy keys.
+    ll = pm("validation_log_loss_mean", "validation_log_loss_std", "validation_log_loss", digits=6)
+    acc = pm(
+        "validation_weighted_accuracy_mean",
+        "validation_weighted_accuracy_std",
+        "validation_weighted_accuracy",
+        digits=6,
+    )
+    ams = pm("validation_AMS_mean", "validation_AMS_std", "validation_AMS", digits=6)
+    thr = pm(
+        "best_probability_threshold_mean",
+        "best_probability_threshold_std",
+        "best_probability_threshold",
+        digits=6,
+    )
+
     return {
         "n_train_rows": f"{int(metrics['n_train_rows_used']):,}",
-        "validation_log_loss": f"{float(metrics['validation_log_loss']):.6f}",
-        "validation_weighted_accuracy": f"{float(metrics['validation_weighted_accuracy']):.6f}",
-        "validation_AMS": f"{float(metrics['validation_AMS']):.6f}",
-        "best_probability_threshold": f"{float(metrics['best_probability_threshold']):.6f}",
+        "validation_log_loss": ll,
+        "validation_weighted_accuracy": acc,
+        "validation_AMS": ams,
+        "best_probability_threshold": thr,
         "elapsed_seconds": f"{float(metrics['elapsed_seconds']):.2f}",
         "model": _latex_escape_text(str(metrics.get("model", ""))),
         "csv_tex": _latex_escape_text(str(metrics.get("csv", ""))),
@@ -54,12 +77,13 @@ def _atlas_figure_entries(figures_src_dir: Path) -> list[dict[str, str]]:
             "vertical line at 125~GeV. "
         ),
         "roc_validation": (
-            "Weighted receiver operating characteristic on the validation fold "
-            "(signal vs background). "
+            "Weighted receiver operating characteristic using in-sample scores from a "
+            "model refit on the full training table after K-fold CV (diagnostic; not an "
+            "additional hold-out). "
         ),
         "ams_vs_threshold": (
-            "Approximate median significance (AMS) as a function of classifier "
-            "probability threshold; marker at the scanned optimum. "
+            "Approximate median significance (AMS) vs probability threshold for the same "
+            "full-data refit as the ROC figure; marker at the in-sample optimum. "
         ),
         "feature_importance_top": (
             "Impurity-based feature importances from HistGradientBoosting "

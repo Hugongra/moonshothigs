@@ -15,11 +15,22 @@ def _fmt(value: float, digits: int = 4) -> str:
         return "---"
 
 
-def _summary_rows(agg: dict[str, Any]) -> list[dict[str, Any]]:
+def _fmt_optional(value: object, digits: int = 4) -> str:
+    if value is None:
+        return "---"
+    try:
+        return _fmt(float(value), digits=digits)
+    except (TypeError, ValueError):
+        return "---"
+
+
+def _summary_rows(agg: dict[str, Any], *, ragas_enabled: bool) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     rm = agg.get("recall_mean", {})
     nm = agg.get("ndcg_mean", {})
     lm = agg.get("lexical_grounded_mean", {})
+    fm = agg.get("faithfulness_mean", {}) if isinstance(agg.get("faithfulness_mean", {}), dict) else {}
+    crm = agg.get("context_relevance_mean", {}) if isinstance(agg.get("context_relevance_mean", {}), dict) else {}
     for k in agg.get("k_values", []):
         rows.append(
             {
@@ -27,18 +38,29 @@ def _summary_rows(agg: dict[str, Any]) -> list[dict[str, Any]]:
                 "recall": _fmt(rm.get(str(k), 0.0)),
                 "ndcg": _fmt(nm.get(str(k), 0.0)),
                 "lexical": _fmt(lm.get(str(k), 0.0)),
+                "faithfulness": _fmt_optional(fm.get(str(k)), digits=4) if ragas_enabled else "",
+                "context_relevance": _fmt_optional(crm.get(str(k)), digits=4) if ragas_enabled else "",
             }
         )
     return rows
 
 
-def _difficulty_rows(agg: dict[str, Any]) -> list[dict[str, Any]]:
+def _difficulty_rows(agg: dict[str, Any], *, ragas_enabled: bool) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     ks = agg.get("k_values", [])
     if not ks:
         return out
     k_hi = max(ks)
     for diff, block in sorted(agg.get("difficulty_breakdown", {}).items()):
+        f_hi = None
+        cr_hi = None
+        if isinstance(block, dict):
+            fm = block.get("faithfulness_mean") or {}
+            cr = block.get("context_relevance_mean") or {}
+            if isinstance(fm, dict):
+                f_hi = fm.get(str(k_hi))
+            if isinstance(cr, dict):
+                cr_hi = cr.get(str(k_hi))
         out.append(
             {
                 "difficulty": _latex_escape_text(diff),
@@ -46,6 +68,8 @@ def _difficulty_rows(agg: dict[str, Any]) -> list[dict[str, Any]]:
                 "recall_hi": _fmt(block.get("recall_mean", {}).get(str(k_hi), 0.0)),
                 "ndcg_hi": _fmt(block.get("ndcg_mean", {}).get(str(k_hi), 0.0)),
                 "lexical_hi": _fmt(block.get("lexical_grounded_mean", {}).get(str(k_hi), 0.0)),
+                "faithfulness_hi": _fmt_optional(f_hi, digits=4) if ragas_enabled else "",
+                "context_relevance_hi": _fmt_optional(cr_hi, digits=4) if ragas_enabled else "",
                 "mrr": _fmt(block.get("mrr_mean", 0.0)),
                 "k_hi": int(k_hi),
             }
@@ -53,7 +77,7 @@ def _difficulty_rows(agg: dict[str, Any]) -> list[dict[str, Any]]:
     return out
 
 
-def _per_query_rows(agg: dict[str, Any]) -> list[dict[str, Any]]:
+def _per_query_rows(agg: dict[str, Any], *, ragas_enabled: bool) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     ks = agg.get("k_values", [])
     if not ks:
@@ -62,6 +86,14 @@ def _per_query_rows(agg: dict[str, Any]) -> list[dict[str, Any]]:
     for pq in agg.get("per_query", []):
         rank = pq.get("path_hit_rank")
         rank_s = "--" if rank is None else str(int(rank))
+        ft = None
+        cr = None
+        ft_map = pq.get("faithfulness_topk") or {}
+        cr_map = pq.get("context_relevance_topk") or {}
+        if isinstance(ft_map, dict):
+            ft = ft_map.get(str(k_hi))
+        if isinstance(cr_map, dict):
+            cr = cr_map.get(str(k_hi))
         rows.append(
             {
                 "id": _latex_escape_text(pq.get("id", "")),
@@ -69,6 +101,8 @@ def _per_query_rows(agg: dict[str, Any]) -> list[dict[str, Any]]:
                 "recall_hi": _fmt(pq.get("recall", {}).get(str(k_hi), 0.0), digits=2),
                 "ndcg_hi": _fmt(pq.get("ndcg", {}).get(str(k_hi), 0.0), digits=2),
                 "lexical_hi": _fmt(float(pq.get("lexical_grounded_topk", {}).get(str(k_hi), 0.0)), digits=2),
+                "faithfulness_hi": _fmt_optional(ft, digits=2) if ragas_enabled else "",
+                "context_relevance_hi": _fmt_optional(cr, digits=2) if ragas_enabled else "",
                 "mrr": _fmt(pq.get("mrr", 0.0), digits=2),
                 "first_hit_rank": rank_s,
                 "has_gold": pq.get("has_gold", False),
@@ -138,10 +172,12 @@ def build_neurips_context(
     embedding_model = ""
     chunk_count_display = ""
 
+    ragas_enabled = bool(eval_aggregate.get("ragas", {}).get("enabled")) if eval_aggregate else False
+
     if eval_aggregate and not eval_skipped:
-        eval_rows = _summary_rows(eval_aggregate)
-        difficulty_rows = _difficulty_rows(eval_aggregate)
-        per_query_rows = _per_query_rows(eval_aggregate)
+        eval_rows = _summary_rows(eval_aggregate, ragas_enabled=ragas_enabled)
+        difficulty_rows = _difficulty_rows(eval_aggregate, ragas_enabled=ragas_enabled)
+        per_query_rows = _per_query_rows(eval_aggregate, ragas_enabled=ragas_enabled)
         failure_rows = _failure_rows(eval_aggregate)
         example_rows = _example_rows(eval_aggregate)
         ts = eval_aggregate.get("timestamp", "")
@@ -163,6 +199,7 @@ def build_neurips_context(
 
     return {
         "atlas": atlas_tex,
+        "eval_use_ragas": ragas_enabled,
         "eval_available": bool(eval_rows) and not eval_skipped,
         "eval_skipped": eval_skipped,
         "eval_skip_reason": reason_esc,

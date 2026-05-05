@@ -31,6 +31,12 @@ def main() -> int:
     p.add_argument("--max-rows", type=int, default=150_000)
     p.add_argument("--full-train", action="store_true")
     p.add_argument(
+        "--cv-folds",
+        type=int,
+        default=5,
+        help="Stratified K-fold splits for ATLAS baseline CV metrics (default: 5).",
+    )
+    p.add_argument(
         "--atlas-output-dir",
         type=Path,
         default=None,
@@ -51,6 +57,23 @@ def main() -> int:
         default=root / "evals" / "data" / "rag_queries.jsonl",
     )
     p.add_argument("--collection", type=str, default=None)
+    p.add_argument(
+        "--embedding-model",
+        type=str,
+        default=None,
+        help="Embedding model id for eval (must match the indexed Chroma DB: HF id or text-embedding-*).",
+    )
+    p.add_argument(
+        "--enable-ragas",
+        action="store_true",
+        help="Enable optional RAGAS LLM-judge metrics during retrieval eval (extra deps + API keys).",
+    )
+    p.add_argument(
+        "--ragas-max-queries",
+        type=int,
+        default=25,
+        help="When --enable-ragas, only score the first N queries (default: 25). Use -1 for all.",
+    )
     p.add_argument("--k-list", type=int, nargs="+", default=[5, 10])
     p.add_argument("--max-k", type=int, default=20)
     p.add_argument(
@@ -134,6 +157,7 @@ def main() -> int:
         atlas_metrics = run_atlas_baseline(
             csv_path,
             max_train_rows=max_rows,
+            cv_folds=int(args.cv_folds),
             output_dir=atlas_dir,
             verbose=not args.quiet,
         )
@@ -180,6 +204,9 @@ def main() -> int:
                 k_list=list(args.k_list),
                 max_k=args.max_k,
                 output_path=eval_out,
+                embedding_model_id=args.embedding_model,
+                enable_ragas=bool(args.enable_ragas),
+                ragas_max_queries=(None if int(args.ragas_max_queries) < 0 else int(args.ragas_max_queries)),
             )
             log(
                 f"[neurips-pipeline] eval done: n={eval_aggregate.get('n_queries')} queries, "
@@ -199,7 +226,13 @@ def main() -> int:
             log(f"[neurips-pipeline] eval failed: {exc}")
 
     rag_display = str(rag_db.resolve()) if rag_db is not None else "(none)"
+    # If we reused an eval JSON, prefer the queries path recorded in that artifact so the
+    # rendered manuscript matches the evaluated file (not whatever default CLI path was left).
     queries_display = str(args.queries.resolve())
+    if isinstance(eval_aggregate, dict):
+        qf = eval_aggregate.get("queries_file")
+        if isinstance(qf, str) and qf.strip():
+            queries_display = qf.strip()
 
     ctx = build_neurips_context(
         atlas_metrics=atlas_metrics,

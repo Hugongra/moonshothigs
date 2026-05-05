@@ -10,6 +10,7 @@ from typing import Any
 
 from .metrics import mean, ndcg_at_k, reciprocal_rank, recall_at_k
 from .rag_store import load_vectorstore
+from .judge_metrics import cheap_answer_from_contexts, faithfulness_and_context_relevance, judge_config_from_env
 
 EMBEDDING_MODEL_ID = "sentence-transformers/all-MiniLM-L6-v2"
 
@@ -51,6 +52,9 @@ def run_retrieval_evaluation(
     max_k: int = 20,
     output_path: Path | None = None,
     results_dir: Path | None = None,
+    embedding_model_id: str | None = None,
+    enable_ragas: bool = False,
+    ragas_max_queries: int | None = None,
 ) -> tuple[dict[str, Any], Path]:
     """
     Run gold-query retrieval evaluation; write JSON and return (aggregate, path).
@@ -71,7 +75,11 @@ def run_retrieval_evaluation(
                 rows.append(json.loads(line))
 
     try:
-        vs = load_vectorstore(rag_db, collection_name=collection_name)
+        vs = load_vectorstore(
+            rag_db,
+            collection_name=collection_name,
+            embedding_model_id=embedding_model_id,
+        )
     except ImportError as exc:
         raise MissingEvalDependencies(
             "Eval dependencies missing in active Python environment. Install with:\n"
@@ -88,6 +96,11 @@ def run_retrieval_evaluation(
     k_max = max(max_k, max(ks))
 
     per_query: list[dict] = []
+    judge_cfg = judge_config_from_env()
+    judge_status_global = "disabled"
+    if enable_ragas:
+        judge_status_global = f"enabled_provider={judge_cfg.provider}"
+
     for item in rows:
         patterns = item.get("relevant_path_patterns") or []
         req_terms = item.get("required_terms") or []
@@ -117,11 +130,40 @@ def run_retrieval_evaluation(
         pq["path_hit_rank"] = (
             next((i + 1 for i, h in enumerate(hits) if h), None) if patterns else None
         )
+
+        # Optional RAGAS judge metrics (expensive; off by default).
+        pq["faithfulness_topk"] = {str(k): None for k in ks}
+        pq["context_relevance_topk"] = {str(k): None for k in ks}
+        pq["ragas_status"] = "disabled"
+
+        if enable_ragas:
+            # Bound cost: only evaluate first N queries unless unlimited.
+            limit = ragas_max_queries
+            if limit is None:
+                limit = 25
+            q_index = len(per_query)
+            if q_index < int(limit):
+                qtext = str(item["query"])
+                for k in ks:
+                    ctxs = [d.page_content for d in docs[:k]]
+                    ans = cheap_answer_from_contexts(qtext, ctxs)
+                    f, cr, st = faithfulness_and_context_relevance(
+                        query=qtext, contexts=ctxs, answer=ans, cfg=judge_cfg
+                    )
+                    pq["faithfulness_topk"][str(k)] = f
+                    pq["context_relevance_topk"][str(k)] = cr
+                pq["ragas_status"] = st
+                judge_status_global = st
+
         per_query.append(pq)
 
     difficulty_groups: dict[str, list[dict]] = defaultdict(list)
     for pq in per_query:
         difficulty_groups[pq.get("difficulty") or "unlabeled"].append(pq)
+
+    def _mean_optional(xs: list[float | None]) -> float | None:
+        ys = [float(x) for x in xs if x is not None]
+        return mean(ys) if ys else None
 
     difficulty_breakdown = {}
     for d, group in difficulty_groups.items():
@@ -135,6 +177,14 @@ def run_retrieval_evaluation(
                 for k in ks
             },
         }
+        if enable_ragas:
+            difficulty_breakdown[d]["faithfulness_mean"] = {
+                str(k): _mean_optional([p["faithfulness_topk"][str(k)] for p in group]) for k in ks
+            }
+            difficulty_breakdown[d]["context_relevance_mean"] = {
+                str(k): _mean_optional([p["context_relevance_topk"][str(k)] for p in group])
+                for k in ks
+            }
 
     with_gold = [p for p in per_query if p["has_gold"]]
     failures = [
@@ -150,7 +200,7 @@ def run_retrieval_evaluation(
 
     aggregate: dict[str, Any] = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
-        "embedding_model": EMBEDDING_MODEL_ID,
+        "embedding_model": embedding_model_id or EMBEDDING_MODEL_ID,
         "rag_db": str(rag_db.resolve()),
         "rag_chunk_count": chunk_count,
         "queries_file": str(queries_path.resolve()),
@@ -170,6 +220,28 @@ def run_retrieval_evaluation(
         "failures": failures,
         "per_query": per_query,
     }
+
+    aggregate["ragas"] = {
+        "enabled": bool(enable_ragas),
+        "max_queries": ragas_max_queries,
+        "status": judge_status_global,
+        "judge_model": judge_cfg.model,
+        "judge_provider": judge_cfg.provider,
+        "note": (
+            "RAGAS metrics are optional and require extra dependencies + LLM credentials. "
+            "When enabled, this harness uses a cheap extractive 'answer' built from the retrieved "
+            "contexts so Faithfulness/ContextRelevance can run without a separate generator model."
+        ),
+    }
+
+    if enable_ragas:
+        aggregate["faithfulness_mean"] = {
+            str(k): _mean_optional([p["faithfulness_topk"][str(k)] for p in per_query]) for k in ks
+        }
+        aggregate["context_relevance_mean"] = {
+            str(k): _mean_optional([p["context_relevance_topk"][str(k)] for p in per_query])
+            for k in ks
+        }
 
     base = results_dir or (Path(__file__).resolve().parent / "results")
     base.mkdir(parents=True, exist_ok=True)

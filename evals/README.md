@@ -1,6 +1,6 @@
 # RAG AI Scientist — evaluation harness
 
-This directory implements **Section 6–style** protocols from `docs/neurips_style_draft.md`: retrieval quality on a **gold query set**, lightweight **lexical groundedness**, optional **human rubrics**, and reproducible **JSON artifacts** under `evals/results/`.
+This directory implements **Section 6–style** protocols from `docs/neurips_style_draft.md`: retrieval quality on a **gold query set**, lightweight **lexical groundedness** (or **RAGAS** faithfulness / context relevance when `--ragas` is enabled), optional **human rubrics**, and reproducible **JSON artifacts** under `evals/results/`.
 
 **Paper bundle:** `../run_neurips_pipeline.py` runs retrieval eval (unless `--skip-eval`), the ATLAS replication, and writes **`output/neurips_paper/neurips_rag_atlas.tex`** with methodology prose + metric tables.
 
@@ -12,6 +12,8 @@ This directory implements **Section 6–style** protocols from `docs/neurips_sty
 ```bash
 cd ~/Desktop/higgs
 pip install -r evals/requirements-eval.txt
+# Optional LLM-judge scores (OpenAI-backed by default; see ``evals/judge_metrics.py``):
+#   pip install -r evals/requirements-ragas.txt
 ```
 
 3. **Tell the script where Chroma lives** (pick one):
@@ -21,7 +23,20 @@ pip install -r evals/requirements-eval.txt
 | Default discovery | `../rag-ai-scientist/.cursor/rag_db` **or** `./.cursor/rag_db` |
 | Explicit | `--rag-db /absolute/path/to/.cursor/rag_db` |
 
-Collection name defaults to `RAG_COLLECTION_NAME` or `rag-ai-scientist`.
+Collection name defaults to `configs/references.yaml` (`indexing.collection_name`), then `RAG_COLLECTION_NAME`, then `rag-ai-scientist`.
+
+## Embedding-model benchmark (parallel Chroma DBs)
+
+When you want **comparable** MRR / nDCG across embedding checkpoints, each model needs its **own** persisted index (same chunking, different vectors):
+
+```bash
+pip install -r evals/requirements-eval.txt
+python evals/run_embedding_sweep.py \
+  --queries evals/data/rag_queries_500_neurips_mirror.jsonl \
+  --models sentence-transformers/all-MiniLM-L6-v2 BAAI/bge-small-en-v1.5
+```
+
+Writes one Chroma directory per model under `.cursor/rag_db__<slug>/`, per-model eval JSON under `evals/results/`, and a CSV summary (`--output-csv`, default `evals/results/embedding_sweep_summary.csv`). OpenAI `text-embedding-*` models work if `langchain-openai` is installed and credentials are configured.
 
 ## Quickstart
 
@@ -56,7 +71,9 @@ Document seed, embedding model id, and `k` in any publication.
 |------|---------|
 | `data/rag_queries.jsonl` | Gold queries + patterns + optional `required_terms` |
 | `metrics.py` | Recall@k, MRR, nDCG (binary relevance) |
-| `rag_store.py` | Load Chroma + MiniLM embeddings |
+| `rag_store.py` | Load Chroma + embeddings (HF MiniLM by default; OpenAI `text-embedding-*` optional) |
+| `chroma_ingest.py` | Build Chroma from `configs/references.yaml` (for sweeps / CI without `rag-ai-scientist`) |
+| `run_embedding_sweep.py` | Index + eval loop across `--models` |
 | `run_retrieval_eval.py` | Main CLI |
 | `report_aggregate.py` | Markdown-friendly table from a run JSON |
 | `human_rubric.md` | Template for qualitative scoring |

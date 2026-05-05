@@ -34,6 +34,14 @@ def main() -> int:
     )
     p.add_argument("--collection", type=str, default=None, help="Chroma collection name")
     p.add_argument(
+        "--embedding-model",
+        type=str,
+        default=None,
+        help="Embedding model id (must match how the Chroma DB was built: HuggingFace sentence-transformers id "
+        "or OpenAI text-embedding-* if langchain-openai is installed). "
+        "Defaults to sentence-transformers/all-MiniLM-L6-v2 or EMBEDDING_MODEL_ID env var.",
+    )
+    p.add_argument(
         "--queries",
         type=Path,
         default=ROOT / "evals" / "data" / "rag_queries.jsonl",
@@ -52,6 +60,17 @@ def main() -> int:
         type=Path,
         default=None,
         help="Write JSON results here (default: evals/results/run_<timestamp>.json)",
+    )
+    p.add_argument(
+        "--ragas",
+        action="store_true",
+        help="Enable optional RAGAS LLM-judge metrics (requires extra deps + OPENAI_API_KEY by default).",
+    )
+    p.add_argument(
+        "--ragas-max-queries",
+        type=int,
+        default=25,
+        help="When --ragas is set, only score the first N queries (default: 25). Use -1 for all queries.",
     )
     args = p.parse_args()
 
@@ -82,6 +101,9 @@ def main() -> int:
             k_list=list(args.k_list),
             max_k=args.max_k,
             output_path=args.output,
+            embedding_model_id=args.embedding_model,
+            enable_ragas=bool(args.ragas),
+            ragas_max_queries=(None if int(args.ragas_max_queries) < 0 else int(args.ragas_max_queries)),
         )
     except Exception as exc:
         print(f"[eval] failed: {exc}", file=sys.stderr)

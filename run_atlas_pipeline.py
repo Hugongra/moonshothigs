@@ -34,6 +34,12 @@ def main() -> int:
         help="Max training rows after KaggleSet=='t' filter (default 150000; lower=faster)",
     )
     p.add_argument(
+        "--cv-folds",
+        type=int,
+        default=5,
+        help="Stratified K-fold splits for weighted CV metrics (default: 5). Set to 1 to disable K-fold (not recommended).",
+    )
+    p.add_argument(
         "--full-train",
         action="store_true",
         help="Use all training rows (large RAM; slow)",
@@ -84,9 +90,15 @@ def main() -> int:
 
     _p("")
     _p("[atlas-pipeline] ══════════ baseline ML + plots (numbered substeps) ══════════")
+    cv_folds = int(args.cv_folds)
+    if cv_folds < 1:
+        print("--cv-folds must be >= 1", file=sys.stderr)
+        return 2
+
     metrics = run_atlas_baseline(
         csv_path,
         max_train_rows=max_rows,
+        cv_folds=cv_folds,
         output_dir=args.output_dir,
         verbose=verbose,
     )

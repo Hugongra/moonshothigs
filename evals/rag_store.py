@@ -6,16 +6,51 @@ import os
 from pathlib import Path
 
 
+def embedding_from_model_id(embedding_model_id: str | None):
+    """
+    Embeddings compatible with how the Chroma collection was built.
+
+    - HuggingFace sentence-transformers (default): normalized vectors on CPU.
+    - OpenAI ``text-embedding-*`` models via ``langchain-openai`` (install separately).
+    """
+    model_name = (embedding_model_id or os.environ.get("EMBEDDING_MODEL_ID") or "sentence-transformers/all-MiniLM-L6-v2").strip()
+
+    if model_name.startswith("text-embedding-"):
+        try:
+            from langchain_openai import OpenAIEmbeddings
+        except ImportError as exc:  # pragma: no cover
+            raise ImportError(
+                "OpenAI embeddings require langchain-openai. Install with:\n"
+                "    pip install langchain-openai\n"
+            ) from exc
+        return OpenAIEmbeddings(model=model_name)
+
+    try:
+        from langchain_huggingface import HuggingFaceEmbeddings
+    except ImportError as exc:  # pragma: no cover
+        raise ImportError(
+            "Install eval deps: pip install -r evals/requirements-eval.txt"
+        ) from exc
+
+    return HuggingFaceEmbeddings(
+        model_name=model_name,
+        model_kwargs={"device": "cpu"},
+        encode_kwargs={"normalize_embeddings": True},
+        show_progress=False,
+    )
+
+
 def load_vectorstore(
     persist_directory: Path | str,
     *,
     collection_name: str | None = None,
+    embedding_model_id: str | None = None,
 ):
     """
     Open a persisted Chroma DB created by rag-ai-scientist indexing.
 
     Uses ``sentence-transformers/all-MiniLM-L6-v2`` with normalized embeddings
-    to match ``.cursor/mcp_server.py``.
+    to match ``.cursor/mcp_server.py`` unless ``embedding_model_id`` / ``EMBEDDING_MODEL_ID`` overrides.
     """
     persist_directory = Path(persist_directory)
     if not persist_directory.is_dir():
@@ -28,15 +63,8 @@ def load_vectorstore(
             "Install eval deps: pip install -r evals/requirements-eval.txt"
         ) from exc
 
-    from langchain_huggingface import HuggingFaceEmbeddings
-
     coll = collection_name or os.environ.get("RAG_COLLECTION_NAME", "rag-ai-scientist")
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2",
-        model_kwargs={"device": "cpu"},
-        encode_kwargs={"normalize_embeddings": True},
-        show_progress=False,
-    )
+    embeddings = embedding_from_model_id(embedding_model_id)
     return Chroma(
         persist_directory=str(persist_directory.resolve()),
         collection_name=coll,

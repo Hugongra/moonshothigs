@@ -1,0 +1,239 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "http://mlcommons.org/croissant/column",
+    "conformsTo": "http://mlcommons.org/croissant/conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "http://mlcommons.org/croissant/data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "http://mlcommons.org/croissant/dataType",
+      "@type": "@vocab"
+    },
+    "examples": {
+      "@id": "http://mlcommons.org/croissant/examples",
+      "@type": "@json"
+    },
+    "extract": "http://mlcommons.org/croissant/extract",
+    "field": "http://mlcommons.org/croissant/field",
+    "fileObject": "http://mlcommons.org/croissant/fileObject",
+    "fileProperty": "http://mlcommons.org/croissant/fileProperty",
+    "fileSet": "http://mlcommons.org/croissant/fileSet",
+    "format": "http://mlcommons.org/croissant/format",
+    "includes": "http://mlcommons.org/croissant/includes",
+    "isLiveDataset": "http://mlcommons.org/croissant/isLiveDataset",
+    "jsonPath": "http://mlcommons.org/croissant/jsonPath",
+    "key": "http://mlcommons.org/croissant/key",
+    "md5": "http://mlcommons.org/croissant/md5",
+    "parentField": "http://mlcommons.org/croissant/parentField",
+    "path": "http://mlcommons.org/croissant/path",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "recordSet": "http://mlcommons.org/croissant/recordSet",
+    "references": "http://mlcommons.org/croissant/references",
+    "regex": "http://mlcommons.org/croissant/regex",
+    "repeated": "http://mlcommons.org/croissant/repeated",
+    "replace": "http://mlcommons.org/croissant/replace",
+    "samplingRate": "http://mlcommons.org/croissant/samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "http://mlcommons.org/croissant/separator",
+    "source": "http://mlcommons.org/croissant/source",
+    "subField": "http://mlcommons.org/croissant/subField",
+    "transform": "http://mlcommons.org/croissant/transform",
+    "dct": "http://purl.org/dc/terms/",
+    "citeAs": "http://mlcommons.org/croissant/citeAs",
+    "equivalentProperty": "http://mlcommons.org/croissant/equivalentProperty",
+    "prov": "http://www.w3.org/ns/prov#"
+  },
+  "@type": "sc:Dataset",
+  "name": "RAG-AI-Scientist-OGTS-Benchmark",
+  "description": "Execution-grounded evaluation suite for retrieval-augmented scientific code assistants. Contains two complementary benchmarks: (1) OGTS (Oracle-Guided Tree Search) — 50 deterministic micro-tasks across four families of domain-specific scientific computing problems (AMS closed-form, weighted log-loss, nDCG@k, threshold scan for AMS), each with 6 pre-computed oracle test cases and numeric tolerances; and (2) RAG Gold Queries — 500 retrieval evaluation queries with path-pattern relevance labels, difficulty tags (easy/medium/hard), and optional required_terms for lexical grounding, designed to evaluate retrieval quality over an indexed physics document corpus.",
+  "url": "https://github.com/ANONYMOUS/rag-ai-scientist-ogts-benchmark",
+  "license": "https://spdx.org/licenses/MIT.html",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "version": "1.0.0",
+  "datePublished": "2026-05-05",
+  "creator": {
+    "@type": "Organization",
+    "name": "Anonymous (NeurIPS 2026 submission)"
+  },
+  "citation": "Anonymous. RAG AI Scientist: Retrieval Grounding for Scientific Code Assistants, with an ATLAS Higgs-Challenge Replication Testbed. NeurIPS 2026 Evaluations & Datasets Track (submitted).",
+  "keywords": [
+    "code generation evaluation",
+    "oracle-guided tree search",
+    "retrieval-augmented generation",
+    "scientific computing",
+    "execution-grounded evaluation",
+    "HEP machine learning",
+    "ATLAS Higgs challenge"
+  ],
+  "rai:dataLimitations": "The OGTS task suite covers only four families of scientific computing micro-tasks (AMS, log-loss, nDCG, threshold scan); broader coverage of tensor manipulation, data wrangling, and visualization tasks would strengthen generalizability claims. The RAG gold queries are specific to the ATLAS Higgs ML Challenge corpus and may not transfer to other scientific domains without re-labeling. Oracle tolerances are set to 1e-9 (numeric_close), which is strict and may penalize numerically valid but differently-rounded implementations. Not recommended for evaluating multi-file code generation, interactive debugging, or tasks requiring external libraries.",
+  "rai:dataBiases": "Task distribution is skewed toward physics-domain metrics (AMS, threshold scan) with 26/50 OGTS tasks in this family. The RAG query set was synthetically generated from a seed set of 10 hand-authored queries via paraphrase expansion, so query diversity is bounded by the seed topics. All tasks use English prompts only. The oracle test cases use uniformly sampled random inputs, which may not reflect the distribution of real-world inputs in production pipelines.",
+  "rai:personalSensitiveInformation": "This dataset contains no personal or sensitive information. All data is synthetic (OGTS tasks with random numeric inputs) or derived from publicly available physics challenge documentation (RAG queries referencing the ATLAS Higgs ML Challenge 2014, CERN Open Data Portal).",
+  "rai:dataUseCases": "Primary intended use: benchmarking LLM code-generation accuracy on domain-specific scientific computing tasks, comparing search strategies (linear retry vs. tree search) under oracle verification. Secondary: evaluating retrieval quality of RAG systems over indexed scientific corpora. Validity has been established for pass@k evaluation of Python code generation models and MRR/nDCG/Recall@k evaluation of vector-store retrieval. Not validated for: general-purpose code generation, natural language understanding, or tasks outside the physics/ML metrics domain.",
+  "rai:dataSocialImpact": "Positive: promotes transparent, reproducible evaluation of AI coding assistants in scientific domains, helping researchers trust and verify AI-generated code. Encourages oracle-based verification over self-reported accuracy. Negative risks are minimal given the synthetic nature of the data; however, high pass rates on this benchmark should not be interpreted as evidence of general scientific coding competence.",
+  "rai:hasSyntheticData": true,
+  "prov:wasDerivedFrom": [
+    {
+      "@id": "atlas-higgs-challenge-2014",
+      "url": "https://opendata.cern.ch/record/328",
+      "description": "ATLAS Higgs Boson Machine Learning Challenge 2014 documentation (source of AMS formula, evaluation methodology, and RAG query topics)"
+    }
+  ],
+  "prov:wasGeneratedBy": {
+    "description": "OGTS tasks: deterministic Python generation (seed=1337) using closed-form implementations of AMS, weighted log-loss, nDCG, and threshold scan. Each task's oracle payload contains 6 test cases with uniformly sampled random inputs and pre-computed expected outputs. RAG queries: 10 seed queries hand-authored by domain experts, expanded to 500 via deterministic paraphrase generation (evals/generate_rag_queries.py) with difficulty labels (easy/medium/hard) assigned by the generator based on query complexity. No human annotation was performed on the expanded set.",
+    "tools": "Python 3.11, NumPy, scikit-learn (for ATLAS pipeline validation)"
+  },
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "@id": "ogts-tasks-file",
+      "name": "ogts_50_tasks.jsonl",
+      "description": "50 OGTS execution-grounded tasks with oracle test cases",
+      "contentUrl": "evals/ogts/data/ogts_50_tasks.jsonl",
+      "encodingFormat": "application/jsonlines",
+      "sha256": "c69982a39f19dd061ecfb3444224bd354018f1a78db8402746d30dd2c18a44d2"
+    },
+    {
+      "@type": "sc:FileObject",
+      "@id": "rag-queries-file",
+      "name": "rag_queries_500_neurips_mirror.jsonl",
+      "description": "500 retrieval evaluation queries with relevance labels and difficulty tags",
+      "contentUrl": "evals/data/rag_queries_500_neurips_mirror.jsonl",
+      "encodingFormat": "application/jsonlines",
+      "sha256": "f43a2b65dac9b36c810160eaff7d22493ed5b71551f9efe935e5a4927e4503c2"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ogts-tasks",
+      "key": "ogts-tasks/id",
+      "name": "ogts_tasks",
+      "description": "Each record is one execution-grounded micro-task with a prompt, entrypoint function name, oracle kind, and oracle payload containing test cases.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ogts-tasks/id",
+          "name": "id",
+          "description": "Unique task identifier (e.g., ogts_001)",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "ogts-tasks-file" },
+            "extract": { "jsonPath": "$.id" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ogts-tasks/title",
+          "name": "title",
+          "description": "Task family name (e.g., AMS closed-form, Weighted log-loss)",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "ogts-tasks-file" },
+            "extract": { "jsonPath": "$.title" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ogts-tasks/prompt",
+          "name": "prompt",
+          "description": "Natural-language prompt instructing the model to write a Python module",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "ogts-tasks-file" },
+            "extract": { "jsonPath": "$.prompt" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ogts-tasks/entrypoint",
+          "name": "entrypoint",
+          "description": "Name of the Python function the generated module must define",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "ogts-tasks-file" },
+            "extract": { "jsonPath": "$.entrypoint" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ogts-tasks/oracle_kind",
+          "name": "oracle_kind",
+          "description": "Type of oracle verification: numeric_close, numeric_equal, or json_equal",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "ogts-tasks-file" },
+            "extract": { "jsonPath": "$.oracle_kind" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ogts-tasks/oracle_payload",
+          "name": "oracle_payload",
+          "description": "JSON object with test cases (args, kwargs, expected) and tolerance settings",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "ogts-tasks-file" },
+            "extract": { "jsonPath": "$.oracle_payload" }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "rag-queries",
+      "key": "rag-queries/id",
+      "name": "rag_queries",
+      "description": "Each record is one retrieval evaluation query with relevance labels for measuring RAG system quality.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "rag-queries/id",
+          "name": "id",
+          "description": "Unique query identifier",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "rag-queries-file" },
+            "extract": { "jsonPath": "$.id" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rag-queries/query",
+          "name": "query",
+          "description": "Natural-language retrieval query",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "rag-queries-file" },
+            "extract": { "jsonPath": "$.query" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rag-queries/difficulty",
+          "name": "difficulty",
+          "description": "Difficulty label: easy, medium, or hard",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "rag-queries-file" },
+            "extract": { "jsonPath": "$.difficulty" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rag-queries/relevant_path_patterns",
+          "name": "relevant_path_patterns",
+          "description": "Substring patterns that must appear in retrieved chunk metadata for the chunk to be counted as relevant",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "rag-queries-file" },
+            "extract": { "jsonPath": "$.relevant_path_patterns" }
+          }
+        }
+      ]
+    }
+  ]
+}

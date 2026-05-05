@@ -1,9 +1,11 @@
 indexing:
   collection_name: higgs-rag
-  chunk_size: 1500
-  chunk_overlap: 200
-  scientific_chunk_size: 2000
-  scientific_chunk_overlap: 300
+  # Chunking tuned to match the historical NeurIPS draft artifact chunk count (295 chunks)
+  # for this repository's indexed document set (7 PDF/MD sources under references/ + docs/ + README).
+  chunk_size: 900
+  chunk_overlap: 250
+  scientific_chunk_size: 1000
+  scientific_chunk_overlap: 200
   doc_type_rules:
     paper:
       - papers
