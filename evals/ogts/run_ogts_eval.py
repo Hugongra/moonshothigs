@@ -12,10 +12,17 @@ Examples:
     --generator openai --model gpt-4o-mini \
     --tasks evals/ogts/data/ogts_50_tasks.jsonl
 
+  # OpenRouter (auto-detected when model looks like provider/name):
+  export OPENROUTER_API_KEY=sk-or-v1-...
+  python evals/ogts/run_ogts_eval.py --generator openai \
+    --model anthropic/claude-3.7-sonnet \
+    --tasks evals/ogts/data/ogts_50_tasks.jsonl \
+    --output evals/ogts/results/ogts_eval_claude35.json
+
   # Only OGTS strategy:
   python evals/ogts/run_ogts_eval.py --generator openai --strategies ogts
 
-Output: evals/ogts/results/ogts_eval_<timestamp>.json
+Output: evals/ogts/results/ogts_eval_<timestamp>.json (or path set via --output)
 """
 
 from __future__ import annotations
@@ -85,6 +92,12 @@ def main() -> int:
         help="'oracle' = ground-truth upper bound; 'noisy' = simulated buggy LLM (no API); 'openai' = real model.",
     )
     p.add_argument("--model", type=str, default="gpt-4o-mini")
+    p.add_argument(
+        "--openrouter",
+        action="store_true",
+        help="Force OpenRouter (OPENROUTER_API_KEY + https://openrouter.ai/api/v1). "
+        "Otherwise enabled automatically when --model contains '/' (e.g. anthropic/claude-3.5-sonnet).",
+    )
     p.add_argument("--bug-rate", type=float, default=0.6, help="Bug injection probability for noisy generator")
     p.add_argument(
         "--strategies",
@@ -111,7 +124,7 @@ def main() -> int:
     elif args.generator == "noisy":
         gen = NoisyGenerator(bug_rate=float(args.bug_rate))
     else:
-        gen = OpenAIGenerator(model=args.model)
+        gen = OpenAIGenerator(model=args.model, openrouter=bool(args.openrouter))
 
     print(
         f"[ogts-eval] tasks={len(tasks)}, generator={args.generator}({getattr(gen, 'model', 'n/a')}), "
@@ -175,6 +188,7 @@ def main() -> int:
         "config": {
             "generator": args.generator,
             "model": getattr(gen, "model", None),
+            "openrouter": bool(getattr(gen, "openrouter", False)),
             "strategies": args.strategies,
             "k": args.k,
             "depth": args.depth,

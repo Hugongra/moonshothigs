@@ -1,145 +1,201 @@
-# higgs
+# RAG AI Scientist — reviewer-facing README
 
-## Tier 2 — Jupyter + CSV track
+This repository accompanies the manuscript **“RAG AI Scientist: Retrieval Grounding for Scientific Code Assistants, with an ATLAS Higgs-Challenge Replication Testbed.”** This document is written for **NeurIPS / ICML-style reviewers**: what is claimed, what is measured, how it is implemented, and how to reproduce it.
 
-Pedagogical workflow (invariant mass → histograms → statistics): see **`notebooks/README.md`**.
+---
 
-CSV inventory and bundle paths: **`data/PROVENANCE.md`**.
+## One-sentence summary
 
-Quick start:
+We evaluate a **retrieval-augmented scientific assistant** along three axes: **(i)** transparent retrieval metrics with explicit failure reporting, **(ii)** an **executable replication** of the 2014 ATLAS Higgs ML challenge as a consistency check between indexed documents and code, and **(iii)** **OGTS**, an execution-grounded benchmark where generated Python is checked by deterministic oracles (complementary to retrieval scores).
+
+---
+
+## Contributions (mapped to the paper)
+
+1. **Evaluation contract for scientific RAG** — Hand-authored queries with path-pattern gold labels, aggregate and stratified metrics (Recall@\(k\), MRR, nDCG@\(k\)), optional lexical checks or RAGAS-style LLM-judge scores, and **published failure cases** when gold documents never appear in the top-\(k\) retrieval list.
+
+2. **Validation testbed (ATLAS Higgs Boson ML Challenge, 2014)** — Weighted training, sentinel missingness (\(-999 \rightarrow\) NaN), AMS with regulator \(b_r{=}10\), stratified K-fold reporting. Demonstrates that the **same references** the assistant indexes align with an executable pipeline (not a leaderboard claim on private test labels).
+
+3. **OGTS (Oracle-Guided Tree Search)** — \(N{=}50\) micro-tasks (AMS closed-form, weighted log-loss, nDCG@\(k\), AMS threshold scan) with **deterministic oracles** and JSONL task definitions. Compares **linear retry** (pass@\(k\)) vs **OGTS** under controlled budgets.
+
+4. **Reproducibility tooling** — Configuration-driven ingest (`configs/references.yaml`), scripts under `evals/` and `run_neurips_pipeline.py`, and LaTeX generation from `paper/neurips_rag_atlas.tex.j2`.
+
+---
+
+## Scope and non-claims
+
+- **Retrieval metrics are corpus-specific.** Numbers transfer only together with the **embedding checkpoint**, **chunking settings**, and **indexed snapshot** recorded in each eval JSON.
+- **Path-pattern relevance is a proxy** for “correct document family” when stable chunk IDs across re-ingests are unavailable.
+- **ATLAS validation AMS** is **not** the private competition leaderboard score; we report **stratified K-fold** metrics on the public training table for reproducibility.
+- **OGTS** targets **small scientific numerical utilities**, not full repository-scale software engineering.
+
+---
+
+## Repository map
+
+| Path | Role |
+|------|------|
+| `paper/neurips_rag_atlas.tex.j2` | NeurIPS-style manuscript template (Jinja placeholders filled by `run_neurips_pipeline.py`) |
+| `run_neurips_pipeline.py` | Orchestrates retrieval eval (optional), ATLAS replication, paper render |
+| `run_atlas_pipeline.py` | ATLAS challenge baseline (weighted boosting, AMS, figures, metrics JSON) |
+| `evals/run_retrieval_eval.py` | Main retrieval evaluation CLI |
+| `evals/retrieval_eval_lib.py` | Metrics + aggregation + optional RAGAS hooks |
+| `evals/judge_metrics.py` | Optional LLM-judge (OpenAI / OpenRouter paths documented in code) |
+| `evals/ogts/run_ogts_eval.py` | OGTS harness CLI |
+| `evals/ogts/strategies.py` | **Authoritative** implementation of linear retry vs OGTS |
+| `evals/ogts/data/ogts_50_tasks.jsonl` | Frozen 50-task suite |
+| `evals/README.md` | Retrieval harness details (RAGAS, embedding sweep, gold JSONL format) |
+| `configs/references.yaml` | Corpus manifest for indexing |
+| `croissant.json` | Dataset / artifact metadata (where applicable) |
+
+Pedagogical Jupyter workflows and CSV provenance remain documented under **`notebooks/README.md`** and **`data/PROVENANCE.md`** (orthogonal to the paper’s core claims).
+
+---
+
+## Evaluation axis 1 — Retrieval (summary)
+
+- **Inputs:** Chroma persist dir + embedding model id matching the index; gold queries JSONL (`evals/data/` — starter set or generated `rag_queries_500_neurips_mirror.jsonl`).
+- **Outputs:** JSON under `evals/results/` with aggregates, per-difficulty breakdowns, per-query rows, and failure-case metadata when no gold path appears in top-\(k\).
+
+**Full commands and RAGAS costs:** see **`evals/README.md`**.
+
+Minimal reproduction (after indexing):
 
 ```bash
-cd references/cms-jupyter-materials-english-1.0/Exercises-with-open-data
-jupyter notebook
+pip install -r evals/requirements-eval.txt
+python evals/run_retrieval_eval.py \
+  --rag-db ./.cursor/rag_db \
+  --k-list 5 10 \
+  --queries evals/data/rag_queries.jsonl \
+  --output evals/results/reviewer_retrieval.json
 ```
 
-## One-shot Python pipeline → LaTeX/PDF
+---
 
-The `ragsci` conda env used for `rag-ai-scientist` does **not** include `pandas` until you install it there. Easiest fix: use a **project virtualenv** (already standard if you ran setup below):
-
-```bash
-cd ~/Desktop/higgs
-python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements-pipeline.txt
-MPLCONFIGDIR="$PWD/.mplcache" python run_pipeline.py --no-compile
-```
-
-Or call the venv Python explicitly (no `activate`):
+## Evaluation axis 2 — ATLAS replication (summary)
 
 ```bash
-~/Desktop/higgs/.venv/bin/python run_pipeline.py
-```
-
-By default the pipeline prints **verbose** progress: absolute paths to each CSV, row counts, column names, mass statistics, figure outputs with sizes, and timings. Use **`--quiet`** (`-q`) for the short summary only.
-
-To silence matplotlib cache warnings:
-
-```bash
+pip install -r requirements-pipeline.txt   # project venv recommended
 export MPLCONFIGDIR="$PWD/.mplcache"
+python run_atlas_pipeline.py --no-compile   # fast dev default uses subsample; see script --help for --full-train
 ```
 
-### Overleaf auto-sync (push every run)
+Writes figures and **`output/atlas_challenge/metrics.json`** (and LaTeX bundles under `output/atlas_*`). Metrics in the paper are **mean ± std over stratified K-fold** on the training table (`KaggleSet=t`), not private test AMS.
 
-The pipeline can push the rendered NeurIPS bundle to an Overleaf project automatically on every run via Overleaf's Git integration. Details: `docs/overleaf-mcp.md`.
+---
 
-One-time setup:
+## Evaluation axis 3 — OGTS (what reviewers should verify)
+
+### Task format
+
+Each line in `evals/ogts/data/ogts_50_tasks.jsonl` defines:
+
+- Natural-language **prompt**,
+- Python **entrypoint** name,
+- **Oracle kind** (`numeric_equal`, `numeric_close`, `json_equal`),
+- **`oracle_payload`** with fixed test cases (arguments + expected outputs).
+
+The oracle **imports the generated module**, calls the entrypoint on each case, and aggregates pass/fail + score (`evals/ogts/oracles.py`).
+
+### Strategy A — Linear retry (pass@\(k\))
+
+For each task:
+
+1. Repeat up to \(k\) times: sample code from the LM using the **original prompt only** (no feedback between failures).
+2. Stop at the **first** module that passes all oracle cases.
+3. If none pass, report best score achieved.
+
+So failures are “caught” **only** by executable tests; there is **no** prompt refinement from oracle output.
+
+### Strategy B — OGTS (as implemented in this repo)
+
+Parameters: **depth** \(d\), **branch** \(b\), sampling temperature \(T\).
+
+For each depth level \(1 \ldots d\):
+
+1. **Expand:** Sample \(b\) **independent** candidate modules from the **current prompt** `ctx` (parallel siblings at this depth).
+2. **Evaluate:** Run the oracle on **every** candidate. **Count each oracle run** (`oracle_calls` in logs).
+3. **Early exit:** If **any** candidate passes, stop immediately (success).
+4. **If none pass:** Sort candidates by oracle **score**, keep **only the single highest-scoring** failure.
+5. **Refine:** Set `ctx` to the **original task prompt** plus a short fixed suffix containing **`Status: <best_failure.status>`** (oracle status string only — not full tracebacks, not per-case diffs).
+6. Proceed to the next depth with this new `ctx`.
+
+**What is *not* done:** This is **not** beam search retaining multiple competing hypotheses across depths. Only **one** lineage survives refinement (the best-scoring failure at each depth). Alternative siblings are **discarded** for deeper search.
+
+**Why this still matters:** Parallel width \(b\) explores diverse corrections at each step; oracle scores gate which failure message informs the next prompt. The paper’s **nDCG family** example illustrates **near-perfect numeric overlap with systematic misuse of rank indexing** — invisible to lexical grounding but exposed by execution.
+
+### Running OGTS
 
 ```bash
-cp configs/overleaf.example.yaml configs/overleaf.local.yaml
-# edit configs/overleaf.local.yaml and paste your Overleaf git_token
-# (Overleaf → Account Settings → Git Integration → Create Token).
-# project_id defaults to 69f6848ce638a310664f4c90; override via env
-# OVERLEAF_PROJECT_ID or the YAML if you target a different project.
+pip install openai   # OpenAI SDK; used also for OpenRouter-compatible base_url
+# Smoke (no API key):
+python evals/ogts/run_ogts_eval.py --generator dummy --max-tasks 2
+
+# Example OpenRouter (see evals/ogts/generators.py for env vars & model IDs):
+export OPENROUTER_API_KEY='…'
+python evals/ogts/run_ogts_eval.py \
+  --generator openai \
+  --model anthropic/claude-3.7-sonnet \
+  --tasks evals/ogts/data/ogts_50_tasks.jsonl \
+  --k 5 --depth 3 --branch 3 \
+  --output evals/ogts/results/ogts_eval_run.json
 ```
 
-Then pick one:
+---
+
+## Full paper bundle (NeurIPS draft)
 
 ```bash
-# full pipeline + push
-OVERLEAF_SYNC=1 scripts/build_rag_and_paper.sh
-
-# or directly
-.venv/bin/python run_neurips_pipeline.py \
-  --reuse-eval-json evals/results/neurips_full.json \
-  --no-compile --sync-overleaf
-
-# kick the tires without committing
-.venv/bin/python run_neurips_pipeline.py --sync-overleaf --overleaf-dry-run
-
-# manual one-off
-.venv/bin/python scripts/sync_overleaf.py
+pip install -r evals/requirements-eval.txt
+export MPLCONFIGDIR="$PWD/.mplcache"
+python run_neurips_pipeline.py --no-compile
 ```
 
-Commits land on Overleaf's `master` with messages like `auto: regenerate from pipeline (<sha10> @ <UTC-iso>)`. If push fails (network, auth), the pipeline logs and continues — the local bundle at `output/neurips_overleaf_bundle/` remains valid. Optional read-only inspection of the Overleaf project from Cursor is provided by the separate [OverleafMCP](https://github.com/mjyoo2/overleafmcp) Node server; see the doc above.
+Options commonly used in split environments:
 
-**Overleaf upload (manual, no sync):** use **`output/overleaf_bundle/`** (`main.tex` + **`figures/`** together). Copy-pasting only `.tex` omits plots.
+- `--skip-eval` — ATLAS + LaTeX only (no Chroma).
+- `--reuse-eval-json path/to.json` — inject a frozen retrieval JSON into the manuscript.
 
-**Local PDF:** run without `--no-compile` if `pdflatex` is installed (PATH or `/Library/TeX/texbin` on macOS).
-
-## ATLAS Higgs Challenge (2014) — baseline ML pipeline
-
-Weighted **HistGradientBoosting** + **AMS** metric on `data/atlas-higgs-challenge-2014-v2.csv`. See **`docs/atlas_higgs_challenge_scaffolding.md`**.
-
-```bash
-.venv/bin/python run_atlas_pipeline.py              # subsample for speed
-.venv/bin/python run_atlas_pipeline.py --full-train # entire training table (heavy)
-.venv/bin/python run_atlas_pipeline.py --no-compile # figures + LaTeX + Overleaf bundle; skip pdflatex
-```
-
-Writes **`output/atlas_challenge/`** (figures + **`metrics.json`**, including **signal vs background** in **`DER_mass_MMC`**, the collinear-mass “peak” view), **`output/atlas_paper/paper.tex`**, and **`output/atlas_overleaf_bundle/`** (`main.tex` + `figures/`). Same Overleaf rule as below: upload the entire **`atlas_overleaf_bundle`** folder.
-
-## NeurIPS-style draft (RAG AI Scientist + evals + ATLAS replication)
-
-Runs **retrieval evaluation** (when a Chroma DB is available), **replicates** the ATLAS challenge baseline, and writes a draft **`neurips_rag_atlas.tex`** that explains the eval methodology and embeds case-study tables or figures. Narrative stance: **RAG AI Scientist** is primary; ATLAS is supporting evidence. Methodology text also lives in **`docs/neurips_style_draft.md`**.
-
-```bash
-pip install -r evals/requirements-eval.txt    # needed for eval + full pipeline
-MPLCONFIGDIR="$PWD/.mplcache" .venv/bin/python run_neurips_pipeline.py
-.venv/bin/python run_neurips_pipeline.py --skip-eval --no-compile   # paper + ATLAS only (no Chroma)
-```
-
-Outputs **`output/neurips_paper/`** (`neurips_rag_atlas.tex`, `figures/`, `pipeline_manifest.json`), **`output/neurips_overleaf_bundle/`**, and **`evals/results/neurips_*.json`** when retrieval eval succeeds.
-
-**Paper evaluation section includes:** run configuration (embedding model, chunk count, paths, timestamps), summary metrics, **per-difficulty** breakdown, **per-query** table with first-hit ranks, a **failure cases** table (gold-labeled queries with no relevant retrieved chunk), and qualitative snippets from the top retrieved chunks.
-
-**Recommended workflow (uses the `rag-ai-scientist` package):**
+Automated index + eval + paper:
 
 ```bash
 scripts/build_rag_and_paper.sh
-# or with explicit env paths:
-RAG_CLI=/opt/homebrew/Caskroom/miniconda/base/envs/ragsci/bin/rag-ai-scientist \
-PIPE_PY=$PWD/.venv/bin/python scripts/build_rag_and_paper.sh
 ```
 
-The script (1) runs `rag-ai-scientist setup-rag --project-root . --collection-name higgs-rag --force` so ATLAS / CMS / methodology docs enter the collection, (2) runs the retrieval eval in the RAG env, (3) renders the NeurIPS paper via the pipeline env. Environment variables `SKIP_INDEX=1` / `SKIP_EVAL=1` skip individual steps; `OVERLEAF_SYNC=1` also pushes the rendered bundle to the configured Overleaf project.
+See comments in **`scripts/build_rag_and_paper.sh`** for `SKIP_INDEX`, `SKIP_EVAL`, and Overleaf sync.
 
-**Manual cross-env recipe** (when RAG deps live outside `.venv`):
+---
 
-```bash
-/path/to/ragsci/bin/rag-ai-scientist setup-rag \
-  --project-root ~/Desktop/higgs --collection-name higgs-rag --force
+## Limitations (explicit)
 
-/path/to/ragsci/bin/python evals/run_retrieval_eval.py \
-  --rag-db ~/Desktop/higgs/.cursor/rag_db \
-  --collection higgs-rag \
-  --output evals/results/neurips_full.json
+- **OGTS refinement signal is intentionally minimal** (status string). Richer feedback (per-case oracle diffs) would likely change search effectiveness and is left to future work.
+- **50 tasks, four families** — generalization beyond these scientific micro-patterns is not claimed.
+- **RAGAS / LLM judges** introduce cost, variance, and provider dependence when enabled.
+- **Anonymized submission:** scrub absolute user paths and API keys from any JSON you bundle as supplementary material.
 
-.venv/bin/python run_neurips_pipeline.py \
-  --reuse-eval-json evals/results/neurips_full.json --no-compile
-```
+---
 
-## Higgs-style CSV peak search (paper-inspired)
+## Ethics / data
 
-Uses `data/diphoton.csv` and `data/hto4leptons.csv` with a sideband background **toy** aligned with arXiv:1207.7235 (γγ and 4ℓ channels). See **`docs/higgs_csv_methodology.md`**.
+Public challenge CSV and open methodology references are documented in **`docs/atlas_higgs_challenge_scaffolding.md`** and **`croissant.json`** where applicable. Do not commit secrets; use environment variables only.
 
-```bash
-.venv/bin/python run_higgs_pipeline.py           # figures + LaTeX + PDF if pdflatex exists
-.venv/bin/python run_higgs_pipeline.py --no-compile   # skip PDF only
-```
+---
 
-Writes **`output/higgs_paper/paper.tex`**, **`output/higgs_overleaf_bundle/`** (`main.tex` + `figures/`), and **`output/higgs_figures/`** plots. Same Overleaf rule as the main pipeline: upload the **whole** `higgs_overleaf_bundle` folder, not only the `.tex`.
+## Citation
 
-This runs the CSV analysis, writes figures under `output/figures/`, generates `output/paper/paper.tex`, and runs `pdflatex` twice if it is on your `PATH`. Use `python run_pipeline.py --no-compile` if you only want the `.tex` and plots.
+Use the citation block from the camera-ready paper once available. Until DOI assignment, cite **repository + commit SHA + eval JSON timestamps** alongside embedding model ids for any numerical claim.
 
-# moonshotHiggs
+---
+
+## Maintainer note
+
+If this README and `paper/neurips_rag_atlas.tex.j2` diverge, treat **`evals/ogts/strategies.py`** and **`evals/retrieval_eval_lib.py`** as ground truth for algorithmic behavior.
+
+---
+
+## Additional materials (outside the paper’s core claims)
+
+- **Tier-2 Jupyter + CSV pedagogy:** `notebooks/README.md`
+- **CSV inventory / provenance:** `data/PROVENANCE.md`
+- **Higgs-style CSV peak-search pipeline:** `docs/higgs_csv_methodology.md`, `run_higgs_pipeline.py`
+- **Legacy combined ops notes** (Overleaf, venv quirks) remain recoverable from git history if needed; this README is intentionally **reviewer-first**.

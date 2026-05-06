@@ -15,7 +15,12 @@ class RagasJudgeConfig:
 
 
 def judge_config_from_env() -> RagasJudgeConfig:
-    prov = (os.environ.get("RAGAS_JUDGE_PROVIDER") or "disabled").strip().lower()
+    raw = os.environ.get("RAGAS_JUDGE_PROVIDER")
+    if raw is None or str(raw).strip() == "":
+        # Default: use OpenAI when a key is present (common `--ragas` UX).
+        prov = "openai" if os.environ.get("OPENAI_API_KEY", "").strip() else "disabled"
+    else:
+        prov = str(raw).strip().lower()
     model = (os.environ.get("RAGAS_JUDGE_MODEL") or "gpt-4o-mini").strip()
     temp = float(os.environ.get("RAGAS_JUDGE_TEMPERATURE") or "0.0")
     return RagasJudgeConfig(provider=prov, model=model, temperature=temp)
@@ -37,7 +42,9 @@ def faithfulness_and_context_relevance(
         return None, None, "disabled"
 
     try:
-        from ragas.metrics import faithfulness, context_relevance  # type: ignore
+        # ragas>=0.4: lowercase `context_relevance` was removed from ragas.metrics;
+        # use legacy NVidia ContextRelevance with output column name `context_relevance`.
+        from ragas.metrics import ContextRelevance, faithfulness  # type: ignore
         from ragas import evaluate  # type: ignore
         from datasets import Dataset  # type: ignore
     except Exception as exc:  # pragma: no cover
@@ -70,7 +77,8 @@ def faithfulness_and_context_relevance(
     )
 
     try:
-        out = evaluate(ds, metrics=[faithfulness, context_relevance], llm=ragas_llm)
+        metrics = [faithfulness, ContextRelevance(name="context_relevance")]
+        out = evaluate(ds, metrics=metrics, llm=ragas_llm)
         row = out.to_pandas().iloc[0].to_dict()
         f = row.get("faithfulness")
         cr = row.get("context_relevance")

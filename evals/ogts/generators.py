@@ -3,8 +3,18 @@ from __future__ import annotations
 import os
 import random
 import re
+import sys
 from dataclasses import dataclass
 from typing import Protocol
+
+# OpenRouter periodically retires short slugs (404 "No endpoints found"). Try these next.
+_OPENROUTER_MODEL_FALLBACKS: dict[str, tuple[str, ...]] = {
+    "anthropic/claude-3.5-sonnet": (
+        "anthropic/claude-3.7-sonnet",
+        "anthropic/claude-sonnet-4",
+    ),
+}
+_fallback_warnings_emitted: set[tuple[str, str]] = set()
 
 
 class CodeGenerator(Protocol):
@@ -132,48 +142,130 @@ class NoisyGenerator:
         return "def nope():\n    raise NotImplementedError\n"
 
 
+def _looks_like_openrouter_model(model: str) -> bool:
+    """OpenRouter model IDs use `provider/model` (e.g. `anthropic/claude-3.5-sonnet`)."""
+    m = model.strip()
+    return "/" in m and not m.startswith("ft:")
+
+
+def _env_truthy(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _openrouter_models_to_try(primary: str) -> list[str]:
+    m = primary.strip()
+    out = [m]
+    for alt in _OPENROUTER_MODEL_FALLBACKS.get(m, ()):
+        if alt not in out:
+            out.append(alt)
+    return out
+
+
+def _warn_openrouter_fallback(requested: str, using: str) -> None:
+    key = (requested, using)
+    if key in _fallback_warnings_emitted:
+        return
+    _fallback_warnings_emitted.add(key)
+    print(
+        f"[ogts OpenRouter] model {requested!r} has no endpoints; retrying with {using!r}. "
+        "Update --model to pin this id explicitly.",
+        file=sys.stderr,
+        flush=True,
+    )
+
+
 @dataclass(frozen=True)
 class OpenAIGenerator:
     """
-    Minimal OpenAI generator.
+    LLM code generator via the OpenAI Python SDK (`chat.completions`).
 
-    Requires:
-      - `pip install openai`
+    Direct OpenAI:
       - `OPENAI_API_KEY`
+
+    OpenRouter (same SDK, different base URL):
+      - `OPENROUTER_API_KEY`
+      - enable with `--openrouter` / `OGTS_USE_OPENROUTER=1`, or pass a `provider/model`
+        id so OpenRouter is selected automatically.
+
+    Optional OpenRouter attribution headers:
+      - `OPENROUTER_HTTP_REFERER`, `OPENROUTER_TITLE`
     """
 
     model: str = "gpt-4o-mini"
+    openrouter: bool = False
+
+    def _use_openrouter(self) -> bool:
+        if self.openrouter or _env_truthy("OGTS_USE_OPENROUTER"):
+            return True
+        return _looks_like_openrouter_model(self.model)
 
     def generate(self, *, prompt: str, temperature: float) -> str:
         try:
-            from openai import OpenAI  # type: ignore
+            from openai import NotFoundError, OpenAI  # type: ignore
         except Exception as exc:  # pragma: no cover
             raise RuntimeError("Missing dependency: pip install openai") from exc
 
-        api_key = os.environ.get("OPENAI_API_KEY", "").strip()
-        if not api_key:
-            raise RuntimeError("Missing OPENAI_API_KEY for OpenAIGenerator")
+        use_or = self._use_openrouter()
+        if use_or:
+            api_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+            if not api_key:
+                raise RuntimeError(
+                    "OpenRouter mode requires OPENROUTER_API_KEY "
+                    "(set --openrouter or use a provider/model id like anthropic/claude-3.7-sonnet)."
+                )
+            default_headers: dict[str, str] = {}
+            referer = os.environ.get("OPENROUTER_HTTP_REFERER", "").strip()
+            title = os.environ.get("OPENROUTER_TITLE", "").strip()
+            if referer:
+                default_headers["HTTP-Referer"] = referer
+            if title:
+                default_headers["X-Title"] = title
+            client = OpenAI(
+                base_url="https://openrouter.ai/api/v1",
+                api_key=api_key,
+                default_headers=default_headers or None,  # type: ignore[arg-type]
+            )
+        else:
+            api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+            if not api_key:
+                raise RuntimeError("Missing OPENAI_API_KEY for OpenAIGenerator (direct OpenAI)")
+            client = OpenAI(api_key=api_key)
 
-        client = OpenAI(api_key=api_key)
-        resp = client.responses.create(
-            model=self.model,
-            input=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You write correct, minimal Python code. "
-                        "Return ONLY the Python module source code, no markdown fences."
-                    ),
-                },
-                {"role": "user", "content": prompt},
-            ],
-            temperature=float(temperature),
+        system = (
+            "You write correct, minimal Python code. "
+            "Return ONLY the Python module source code, no markdown fences."
         )
-        # responses API can return multiple output items; we join text fragments.
-        out_parts: list[str] = []
-        for item in resp.output:
-            for c in getattr(item, "content", []) or []:
-                if getattr(c, "type", None) == "output_text":
-                    out_parts.append(getattr(c, "text", "") or "")
-        return "\n".join(out_parts).strip()
+        models = _openrouter_models_to_try(self.model) if use_or else [self.model.strip()]
+        last_exc: Exception | None = None
+        resp = None
+        for mid in models:
+            try:
+                resp = client.chat.completions.create(
+                    model=mid,
+                    messages=[
+                        {"role": "system", "content": system},
+                        {"role": "user", "content": prompt},
+                    ],
+                    temperature=float(temperature),
+                )
+                if use_or and mid != self.model.strip():
+                    _warn_openrouter_fallback(self.model.strip(), mid)
+                break
+            except NotFoundError as exc:
+                last_exc = exc
+                continue
+        if resp is None:
+            hint = (
+                " Check https://openrouter.ai/models for current IDs "
+                "(e.g. anthropic/claude-3.7-sonnet)."
+                if use_or
+                else ""
+            )
+            raise RuntimeError(
+                f"No chat completion endpoint for models tried {models!r}.{hint}"
+            ) from last_exc
+
+        choice0 = resp.choices[0].message
+        text = (getattr(choice0, "content", None) or "").strip()
+        return text
 

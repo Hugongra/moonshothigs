@@ -38,6 +38,27 @@ python evals/run_embedding_sweep.py \
 
 Writes one Chroma directory per model under `.cursor/rag_db__<slug>/`, per-model eval JSON under `evals/results/`, and a CSV summary (`--output-csv`, default `evals/results/embedding_sweep_summary.csv`). OpenAI `text-embedding-*` models work if `langchain-openai` is installed and credentials are configured.
 
+## RAGAS (`--ragas`)
+
+Requires `pip install -r evals/requirements-ragas.txt`, Chroma available (`--rag-db` or default `./.cursor/rag_db`), and **`OPENAI_API_KEY`** in the environment. If `RAGAS_JUDGE_PROVIDER` is unset and a key is present, the harness defaults to OpenAI (`evals/judge_metrics.py`).
+
+- **Default:** only the **first 25 queries** get RAGAS scores (cost guard). Use **`--ragas-max-queries -1`** for all lines in the JSONL (e.g. 500).
+
+Example (500-query mirror, faithfulness + context relevance for every query):
+
+```bash
+export OPENAI_API_KEY="sk-..."
+# optional: export RAGAS_JUDGE_MODEL=gpt-4o-mini
+python evals/run_retrieval_eval.py \
+  --queries evals/data/rag_queries_500_neurips_mirror.jsonl \
+  --k-list 5 10 \
+  --ragas \
+  --ragas-max-queries -1 \
+  --output evals/results/run_mirror_500_ragas.json
+```
+
+Expect **many** LLM calls (per query × each `k` in `--k-list`); full 500×2 can take a long time and incur noticeable API cost.
+
 ## Quickstart
 
 ```bash
