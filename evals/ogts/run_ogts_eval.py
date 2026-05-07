@@ -1,23 +1,34 @@
 #!/usr/bin/env python3
 """
-Run OGTS evaluation: linear-retry vs Oracle-Guided Tree Search on 50 tasks.
+Run OGTS evaluation: linear retry and OGTS tree search on 70 tasks (50 Higgs ML +
+20 Bioinformatics), with an optional iterative-repair baseline that feeds oracle
+mismatch summaries back into the prompt.
+
+Pass ``--strategies linear_retry iterative_repair ogts`` to compare all three.
 
 Examples:
 
   # Smoke test with dummy generator (no API key needed):
-  python evals/ogts/run_ogts_eval.py --generator dummy --tasks evals/ogts/data/ogts_50_tasks.jsonl
+  python evals/ogts/run_ogts_eval.py --generator dummy
 
-  # Real evaluation with OpenAI:
+  # Full 70-task suite (default):
+  python evals/ogts/run_ogts_eval.py --generator oracle
+
+  # Only the original 50 Higgs tasks:
+  python evals/ogts/run_ogts_eval.py --tasks evals/ogts/data/ogts_50_tasks.jsonl
+
+  # Only the 20 bioinformatics tasks:
+  python evals/ogts/run_ogts_eval.py --tasks evals/ogts/data/bio_20_tasks.jsonl
+
+  # API keys: export OPENAI_API_KEY, or create repo-root .env with OPENAI_API_KEY=... (auto-loaded).
   OPENAI_API_KEY=sk-... python evals/ogts/run_ogts_eval.py \
-    --generator openai --model gpt-4o-mini \
-    --tasks evals/ogts/data/ogts_50_tasks.jsonl
+    --generator openai --model gpt-4o-mini
 
   # OpenRouter (auto-detected when model looks like provider/name):
   export OPENROUTER_API_KEY=sk-or-v1-...
   python evals/ogts/run_ogts_eval.py --generator openai \
     --model anthropic/claude-3.7-sonnet \
-    --tasks evals/ogts/data/ogts_50_tasks.jsonl \
-    --output evals/ogts/results/ogts_eval_claude35.json
+    --output evals/ogts/results/ogts_eval_claude37.json
 
   # Only OGTS strategy:
   python evals/ogts/run_ogts_eval.py --generator openai --strategies ogts
@@ -29,6 +40,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 from collections import Counter, defaultdict
@@ -38,9 +50,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
+from evals.load_local_env import dotenv_paths_tried, load_repo_dotenv
 from evals.ogts.generators import CodeGenerator, DummyGenerator, NoisyGenerator, OracleGenerator, OpenAIGenerator
 from evals.ogts.oracles import summarize_attempt_for_json
-from evals.ogts.strategies import RunStats, linear_retry, ogts
+from evals.ogts.strategies import RunStats, iterative_repair, linear_retry, ogts
 from evals.ogts.task_suite import load_tasks_jsonl
 from evals.ogts.types import AttemptResult, OgtsTask
 
@@ -58,6 +71,8 @@ def _run_one(
     t0 = time.perf_counter()
     if strategy == "linear_retry":
         res, stats = linear_retry(task=task, gen=gen, k=k, temperature=temperature)
+    elif strategy == "iterative_repair":
+        res, stats = iterative_repair(task=task, gen=gen, k=k, temperature=temperature)
     elif strategy == "ogts":
         res, stats = ogts(task=task, gen=gen, depth=depth, branch=branch, temperature=temperature)
     else:
@@ -79,11 +94,16 @@ def _run_one(
 
 
 def main() -> int:
+    load_repo_dotenv(ROOT)
+
     p = argparse.ArgumentParser(description="OGTS execution-grounded evaluation")
     p.add_argument(
         "--tasks",
         type=Path,
-        default=ROOT / "evals" / "ogts" / "data" / "ogts_50_tasks.jsonl",
+        nargs="+",
+        default=[ROOT / "evals" / "ogts" / "data" / "ogts_70_tasks.jsonl"],
+        help="One or more .jsonl task files to load (merged in order). "
+        "Default: the combined 70-task suite (50 Higgs + 20 Bio).",
     )
     p.add_argument(
         "--generator",
@@ -102,7 +122,7 @@ def main() -> int:
     p.add_argument(
         "--strategies",
         nargs="+",
-        choices=["linear_retry", "ogts"],
+        choices=["linear_retry", "iterative_repair", "ogts"],
         default=["linear_retry", "ogts"],
     )
     p.add_argument("--k", type=int, default=5, help="pass@k budget for linear_retry")
@@ -113,7 +133,9 @@ def main() -> int:
     p.add_argument("--output", type=Path, default=None)
     args = p.parse_args()
 
-    tasks = load_tasks_jsonl(args.tasks)
+    tasks: list[OgtsTask] = []
+    for tf in args.tasks:
+        tasks.extend(load_tasks_jsonl(tf))
     if args.max_tasks:
         tasks = tasks[: int(args.max_tasks)]
 
@@ -125,6 +147,28 @@ def main() -> int:
         gen = NoisyGenerator(bug_rate=float(args.bug_rate))
     else:
         gen = OpenAIGenerator(model=args.model, openrouter=bool(args.openrouter))
+        if gen._use_openrouter():
+            if not os.environ.get("OPENROUTER_API_KEY", "").strip():
+                p_repo, p_cwd = dotenv_paths_tried(ROOT)
+                print(
+                    "[ogts-eval] OPENROUTER_API_KEY missing.\n"
+                    f"  .env candidates: {p_repo} ({'exists' if p_repo.is_file() else 'missing'}), "
+                    f"{p_cwd} ({'exists' if p_cwd.is_file() else 'missing'})",
+                    file=sys.stderr,
+                )
+                return 2
+        else:
+            if not os.environ.get("OPENAI_API_KEY", "").strip():
+                p_repo, p_cwd = dotenv_paths_tried(ROOT)
+                print(
+                    "[ogts-eval] OPENAI_API_KEY missing after loading .env.\n"
+                    f"  Checked (repo-root): {p_repo} → {'exists' if p_repo.is_file() else 'missing'}\n"
+                    f"  Checked (cwd):       {p_cwd} → {'exists' if p_cwd.is_file() else 'missing'}\n"
+                    "  Create one of those files with a single line: OPENAI_API_KEY=sk-...\n"
+                    "  (no quotes needed). Or export OPENAI_API_KEY in this shell.",
+                    file=sys.stderr,
+                )
+                return 2
 
     print(
         f"[ogts-eval] tasks={len(tasks)}, generator={args.generator}({getattr(gen, 'model', 'n/a')}), "
@@ -195,7 +239,7 @@ def main() -> int:
             "branch": args.branch,
             "temperature": args.temperature,
             "n_tasks": len(tasks),
-            "tasks_file": str(args.tasks.resolve()),
+            "tasks_files": [str(tf.resolve()) for tf in args.tasks],
         },
         "aggregate": agg,
         "wall_time_s": round(wall, 2),

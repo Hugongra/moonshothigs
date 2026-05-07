@@ -20,11 +20,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from evals.load_local_env import load_repo_dotenv
 from evals.rag_store import default_collection_name, default_rag_db_path
 from evals.retrieval_eval_lib import run_retrieval_evaluation
 
 
 def main() -> int:
+    load_repo_dotenv(ROOT)
+
     p = argparse.ArgumentParser(description="RAG retrieval eval for rag-ai-scientist-style corpora")
     p.add_argument(
         "--rag-db",
@@ -70,7 +73,7 @@ def main() -> int:
         "--ragas-max-queries",
         type=int,
         default=25,
-        help="When --ragas is set, only score the first N queries (default: 25). Use -1 for all queries.",
+        help="When --ragas is set, only score the first N queries (default: 25). Use -1 for all queries (full-file RAGAS).",
     )
     args = p.parse_args()
 

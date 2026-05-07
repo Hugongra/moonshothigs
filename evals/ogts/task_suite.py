@@ -217,6 +217,22 @@ def make_ogts_tasks_50(seed: int = 1337) -> list[OgtsTask]:
     return tasks
 
 
+def make_all_tasks_70(*, higgs_seed: int = 1337, bio_seed: int = 2024) -> list[OgtsTask]:
+    """
+    Build the combined 70-task suite: 50 Higgs ML + 20 Bioinformatics.
+
+    The two suites use independent seeds so adding the bioinformatics tasks
+    does not alter the Higgs tasks (backward-compatible).
+    """
+    from .bioinformatics_tasks import make_bioinformatics_tasks_20
+
+    higgs = make_ogts_tasks_50(seed=higgs_seed)
+    bio = make_bioinformatics_tasks_20(seed=bio_seed)
+    combined = higgs + bio
+    assert len(combined) == 70
+    return combined
+
+
 def write_tasks_jsonl(tasks: list[OgtsTask], path: Path) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:

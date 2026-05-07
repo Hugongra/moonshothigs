@@ -6,6 +6,9 @@ One-shot pipeline: RAG retrieval eval + ATLAS case study replication → NeurIPS
   python run_neurips_pipeline.py --skip-eval              # only atlas + paper (no Chroma)
   python run_neurips_pipeline.py --skip-atlas             # paper from existing metrics.json
   python run_neurips_pipeline.py --max-rows 8000 --no-compile
+  python run_neurips_pipeline.py --ragas --ragas-max-queries -1 \\
+      --queries evals/data/rag_queries_500_neurips_mirror.jsonl
+  python run_neurips_pipeline.py --reuse-ogts-json evals/ogts/results/ogts_eval_latest.json
 
 Requires: requirements-pipeline.txt + evals/requirements-eval.txt for full eval.
 """
@@ -14,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 import time
 from datetime import datetime, timezone
@@ -23,6 +27,10 @@ from pathlib import Path
 def main() -> int:
     root = Path(__file__).resolve().parent
     sys.path.insert(0, str(root))
+
+    from evals.load_local_env import load_repo_dotenv
+
+    load_repo_dotenv(root)
 
     p = argparse.ArgumentParser(
         description="NeurIPS draft: RAG eval methodology + ATLAS Higgs case study replication"
@@ -50,6 +58,12 @@ def main() -> int:
         default=None,
         help="Use a previously written evals/results/*.json instead of re-running eval",
     )
+    p.add_argument(
+        "--reuse-ogts-json",
+        type=Path,
+        default=None,
+        help="Optional evals/ogts/results/*.json to populate OGTS tables from an executed benchmark run.",
+    )
     p.add_argument("--rag-db", type=Path, default=None, help="Chroma persist dir for eval")
     p.add_argument(
         "--queries",
@@ -69,10 +83,15 @@ def main() -> int:
         help="Enable optional RAGAS LLM-judge metrics during retrieval eval (extra deps + API keys).",
     )
     p.add_argument(
+        "--ragas",
+        action="store_true",
+        help="Alias for --enable-ragas (same flag name as evals/run_retrieval_eval.py --ragas).",
+    )
+    p.add_argument(
         "--ragas-max-queries",
         type=int,
         default=25,
-        help="When --enable-ragas, only score the first N queries (default: 25). Use -1 for all.",
+        help="When RAGAS is enabled, score only the first N queries (default: 25). Use -1 for the entire JSONL.",
     )
     p.add_argument("--k-list", type=int, nargs="+", default=[5, 10])
     p.add_argument("--max-k", type=int, default=20)
@@ -134,6 +153,16 @@ def main() -> int:
     from evals.retrieval_eval_lib import MissingEvalDependencies, run_retrieval_evaluation
 
     pipeline_started_wall = time.time()
+
+    def git_commit_sha(repo: Path) -> str | None:
+        try:
+            return subprocess.check_output(
+                ["git", "-C", str(repo), "rev-parse", "HEAD"],
+                text=True,
+                stderr=subprocess.DEVNULL,
+            ).strip()
+        except Exception:
+            return None
 
     atlas_dir = (args.atlas_output_dir or (root / "output" / "atlas_challenge")).resolve()
     metrics_path = atlas_dir / "metrics.json"
@@ -205,7 +234,7 @@ def main() -> int:
                 max_k=args.max_k,
                 output_path=eval_out,
                 embedding_model_id=args.embedding_model,
-                enable_ragas=bool(args.enable_ragas),
+                enable_ragas=bool(args.enable_ragas or args.ragas),
                 ragas_max_queries=(None if int(args.ragas_max_queries) < 0 else int(args.ragas_max_queries)),
             )
             log(
@@ -225,6 +254,16 @@ def main() -> int:
             eval_reason = f"Eval failed: {exc}"
             log(f"[neurips-pipeline] eval failed: {exc}")
 
+    ogts_aggregate: dict | None = None
+    ogts_json_display = "---"
+    if args.reuse_ogts_json is not None:
+        op = args.reuse_ogts_json.resolve()
+        if not op.is_file():
+            print(f"--reuse-ogts-json not found: {op}", file=sys.stderr)
+            return 2
+        ogts_aggregate = json.loads(op.read_text(encoding="utf-8"))
+        ogts_json_display = str(op)
+
     rag_display = str(rag_db.resolve()) if rag_db is not None else "(none)"
     # If we reused an eval JSON, prefer the queries path recorded in that artifact so the
     # rendered manuscript matches the evaluated file (not whatever default CLI path was left).
@@ -242,6 +281,7 @@ def main() -> int:
         eval_json_path=eval_path,
         rag_db_display=rag_display,
         queries_file_display=queries_display,
+        ogts_aggregate=ogts_aggregate,
     )
 
     # --- 3) LaTeX + figures ---
@@ -302,10 +342,24 @@ def main() -> int:
         input_deps["atlas_metrics_json"] = summarize(metrics_path).as_dict()
     if args.queries.is_file():
         input_deps["queries_jsonl"] = summarize(args.queries).as_dict()
+    if args.reuse_ogts_json is not None and Path(args.reuse_ogts_json).is_file():
+        input_deps["ogts_eval_json"] = summarize(Path(args.reuse_ogts_json).resolve()).as_dict()
 
     manifest = {
         "elapsed_seconds_pipeline": time.perf_counter() - t_pipeline,
         "pipeline_started_iso": datetime.fromtimestamp(pipeline_started_wall, tz=timezone.utc).isoformat(),
+        "python_version": sys.version.split()[0],
+        "git_commit": git_commit_sha(root),
+        "pipeline_argv": sys.argv,
+        "queries_path_cli": str(args.queries.resolve()) if args.queries.is_file() else None,
+        "ragas_enabled": bool(args.enable_ragas or args.ragas),
+        "ragas_max_queries": int(args.ragas_max_queries),
+        "reuse_ogts_json": ogts_json_display if ogts_json_display != "---" else None,
+        "eval_json_ragas_enabled": (
+            bool(eval_aggregate.get("ragas", {}).get("enabled"))
+            if isinstance(eval_aggregate, dict)
+            else None
+        ),
         "atlas_metrics_path": str(metrics_path.resolve()),
         "atlas_output_dir": str(atlas_dir),
         "eval_skipped": eval_skipped,
@@ -322,9 +376,16 @@ def main() -> int:
         "inputs": input_deps,
     }
     man_path = paper_root / "pipeline_manifest.json"
-    atomic_write_text(man_path, json.dumps(manifest, indent=2))
+    manifest_json = json.dumps(manifest, indent=2)
+    atomic_write_text(man_path, manifest_json)
     assert_recent(man_path, pipeline_started_wall)
     log(f"[neurips-pipeline] manifest → {man_path}")
+
+    alt_manifest = root / "output" / "pipeline_manifest.json"
+    alt_manifest.parent.mkdir(parents=True, exist_ok=True)
+    atomic_write_text(alt_manifest, manifest_json)
+    assert_recent(alt_manifest, pipeline_started_wall)
+    log(f"[neurips-pipeline] manifest → {alt_manifest}")
 
     log("")
     log(banner("neurips-pipeline outputs", produced))

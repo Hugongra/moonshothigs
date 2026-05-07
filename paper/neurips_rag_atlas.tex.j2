@@ -43,9 +43,9 @@ A full architectural description (chunking heuristics, embedding choices, proven
 We evaluate \textbf{RAG AI Scientist} along three complementary axes: (i) \textbf{retrieval quality} against hand-labeled relevance (automatic); (ii) lightweight \textbf{answer grounding checks}---either cheap lexical presence tests (optional) or, when enabled, \textbf{RAGAS-style} faithfulness/context-relevance scores via an LLM judge; and (iii) \textbf{human rubrics} for qualitative claims. All runnable artifacts live in \texttt{evals/} in the repository.
 
 \subsection{Gold queries and relevance}
-The repository ships a small starter set in \texttt{evals/data/rag\_queries.jsonl}. For larger paper tables (e.g.\ $N{=}500$ with easy/medium/hard stratification), we also generate \texttt{evals/data/rag\_queries\_500\_neurips\_mirror.jsonl} via \texttt{evals/generate\_rag\_queries.py} (deterministic, reproducible).
+The repository ships a small starter set in \texttt{evals/data/rag\_queries.jsonl}. For larger paper tables (e.g.\ $N{=}500$ with easy/medium/hard stratification), we also generate \texttt{evals/data/rag\_queries\_500\_neurips\_mirror.jsonl} via \texttt{evals/generate\_rag\_queries.py} (deterministic, reproducible). The generator can reserve a configurable fraction of slots for \texttt{benchmark\_segment=negative\_absent} controls: plausible domain questions whose gold path substrings never occur in any indexed chunk metadata, surfacing how lexical overlap and RAGAS scores behave under distractor-heavy retrieval when no true supporting document exists.
 
-Each JSONL line carries a \texttt{query} string, \texttt{relevant\_path\_patterns} (substrings that must appear in chunk metadata paths for the chunk to count as \emph{relevant}), optional \texttt{required\_terms} for lexical grounding, and a \texttt{difficulty} tag. Pattern matching proxies ``correct document family'' when chunk identifiers are unstable between re-ingests.
+Each JSONL line carries a \texttt{query} string, \texttt{relevant\_path\_patterns} (substrings that must appear in chunk metadata paths for the chunk to count as \emph{relevant}), optional \texttt{required\_terms} for lexical grounding, a \texttt{difficulty} tag, and optionally \texttt{benchmark\_segment}. Pattern matching proxies ``correct document family'' when chunk identifiers are unstable between re-ingests.
 
 \subsection{Metrics}
 \textbf{Recall@$k$}: per query, 1 if any of the top-$k$ retrieved chunks is relevant, else 0; report the mean over queries.
@@ -56,7 +56,7 @@ Each JSONL line carries a \texttt{query} string, \texttt{relevant\_path\_pattern
 \textbf{Failure cases}: queries with gold labels that return \emph{no} relevant chunk within the retrieval depth, reported explicitly so coverage gaps are not hidden by averages.
 
 \subsection{Implementation}
-Evaluations execute via \texttt{evals/run\_retrieval\_eval.py} (library: \texttt{evals/retrieval\_eval\_lib.py}), loading the Chroma persist directory and embedding checkpoint used in production (\texttt{--embedding-model} must match the index). Gold data defaults to \texttt{evals/data/rag\_queries.jsonl}; pass \texttt{--queries} to evaluate alternate JSONL sets (including the 500-query mirror file). Optional RAGAS scores are enabled with \texttt{--ragas} after installing \texttt{evals/requirements-ragas.txt} and configuring a judge provider (see \texttt{evals/judge\_metrics.py}).
+Evaluations execute via \texttt{evals/run\_retrieval\_eval.py} (library: \texttt{evals/retrieval\_eval\_lib.py}), loading the Chroma persist directory and embedding checkpoint used in production (\texttt{--embedding-model} must match the index). Gold data defaults to \texttt{evals/data/rag\_queries.jsonl}; pass \texttt{--queries} to evaluate alternate JSONL sets (including the 500-query mirror file). Optional RAGAS scores are enabled with \texttt{--ragas} (use \texttt{--ragas-max-queries -1} to score every line in large suites) after installing \texttt{evals/requirements-ragas.txt} and configuring a judge provider (see \texttt{evals/judge\_metrics.py}). The NeurIPS pipeline accepts the same flags as \texttt{--ragas}/\texttt{--enable-ragas} when it invokes the shared library.
 
 {% if eval_available %}
 \subsection{Results (this run)}
@@ -123,6 +123,35 @@ Difficulty & $N$ & Recall@$k$ & nDCG@$k$ & Lexical & MRR \\
 \end{tabular}
 {% endif %}
 \caption{Metrics at $k=\texttt{<< difficulty_rows[0].k_hi >>}$ grouped by the \texttt{difficulty} label on each gold query.}
+\end{table}
+{% endif %}
+
+{% if benchmark_segment_rows %}
+\paragraph{Benchmark segments (honesty controls).}
+\begin{table}[t]
+\centering
+{% if eval_use_ragas %}
+\begin{tabular}{lrccccc}
+\toprule
+Segment & $N$ & Recall@$k$ & nDCG@$k$ & Lexical & Faithfulness & Ctx.\ rel. \\
+\midrule
+{% for row in benchmark_segment_rows %}
+<< row.segment >> & << row.n >> & << row.recall_hi >> & << row.ndcg_hi >> & << row.lexical_hi >> & << row.faithfulness_hi >> & << row.context_relevance_hi >> \\
+{% endfor %}
+\bottomrule
+\end{tabular}
+{% else %}
+\begin{tabular}{lrcccc}
+\toprule
+Segment & $N$ & Recall@$k$ & nDCG@$k$ & Lexical & No-hit count \\
+\midrule
+{% for row in benchmark_segment_rows %}
+<< row.segment >> & << row.n >> & << row.recall_hi >> & << row.ndcg_hi >> & << row.lexical_hi >> & << row.n_label_fail >> \\
+{% endfor %}
+\bottomrule
+\end{tabular}
+{% endif %}
+\caption{Stratification by \texttt{benchmark\_segment} at $k=\texttt{<< benchmark_segment_rows[0].k_hi >>}$. The \texttt{negative\_absent} slice keeps gold path patterns that never occur in the indexed corpus, isolating false lexical grounding or optimistic judge scores when only distractors are retrieved.}
 \end{table}
 {% endif %}
 
@@ -232,7 +261,7 @@ Elapsed (s) & << atlas.elapsed_seconds >> \\
 
 \paragraph{Case study.} Validation AMS is \emph{not} the private leaderboard score~\cite{adam2015higgs}; we use it to anchor reproducibility, not to claim competitive ranking. Stratified K-fold cross-validation (reported as mean$\pm$std) reduces sensitivity to a single random split, though it still does not substitute for the held-out competition test set.
 
-\paragraph{OGTS.} The current 50-task suite covers only four families of scientific computing micro-tasks; broader coverage (tensor manipulation, data wrangling, plotting) would strengthen generalizability claims. The OGTS refinement prompt currently conveys only the oracle's pass/fail status---not the specific test-case failures---which limits tree-search recovery. Results are reported for a single model (\texttt{gpt-4o-mini}); scaling to larger or specialized code models is likely to change the pass-rate landscape and the relative advantage of OGTS over linear retry.
+\paragraph{OGTS.} The current 50-task suite covers only four families of scientific computing micro-tasks; broader coverage (tensor manipulation, data wrangling, plotting) would strengthen generalizability claims. OGTS refinement historically surfaced only coarse status strings, whereas the iterative-repair baseline now feeds abbreviated oracle mismatches; extending OGTS with the same structured feedback is straightforward future work. Results are reported for a single model (\texttt{gpt-4o-mini}); scaling to larger or specialized code models is likely to change the pass-rate landscape and the relative advantage of OGTS over linear retry.
 
 \section{Reproducibility}\label{sec:repro}
 
@@ -250,7 +279,10 @@ python run_neurips_pipeline.py \
   --rag-db ~/Desktop/higgs/.cursor/rag_db \
   --collection higgs-rag
 \end{verbatim}
-(or split eval and paper rendering across environments via \texttt{--reuse-eval-json}).
+(or split eval and paper rendering across environments via \texttt{--reuse-eval-json}). Each completed render emits \texttt{pipeline\_manifest.json} under \texttt{output/neurips\_paper/} (with a duplicate pointer under \texttt{output/pipeline\_manifest.json}) recording CLI arguments, git revision when available, dataset paths, and hashes for eval outputs---keep these artifacts alongside submitted PDFs for reproducibility reviews.
+
+\paragraph{RAGAS + OGTS artifacts.}
+Retrieval runs may enable \texttt{--ragas} / \texttt{--ragas-max-queries -1}; OGTS tables can be populated from \texttt{evals/ogts/run\_ogts\_eval.py} and wired into the manuscript via \texttt{run\_neurips\_pipeline.py --reuse-ogts-json <eval.json>}.
 
 \section{Execution-grounded evaluation: Oracle-Guided Tree Search}\label{sec:ogts}
 
@@ -261,10 +293,51 @@ We construct $N{=}50$ micro-tasks spanning four domain-specific families: (i)~AM
 
 \subsection{Strategies}
 \paragraph{Linear retry (pass@$k$).} Sample $k$ independent modules at temperature $T$; return the first module that passes all oracle cases.
+\paragraph{Iterative repair.} A sequential self-debugging baseline in the spirit of test-driven repair~\cite{chen2023codet}: after each failure the oracle returns structured mismatch summaries for up to two failing cases, which are appended to the prompt before drawing the next candidate (still capped at $k$ oracle evaluations for parity with linear retry).
 \paragraph{OGTS.} Inspired by tree-structured exploration~\cite{yao2023tot} with execution feedback~\cite{chen2023codet}: at each of $d$ depth steps, draw $b$ independent samples; run every sample through the oracle; return the first passing sample; otherwise advance using the highest-scoring survivor as context for the next depth. OGTS trades serial depth for parallel width, letting the oracle prune bad branches immediately.
 
 \subsection{Results ($N{=}50$, \texttt{gpt-4o-mini})}
 
+{% if ogts_available %}
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Strategy & pass@$N$ & Pass rate & Oracle calls & Mean calls/task \\
+\midrule
+{% for row in ogts_summary_rows %}
+<< row.strategy_long >> & << row.pass_at_n >> & << row.pass_pct >>\% & << row.oracle_total >> & << row.mean_calls >> \\
+{% endfor %}
+\bottomrule
+\end{tabular}
+\caption{Aggregate pass rates from \texttt{evals/ogts/run\_ogts\_eval.py} (timestamp \texttt{<< ogts_json_timestamp >>}). Values refresh whenever \texttt{run\_neurips\_pipeline.py} is invoked with \texttt{--reuse-ogts-json}.}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{<< ogts_family_col_spec >>}
+\toprule
+Task family & $n$
+{% for h in ogts_family_headers %}
+ & \multicolumn{2}{c}{<< h >>}
+{% endfor %}
+{% if ogts_show_delta %}
+ & $\Delta_{\mathrm{OGTS}-\mathrm{Lin}}$
+{% endif %}
+\\
+\midrule
+{% for row in ogts_family_rows %}
+<< row.family >> & << row.n_tasks_f >>
+{% for c in row.cells %} & << c >>{% endfor %}
+{% if ogts_show_delta %} & << row.delta_pass >>{% endif %}
+\\
+{% endfor %}
+\bottomrule
+\end{tabular}
+\caption{Per-family breakdown for each strategy (columns alternate passed/$n$ tasks and total oracle calls). $\Delta_{\mathrm{OGTS}-\mathrm{Lin}}$ counts additional passes from OGTS relative to linear retry.}
+\end{table}
+
+{% else %}
 \begin{table}[h]
 \centering
 \begin{tabular}{lcccc}
@@ -275,7 +348,7 @@ Linear retry ($k{=}5$, $T{=}0.8$) & 33/50 & 66.0\% & 135 & 2.7 \\
 OGTS ($d{=}3$, $b{=}3$, $T{=}0.8$) & 33/50 & 66.0\% & 194 & 3.9 \\
 \bottomrule
 \end{tabular}
-\caption{Aggregate pass rates and oracle efficiency across 50 tasks using \texttt{gpt-4o-mini}. Both strategies achieve equal pass rates; OGTS uses more oracle calls because it exhaustively explores failing branches (nDCG tasks) before terminating.}
+\caption{Representative aggregate snapshot when no OGTS JSON is wired into the manuscript generator (fallback). Re-run \texttt{evals/ogts/run\_ogts\_eval.py} with the iterative-repair strategy enabled and pass \texttt{--reuse-ogts-json} to \texttt{run\_neurips\_pipeline.py}.}
 \end{table}
 
 \begin{table}[h]
@@ -292,12 +365,13 @@ nDCG@$k$ (binary) & 12 & 1 & 58 & 0 & 108 & $-1$ \\
 Threshold scan & 12 & 6 & 51 & 7 & 59 & $+1$ \\
 \bottomrule
 \end{tabular}
-\caption{Per-family breakdown. AMS and log-loss are solved perfectly by both strategies. nDCG tasks expose a systematic failure mode: the model consistently uses 0-based instead of 1-based ranking in the log-discount, producing near-correct but oracle-failing outputs. OGTS gains one additional pass on threshold-scan tasks through its refinement mechanism.}
+\caption{Representative per-family breakdown (fallback tables).}
 \end{table}
+{% endif %}
 
 \paragraph{Error taxonomy.} The nDCG family reveals a \emph{systematic} bug: \texttt{gpt-4o-mini} computes \texttt{log2(i+1)} with 0-based~$i$ (yielding \texttt{log2(1)=0} at rank~1, a division by zero or off-by-one), whereas the oracle expects 1-based ranks (\texttt{log2(i+1)} for $i=1\ldots k$). Average scores on failed nDCG tasks are ${\approx}0.96$, confirming near-correct but systematically shifted outputs. This is precisely the kind of ``invisible hallucination'' that lexical grounding cannot detect but execution oracles expose immediately.
 
-\paragraph{Implications.} On well-specified closed-form tasks (AMS, log-loss), even a small model achieves $100\%$ pass rate at $k{=}1$. Harder compositional tasks (threshold scan, nDCG) benefit from either more attempts or deeper search. The current OGTS implementation provides marginal gains over linear retry on this suite; we hypothesize that feeding \emph{oracle error details} (not just status strings) into the refinement prompt would improve tree-search recovery, and plan to test this with larger models.
+\paragraph{Implications.} On well-specified closed-form tasks (AMS, log-loss), even a small model achieves $100\%$ pass rate at $k{=}1$. Harder compositional tasks (threshold scan, nDCG) benefit from additional stochastic attempts or structured search. Iterative repair demonstrates that supplying oracle mismatch fragments closes part of the gap for OGTS-style refinement, although breadth-first OGTS can still spend extra oracle calls exploring parallel failures before depth advances.
 
 \section{Conclusion}
 We presented \textbf{RAG AI Scientist} alongside a public evaluation protocol and used an ATLAS Higgs-challenge replication as a validation testbed. The retrieval harness exposes corpus-coverage gaps rather than papering over them, so even a failing run produces a concrete failure-case table guiding corpus maintenance. The OGTS execution-grounded harness adds a complementary axis: 50 domain-specific micro-tasks with deterministic oracles, revealing systematic code-generation failures (e.g.\ off-by-one in nDCG ranking) that retrieval metrics alone cannot detect. Code, configuration, task suite, and this document regenerate from a single pipeline.

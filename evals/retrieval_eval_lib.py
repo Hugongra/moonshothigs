@@ -14,6 +14,9 @@ from .judge_metrics import cheap_answer_from_contexts, faithfulness_and_context_
 
 EMBEDDING_MODEL_ID = "sentence-transformers/all-MiniLM-L6-v2"
 
+# Matches ``benchmark_segment=negative_absent`` queries from ``generate_rag_queries.py``:
+NEGATIVE_ABSENT_PATH_SENTINEL = "__benchmark_negative__/"
+
 
 class MissingEvalDependencies(RuntimeError):
     """Raised when langchain-chroma / langchain-huggingface are absent in the current env."""
@@ -41,6 +44,47 @@ def lexical_grounded(concat_text: str, required_terms: list[str]) -> bool:
         return True
     low = concat_text.lower()
     return all(t.lower() in low for t in required_terms)
+
+
+def _benchmark_segment_for_query(item: dict) -> str:
+    explicit = item.get("benchmark_segment")
+    if isinstance(explicit, str) and explicit.strip():
+        return explicit.strip()
+    patterns = item.get("relevant_path_patterns") or []
+    if patterns and any(isinstance(p, str) and NEGATIVE_ABSENT_PATH_SENTINEL in p for p in patterns):
+        return "negative_absent"
+    return "positive"
+
+
+def _metrics_for_query_group(group: list[dict], ks: list[int], *, enable_ragas: bool) -> dict[str, Any]:
+    def _mean_optional(xs: list[float | None]) -> float | None:
+        ys = [float(x) for x in xs if x is not None]
+        return mean(ys) if ys else None
+
+    if not group:
+        return {"n": 0}
+
+    out: dict[str, Any] = {
+        "n": len(group),
+        "recall_mean": {str(k): mean([p["recall"][str(k)] for p in group]) for k in ks},
+        "mrr_mean": mean([p["mrr"] for p in group]),
+        "ndcg_mean": {str(k): mean([p["ndcg"][str(k)] for p in group]) for k in ks},
+        "lexical_grounded_mean": {
+            str(k): mean([float(p["lexical_grounded_topk"][str(k)]) for p in group]) for k in ks
+        },
+        "n_label_failures": sum(
+            1 for p in group if p["has_gold"] and p.get("path_hit_rank") is None
+        ),
+    }
+    if enable_ragas:
+        out["faithfulness_mean"] = {
+            str(k): _mean_optional([p["faithfulness_topk"][str(k)] for p in group]) for k in ks
+        }
+        out["context_relevance_mean"] = {
+            str(k): _mean_optional([p["context_relevance_topk"][str(k)] for p in group])
+            for k in ks
+        }
+    return out
 
 
 def run_retrieval_evaluation(
@@ -110,10 +154,13 @@ def run_retrieval_evaluation(
         while len(hits) < k_max:
             hits.append(False)
 
+        bseg = _benchmark_segment_for_query(item)
+
         pq: dict[str, Any] = {
             "id": item["id"],
             "query": item["query"],
             "difficulty": item.get("difficulty", ""),
+            "benchmark_segment": bseg,
             "has_gold": bool(patterns),
             "recall": {str(k): recall_at_k(hits, k) for k in ks},
             "mrr": reciprocal_rank(hits),
@@ -137,12 +184,13 @@ def run_retrieval_evaluation(
         pq["ragas_status"] = "disabled"
 
         if enable_ragas:
-            # Bound cost: only evaluate first N queries unless unlimited.
-            limit = ragas_max_queries
-            if limit is None:
-                limit = 25
+            # Bound cost: only evaluate first N queries unless unlimited (ragas_max_queries < 0).
+            raw_limit = ragas_max_queries
+            if raw_limit is None:
+                raw_limit = 25
+            unlimited = int(raw_limit) < 0
             q_index = len(per_query)
-            if q_index < int(limit):
+            if unlimited or q_index < int(raw_limit):
                 qtext = str(item["query"])
                 for k in ks:
                     ctxs = [d.page_content for d in docs[:k]]
@@ -192,11 +240,21 @@ def run_retrieval_evaluation(
             "id": p["id"],
             "query": p["query"],
             "difficulty": p["difficulty"],
+            "benchmark_segment": p.get("benchmark_segment", "positive"),
             "top_metadata_preview": p["top_metadata_preview"],
         }
         for p in with_gold
         if p.get("path_hit_rank") is None
     ]
+
+    segment_groups: defaultdict[str, list] = defaultdict(list)
+    for pq in per_query:
+        segment_groups[pq["benchmark_segment"]].append(pq)
+
+    benchmark_segment_breakdown = {
+        seg: _metrics_for_query_group(grp, ks, enable_ragas=enable_ragas)
+        for seg, grp in sorted(segment_groups.items(), key=lambda kv: kv[0])
+    }
 
     aggregate: dict[str, Any] = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -217,6 +275,8 @@ def run_retrieval_evaluation(
             for k in ks
         },
         "difficulty_breakdown": difficulty_breakdown,
+        "benchmark_segment_counts": {k: len(v) for k, v in segment_groups.items()},
+        "benchmark_segment_breakdown": benchmark_segment_breakdown,
         "failures": failures,
         "per_query": per_query,
     }

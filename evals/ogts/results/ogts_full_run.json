@@ -1,0 +1,5054 @@
+{
+  "timestamp": "2026-05-07T01:00:02.442677+00:00",
+  "config": {
+    "generator": "openai",
+    "model": "gpt-4o-mini",
+    "openrouter": false,
+    "strategies": [
+      "linear_retry",
+      "iterative_repair",
+      "ogts"
+    ],
+    "k": 5,
+    "depth": 3,
+    "branch": 3,
+    "temperature": 0.8,
+    "n_tasks": 50,
+    "tasks_file": "/mnt/c/Users/hugog/moonshotHiggs/evals/ogts/data/ogts_50_tasks.jsonl"
+  },
+  "aggregate": {
+    "linear_retry": {
+      "n_tasks": 50,
+      "n_passed": 33,
+      "pass_rate": 0.66,
+      "total_oracle_calls": 126,
+      "mean_oracle_calls": 2.52,
+      "total_elapsed_s": 385.19,
+      "by_family": {
+        "AMS closed-form": {
+          "n": 14,
+          "passed": 14,
+          "oracle_calls": 14
+        },
+        "Weighted log-loss": {
+          "n": 12,
+          "passed": 12,
+          "oracle_calls": 12
+        },
+        "nDCG@k (binary)": {
+          "n": 12,
+          "passed": 0,
+          "oracle_calls": 60
+        },
+        "Threshold scan for AMS": {
+          "n": 12,
+          "passed": 7,
+          "oracle_calls": 40
+        }
+      }
+    },
+    "iterative_repair": {
+      "n_tasks": 50,
+      "n_passed": 40,
+      "pass_rate": 0.8,
+      "total_oracle_calls": 118,
+      "mean_oracle_calls": 2.36,
+      "total_elapsed_s": 396.41,
+      "by_family": {
+        "AMS closed-form": {
+          "n": 14,
+          "passed": 14,
+          "oracle_calls": 14
+        },
+        "Weighted log-loss": {
+          "n": 12,
+          "passed": 12,
+          "oracle_calls": 14
+        },
+        "nDCG@k (binary)": {
+          "n": 12,
+          "passed": 8,
+          "oracle_calls": 45
+        },
+        "Threshold scan for AMS": {
+          "n": 12,
+          "passed": 6,
+          "oracle_calls": 45
+        }
+      }
+    },
+    "ogts": {
+      "n_tasks": 50,
+      "n_passed": 33,
+      "pass_rate": 0.66,
+      "total_oracle_calls": 195,
+      "mean_oracle_calls": 3.9,
+      "total_elapsed_s": 630.87,
+      "by_family": {
+        "AMS closed-form": {
+          "n": 14,
+          "passed": 14,
+          "oracle_calls": 14
+        },
+        "Weighted log-loss": {
+          "n": 12,
+          "passed": 12,
+          "oracle_calls": 12
+        },
+        "nDCG@k (binary)": {
+          "n": 12,
+          "passed": 0,
+          "oracle_calls": 108
+        },
+        "Threshold scan for AMS": {
+          "n": 12,
+          "passed": 7,
+          "oracle_calls": 61
+        }
+      }
+    }
+  },
+  "wall_time_s": 1412.5,
+  "per_task": [
+    {
+      "task_id": "ogts_001",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.874,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_001",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.494,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_001",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.281,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_002",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.262,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_002",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.363,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_002",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.538,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_003",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.399,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_003",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.32,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_003",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.535,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_004",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.745,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_004",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.316,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_004",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.211,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_005",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.259,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_005",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.602,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_005",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.356,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_006",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.445,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_006",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.4,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_006",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.504,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_007",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.806,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_007",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.665,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_007",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.426,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_008",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.625,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_008",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.864,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_008",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.496,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_009",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.245,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_009",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.332,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_009",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.32,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_010",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.616,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_010",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.682,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_010",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.645,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_011",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.431,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_011",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.112,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_011",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.692,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_012",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.375,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_012",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.32,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_012",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.636,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_013",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.768,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_013",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.241,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_013",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.493,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_014",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.952,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_014",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.422,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_014",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.745,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_015",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.199,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_015",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.569,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_015",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.44,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_016",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.532,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_016",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.674,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_016",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.398,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_017",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.246,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_017",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 4.977,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_017",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.112,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_018",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.27,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_018",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.341,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_018",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.509,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_019",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.013,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_019",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.5,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_019",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.023,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_020",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.32,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_020",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.487,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_020",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.914,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_021",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.288,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_021",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.976,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_021",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.492,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_022",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.485,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_022",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.296,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_022",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.584,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_023",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.233,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_023",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 4.351,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_023",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.69,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_024",
+      "task_title": "Weighted log-loss",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.729,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_024",
+      "task_title": "Weighted log-loss",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.045,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_024",
+      "task_title": "Weighted log-loss",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.433,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_025",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9634993272957161,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 15.795,
+      "result": {
+        "ok": false,
+        "score": 0.9634993272957161,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.8179809735263114,
+              "got": 0.8333333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.9709286432396583,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9747429528567879,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.6797310500037655,
+              "got": 0.5833333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.8756458727267334,
+              "got": 0.9285714285714285,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9846476401929781,
+            0.9709286432396583,
+            0.9747429528567879,
+            0.9036022833295677,
+            1.0,
+            0.947074444155305
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_025",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 11.611,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_025",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9634993272957161,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 27.782,
+      "result": {
+        "ok": false,
+        "score": 0.9634993272957161,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.8179809735263114,
+              "got": 0.8333333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.9709286432396583,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9747429528567879,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.6797310500037655,
+              "got": 0.5833333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.8756458727267334,
+              "got": 0.9285714285714285,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9846476401929781,
+            0.9709286432396583,
+            0.9747429528567879,
+            0.9036022833295677,
+            1.0,
+            0.947074444155305
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_026",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9115184239521444,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 13.847,
+      "result": {
+        "ok": false,
+        "score": 0.9115184239521444,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.6509209298071326,
+              "got": 0.5555555555555555,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.43067655807339306,
+              "got": 0.3333333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.43067655807339306,
+              "got": 0.3333333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9046346257484229,
+            0.9026567752599403,
+            0.9197207891481876,
+            0.9026567752599403,
+            0.9197207891481876,
+            0.9197207891481876
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_026",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.9115184239521444,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 18.681,
+      "result": {
+        "ok": false,
+        "score": 0.9115184239521444,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.6509209298071326,
+              "got": 0.5555555555555555,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.43067655807339306,
+              "got": 0.3333333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.43067655807339306,
+              "got": 0.3333333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9046346257484229,
+            0.9026567752599403,
+            0.9197207891481876,
+            0.9026567752599403,
+            0.9197207891481876,
+            0.9197207891481876
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_026",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9115184239521444,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 30.763,
+      "result": {
+        "ok": false,
+        "score": 0.9115184239521444,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.6509209298071326,
+              "got": 0.5555555555555555,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.43067655807339306,
+              "got": 0.3333333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.43067655807339306,
+              "got": 0.3333333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9046346257484229,
+            0.9026567752599403,
+            0.9197207891481876,
+            0.9026567752599403,
+            0.9197207891481876,
+            0.9197207891481876
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_027",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9762967047019862,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 16.03,
+      "result": {
+        "ok": false,
+        "score": 0.9762967047019862,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.7606395682357036,
+              "got": 0.7142857142857142,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.9060254355346823,
+              "got": 0.9166666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9558295932317544,
+              "got": 0.9285714285714285,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.8854598815714874,
+              "got": 0.9166666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9536461460500106,
+            0.9893587688680157,
+            0.9727418353396741,
+            0.9687932149048207,
+            1.0,
+            0.9732402630493958
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_027",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.9762967047019862,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 21.315,
+      "result": {
+        "ok": false,
+        "score": 0.9762967047019862,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.7606395682357036,
+              "got": 0.7142857142857142,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.9060254355346823,
+              "got": 0.9166666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9558295932317544,
+              "got": 0.9285714285714285,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.8854598815714874,
+              "got": 0.9166666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9536461460500106,
+            0.9893587688680157,
+            0.9727418353396741,
+            0.9687932149048207,
+            1.0,
+            0.9732402630493958
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_027",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9762967047019862,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 33.577,
+      "result": {
+        "ok": false,
+        "score": 0.9762967047019862,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.7606395682357036,
+              "got": 0.7142857142857142,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.9060254355346823,
+              "got": 0.9166666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9558295932317544,
+              "got": 0.9285714285714285,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.8854598815714874,
+              "got": 0.9166666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9536461460500106,
+            0.9893587688680157,
+            0.9727418353396741,
+            0.9687932149048207,
+            1.0,
+            0.9732402630493958
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_028",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9777002192078298,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 18.289,
+      "result": {
+        "ok": false,
+        "score": 0.9777002192078298,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9732402630493958,
+            0.9732402630493958,
+            0.9197207891481876,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_028",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 18.136,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_028",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9777002192078298,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 38.878,
+      "result": {
+        "ok": false,
+        "score": 0.9777002192078298,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9732402630493958,
+            0.9732402630493958,
+            0.9197207891481876,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_029",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.5863917301091589,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 15.304,
+      "result": {
+        "ok": false,
+        "score": 0.5863917301091589,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.5437713091520254,
+              "got": 1.25,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 1.0,
+              "got": 3.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 1.0,
+              "got": 1.3333333333333333,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 1.0,
+              "got": 2.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.5,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            1.0,
+            0.4350170473216204,
+            0.33333333333333337,
+            0.75,
+            0.5,
+            0.5
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_029",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 7.572,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_029",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.998035958932745,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 30.288,
+      "result": {
+        "ok": false,
+        "score": 0.998035958932745,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.5437713091520254,
+              "got": 0.5555555555555555,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            1.0,
+            0.98821575359647,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_030",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9905420618728605,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 15.645,
+      "result": {
+        "ok": false,
+        "score": 0.9905420618728605,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.7606395682357036,
+              "got": 0.7142857142857142,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.9896062251871525,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9536461460500106,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.9896062251871525
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_030",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 11.667,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_030",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9905420618728605,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 31.257,
+      "result": {
+        "ok": false,
+        "score": 0.9905420618728605,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.7606395682357036,
+              "got": 0.7142857142857142,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.9896062251871525,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9536461460500106,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.9896062251871525
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_031",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9751292141462701,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 10.973,
+      "result": {
+        "ok": false,
+        "score": 0.9751292141462701,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.7122630665145961,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.9828920819566879,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.8854598815714874,
+              "got": 0.9166666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.48247555939075504,
+              "got": 0.4444444444444444,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.7315682114753617,
+              "got": 0.7142857142857142,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9544036001520705,
+            0.9828920819566879,
+            1.0,
+            0.9687932149048207,
+            0.9619688850536894,
+            0.9827175028103525
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_031",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 8.355,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_031",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9751292141462701,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 24.915,
+      "result": {
+        "ok": false,
+        "score": 0.9751292141462701,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.7122630665145961,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.9828920819566879,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.8854598815714874,
+              "got": 0.9166666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.48247555939075504,
+              "got": 0.4444444444444444,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.7315682114753617,
+              "got": 0.7142857142857142,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9544036001520705,
+            0.9828920819566879,
+            1.0,
+            0.9687932149048207,
+            0.9619688850536894,
+            0.9827175028103525
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_032",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9788944200783766,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 13.491,
+      "result": {
+        "ok": false,
+        "score": 0.9788944200783766,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.8529278650606567,
+              "got": 0.8333333333333333,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9197207891481876,
+            0.9732402630493958,
+            1.0,
+            0.9804054682726766,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_032",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.9788944200783766,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 15.185,
+      "result": {
+        "ok": false,
+        "score": 0.9788944200783766,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.8529278650606567,
+              "got": 0.8333333333333333,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9197207891481876,
+            0.9732402630493958,
+            1.0,
+            0.9804054682726766,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_032",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9788944200783766,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 28.642,
+      "result": {
+        "ok": false,
+        "score": 0.9788944200783766,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.8529278650606567,
+              "got": 0.8333333333333333,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9197207891481876,
+            0.9732402630493958,
+            1.0,
+            0.9804054682726766,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_033",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9804155077629639,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 13.223,
+      "result": {
+        "ok": false,
+        "score": 0.9804155077629639,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.9047172294870751,
+              "got": 0.9285714285714285,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.5437713091520254,
+              "got": 0.5555555555555555,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.9619991470595832,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.9828920819566879,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9732402630493958,
+            0.9761458009156466,
+            0.98821575359647,
+            0.9619991470595832,
+            0.9828920819566879,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_033",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 12.058,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_033",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9804155077629639,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 26.021,
+      "result": {
+        "ok": false,
+        "score": 0.9804155077629639,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 0.9047172294870751,
+              "got": 0.9285714285714285,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.5437713091520254,
+              "got": 0.5555555555555555,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 0.9619991470595832,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.9828920819566879,
+              "got": 1.0,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9732402630493958,
+            0.9761458009156466,
+            0.98821575359647,
+            0.9619991470595832,
+            0.9828920819566879,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_034",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.44673190952615044,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 17.563,
+      "result": {
+        "ok": false,
+        "score": 0.44673190952615044,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.5012658353418871,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 1,
+              "expected": 1.0,
+              "got": 2.25,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.8503449055347546,
+              "got": 2.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 3,
+              "expected": 1.0,
+              "got": 2.25,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.6309297535714575,
+              "got": 1.5,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 1.0,
+              "got": 2.25,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.5012658353418871,
+            0.4444444444444444,
+            0.42517245276737725,
+            0.4444444444444444,
+            0.42061983571430506,
+            0.4444444444444444
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_034",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 12.112,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_034",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9622841453628276,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 28.928,
+      "result": {
+        "ok": false,
+        "score": 0.9622841453628276,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.5012658353418871,
+              "got": 0.4444444444444444,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.8503449055347546,
+              "got": 0.8888888888888888,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.6309297535714575,
+              "got": 0.5,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9431786091025574,
+            1.0,
+            0.9614560166458658,
+            1.0,
+            0.8690702464285425,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_035",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9763343139136064,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 17.129,
+      "result": {
+        "ok": false,
+        "score": 0.9763343139136064,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.6182885020492784,
+              "got": 0.5833333333333333,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            1.0,
+            0.9197207891481876,
+            0.9732402630493958,
+            1.0,
+            1.0,
+            0.9650448312840548
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_035",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 14.799,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_035",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9763343139136064,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 23.676,
+      "result": {
+        "ok": false,
+        "score": 0.9763343139136064,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.6934264036172708,
+              "got": 0.6666666666666666,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.6182885020492784,
+              "got": 0.5833333333333333,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            1.0,
+            0.9197207891481876,
+            0.9732402630493958,
+            1.0,
+            1.0,
+            0.9650448312840548
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_036",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9625270766303679,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 13.98,
+      "result": {
+        "ok": false,
+        "score": 0.9625270766303679,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.725124396546942,
+              "got": 0.6875,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.6533933590057491,
+              "got": 0.6428571428571428,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.6797310500037655,
+              "got": 0.5833333333333333,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.962375603453058,
+            1.0,
+            0.9894637838513937,
+            1.0,
+            0.9197207891481876,
+            0.9036022833295677
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_036",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.9641638711435693,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 13.911,
+      "result": {
+        "ok": false,
+        "score": 0.9641638711435693,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.725124396546942,
+              "got": 0.7507108642732468,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.6533933590057491,
+              "got": 0.6223260412204333,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.9197207891481876,
+              "got": 0.8154648767857288,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.6797310500037655,
+              "got": 0.7338381252682711,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.9744135322736952,
+            1.0,
+            0.9689326822146842,
+            1.0,
+            0.8957440876375412,
+            0.9458929247354945
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_036",
+      "task_title": "nDCG@k (binary)",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9625270766303679,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 25.352,
+      "result": {
+        "ok": false,
+        "score": 0.9625270766303679,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.725124396546942,
+              "got": 0.6875,
+              "tol": 1e-09
+            },
+            {
+              "case": 2,
+              "expected": 0.6533933590057491,
+              "got": 0.6428571428571428,
+              "tol": 1e-09
+            },
+            {
+              "case": 4,
+              "expected": 0.9197207891481876,
+              "got": 1.0,
+              "tol": 1e-09
+            },
+            {
+              "case": 5,
+              "expected": 0.6797310500037655,
+              "got": 0.5833333333333333,
+              "tol": 1e-09
+            }
+          ],
+          "scores": [
+            0.962375603453058,
+            1.0,
+            0.9894637838513937,
+            1.0,
+            0.9197207891481876,
+            0.9036022833295677
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_037",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 4.621,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_037",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 10.983,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_037",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 20.25,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_038",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9816666666666666,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 18.741,
+      "result": {
+        "ok": false,
+        "score": 0.9816666666666666,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.11,
+              "got": 0.05,
+              "tol": 1e-12
+            },
+            {
+              "case": 4,
+              "expected": 0.13,
+              "got": 0.08,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            0.94,
+            1.0,
+            1.0,
+            0.95,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_038",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.9816666666666666,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 21.461,
+      "result": {
+        "ok": false,
+        "score": 0.9816666666666666,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.11,
+              "got": 0.05,
+              "tol": 1e-12
+            },
+            {
+              "case": 4,
+              "expected": 0.13,
+              "got": 0.08,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            0.94,
+            1.0,
+            1.0,
+            0.95,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_038",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9899999999999999,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 35.076,
+      "result": {
+        "ok": false,
+        "score": 0.9899999999999999,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.11,
+              "got": 0.05,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            0.94,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_039",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.985,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 20.717,
+      "result": {
+        "ok": false,
+        "score": 0.985,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 2,
+              "expected": 0.01,
+              "got": 0.1,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            1.0,
+            0.91,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_039",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.985,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 19.587,
+      "result": {
+        "ok": false,
+        "score": 0.985,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 2,
+              "expected": 0.01,
+              "got": 0.1,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            1.0,
+            0.91,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_039",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9716666666666667,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 38.014,
+      "result": {
+        "ok": false,
+        "score": 0.9716666666666667,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 4,
+              "expected": 0.18,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.8300000000000001,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_040",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 11.266,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_040",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 8.329,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_040",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 7.229,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_041",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 11.364,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_041",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 11.655,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_041",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.624,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_042",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 4.36,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_042",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 14.312,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_042",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9633333333333334,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 33.369,
+      "result": {
+        "ok": false,
+        "score": 0.9633333333333334,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 4,
+              "expected": 0.31,
+              "got": 0.09,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.78,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_043",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9783333333333334,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 16.925,
+      "result": {
+        "ok": false,
+        "score": 0.9783333333333334,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.05,
+              "got": 0.18,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            0.87,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_043",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.9783333333333334,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 17.019,
+      "result": {
+        "ok": false,
+        "score": 0.9783333333333334,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.05,
+              "got": 0.18,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            0.87,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_043",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9783333333333334,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 29.571,
+      "result": {
+        "ok": false,
+        "score": 0.9783333333333334,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.05,
+              "got": 0.18,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            0.87,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_044",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 4.074,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_044",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.6666666666666666,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 21.822,
+      "result": {
+        "ok": false,
+        "score": 0.6666666666666666,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.02,
+              "got": 0.06,
+              "tol": 1e-12
+            },
+            {
+              "case": 1,
+              "expected": 0.09,
+              "got": 0.61,
+              "tol": 1e-12
+            },
+            {
+              "case": 2,
+              "expected": 0.01,
+              "got": 0.72,
+              "tol": 1e-12
+            },
+            {
+              "case": 3,
+              "expected": 0.01,
+              "got": 0.45,
+              "tol": 1e-12
+            },
+            {
+              "case": 4,
+              "expected": 0.02,
+              "got": 0.31,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            0.96,
+            0.48,
+            0.29000000000000004,
+            0.56,
+            0.71,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_044",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 13.74,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_045",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 8.689,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_045",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.9933333333333333,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 18.393,
+      "result": {
+        "ok": false,
+        "score": 0.9933333333333333,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.06,
+              "got": 0.02,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            0.96,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_045",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 10.139,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_046",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.71,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 19.038,
+      "result": {
+        "ok": false,
+        "score": 0.71,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.15,
+              "got": 0.94,
+              "tol": 1e-12
+            },
+            {
+              "case": 1,
+              "expected": 0.01,
+              "got": 0.87,
+              "tol": 1e-12
+            },
+            {
+              "case": 5,
+              "expected": 0.1,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            0.21000000000000008,
+            0.14,
+            1.0,
+            1.0,
+            1.0,
+            0.91
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_046",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.51,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_046",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.117,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_047",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.9683333333333334,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 20.031,
+      "result": {
+        "ok": false,
+        "score": 0.9683333333333334,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 4,
+              "expected": 0.2,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.81,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_047",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": false,
+      "best_score": 0.9583333333333334,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 18.167,
+      "result": {
+        "ok": false,
+        "score": 0.9583333333333334,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.05,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 2,
+              "expected": 0.03,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 4,
+              "expected": 0.2,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            0.96,
+            1.0,
+            0.98,
+            1.0,
+            0.81,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_047",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": false,
+      "best_score": 0.9683333333333334,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 29.473,
+      "result": {
+        "ok": false,
+        "score": 0.9683333333333334,
+        "status": "fail:oracle_mismatch",
+        "details": {
+          "failures": [
+            {
+              "case": 4,
+              "expected": 0.2,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.81,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_048",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 3,
+      "attempts": 3,
+      "elapsed_s": 11.066,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_048",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 7.908,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_048",
+      "task_title": "Threshold scan for AMS",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 3.372,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_049",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 2.172,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_049",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.21,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_049",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.496,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_050",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.739,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_050",
+      "task_title": "AMS closed-form",
+      "strategy": "iterative_repair",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.307,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "ogts_050",
+      "task_title": "AMS closed-form",
+      "strategy": "ogts",
+      "passed": true,
+      "best_score": 1.0,
+      "best_status": "pass",
+      "oracle_calls": 1,
+      "attempts": 1,
+      "elapsed_s": 1.848,
+      "result": {
+        "ok": true,
+        "score": 1.0,
+        "status": "pass",
+        "details": {
+          "failures": [],
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    }
+  ]
+}

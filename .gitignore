@@ -17,6 +17,9 @@ configs/overleaf.local.yaml
 # Cursor / RAG project state (private)
 .cursor/
 
+# Local secrets (never commit)
+.env
+
 # macOS
 .DS_Store
 

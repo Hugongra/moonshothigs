@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+import json
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
 
 from .code_runner import import_module_from_path, write_module
 from .generators import CodeGenerator
@@ -57,6 +57,74 @@ def linear_retry(
                     best_score=float(res.score),
                     best_status=str(res.status),
                 )
+    return best, RunStats(
+        oracle_calls=oracle_calls,
+        attempts=int(k),
+        passed=bool(best.ok) if best else False,
+        best_score=float(best.score) if best else 0.0,
+        best_status=str(best.status) if best else "fail:no_attempts",
+    )
+
+
+def _oracle_feedback_snippet(res: AttemptResult, *, max_cases: int = 2, max_chars: int = 2800) -> str:
+    """Compact JSON for iterative repair prompts (CodeT-style execution feedback)."""
+    fails = []
+    if isinstance(res.details, dict):
+        raw = res.details.get("failures")
+        if isinstance(raw, list):
+            fails = raw[:max_cases]
+    blob = json.dumps(fails, ensure_ascii=False)
+    if len(blob) > max_chars:
+        return blob[:max_chars] + "…"
+    return blob
+
+
+def iterative_repair(
+    *,
+    task: OgtsTask,
+    gen: CodeGenerator,
+    k: int,
+    temperature: float,
+) -> tuple[AttemptResult | None, RunStats]:
+    r"""
+    Sequential self-debugging baseline: up to ``k`` attempts; each failure feeds oracle
+    mismatch details into the next prompt (cf. test-driven repair / CodeT).
+
+    Same oracle-call budget cap as ``linear_retry`` for comparable cost curves.
+    """
+    oracle_calls = 0
+    best: AttemptResult | None = None
+    ctx = task.prompt
+
+    with tempfile.TemporaryDirectory(prefix=f"ogts_{task.id}_repair_") as td:
+        base = Path(td)
+        for i in range(int(k)):
+            code = gen.generate(prompt=ctx, temperature=float(temperature))
+            try:
+                res = _eval_code(task, code, work_dir=base / f"repair_{i+1:02d}")
+            except Exception as exc:
+                res = AttemptResult(ok=False, score=0.0, status=f"fail:exec:{type(exc).__name__}", details={"msg": str(exc)})
+            oracle_calls += 1
+            if best is None or res.score > best.score:
+                best = res
+            if res.ok:
+                return res, RunStats(
+                    oracle_calls=oracle_calls,
+                    attempts=i + 1,
+                    passed=True,
+                    best_score=float(res.score),
+                    best_status=str(res.status),
+                )
+            fb = _oracle_feedback_snippet(res)
+            ctx = (
+                task.prompt
+                + "\n\nPrevious attempt failed automated checks.\n"
+                + f"Oracle status: {res.status}\n"
+                + "Mismatch summary (JSON):\n"
+                + fb
+                + "\nWrite a corrected module. Return ONLY Python code.\n"
+            )
+
     return best, RunStats(
         oracle_calls=oracle_calls,
         attempts=int(k),

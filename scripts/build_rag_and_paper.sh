@@ -7,6 +7,8 @@
 #   SKIP_INDEX=1 scripts/build_rag_and_paper.sh          # skip setup-rag step
 #   SKIP_EVAL=1 scripts/build_rag_and_paper.sh           # paper + atlas only
 #   OVERLEAF_SYNC=1 scripts/build_rag_and_paper.sh       # also push bundle to Overleaf
+#   ENABLE_RAGAS=1 scripts/build_rag_and_paper.sh          # Faithfulness + Context relevance (needs API keys)
+#   OGTS_JSON=evals/ogts/results/latest.json scripts/build_rag_and_paper.sh  # inject OGTS tables into §4
 #   RAG_CLI=/path/to/ragsci/bin/rag-ai-scientist scripts/build_rag_and_paper.sh
 #
 # Environments:
@@ -53,12 +55,19 @@ else
   echo "[build-rag-paper] step 1/3 -- skipped (SKIP_INDEX=1)"
 fi
 
+RAGAS_ARGS=()
+if [[ "${ENABLE_RAGAS:-0}" == "1" ]]; then
+  RAGAS_ARGS=(--ragas --ragas-max-queries -1)
+  echo "[build-rag-paper] RAGAS enabled (full-query sweep)"
+fi
+
 if [[ "${SKIP_EVAL:-0}" != "1" ]]; then
   echo "[build-rag-paper] step 2/3 -- retrieval eval via $RAG_PY"
   "$RAG_PY" evals/run_retrieval_eval.py \
     --rag-db "$RAG_DB" \
     --collection "$COLL_NAME" \
     --k-list 5 10 \
+    "${RAGAS_ARGS[@]}" \
     --output "$EVAL_OUT"
 else
   echo "[build-rag-paper] step 2/3 -- skipped (SKIP_EVAL=1)"
@@ -71,6 +80,12 @@ if [[ -f "$EVAL_OUT" ]]; then
 else
   PIPE_ARGS=(--skip-eval "${PIPE_ARGS[@]}")
 fi
+if [[ "${ENABLE_RAGAS:-0}" == "1" ]]; then
+  PIPE_ARGS+=(--ragas --ragas-max-queries -1)
+fi
+if [[ -n "${OGTS_JSON:-}" && -f "${OGTS_JSON}" ]]; then
+  PIPE_ARGS+=(--reuse-ogts-json "$OGTS_JSON")
+fi
 if [[ "${OVERLEAF_SYNC:-0}" == "1" ]]; then
   PIPE_ARGS+=(--sync-overleaf)
 fi
@@ -81,3 +96,5 @@ echo "  - $RAG_DB"
 echo "  - $EVAL_OUT"
 echo "  - $ROOT/output/neurips_paper/"
 echo "  - $ROOT/output/neurips_overleaf_bundle/"
+echo "  - $ROOT/output/neurips_paper/pipeline_manifest.json"
+echo "  - $ROOT/output/pipeline_manifest.json"

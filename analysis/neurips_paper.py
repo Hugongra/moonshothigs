@@ -146,6 +146,129 @@ def _example_rows(agg: dict[str, Any], max_examples: int = 2) -> list[dict[str, 
     return out
 
 
+def _benchmark_segment_rows(agg: dict[str, Any], *, ragas_enabled: bool) -> list[dict[str, Any]]:
+    bd = agg.get("benchmark_segment_breakdown")
+    if not isinstance(bd, dict) or not bd:
+        return []
+    ks = agg.get("k_values") or []
+    if not ks:
+        return []
+    k_hi = max(int(k) for k in ks)
+    rows: list[dict[str, Any]] = []
+    for seg in sorted(bd.keys()):
+        block = bd.get(seg)
+        if not isinstance(block, dict) or int(block.get("n", 0)) <= 0:
+            continue
+        fm = block.get("faithfulness_mean") or {}
+        cr = block.get("context_relevance_mean") or {}
+        f_hi = fm.get(str(k_hi)) if isinstance(fm, dict) else None
+        cr_hi = cr.get(str(k_hi)) if isinstance(cr, dict) else None
+        rows.append(
+            {
+                "segment": _latex_escape_text(str(seg)),
+                "n": str(int(block["n"])),
+                "recall_hi": _fmt(block.get("recall_mean", {}).get(str(k_hi), 0.0)),
+                "ndcg_hi": _fmt(block.get("ndcg_mean", {}).get(str(k_hi), 0.0)),
+                "lexical_hi": _fmt(block.get("lexical_grounded_mean", {}).get(str(k_hi), 0.0)),
+                "faithfulness_hi": _fmt_optional(f_hi, digits=4) if ragas_enabled else "---",
+                "context_relevance_hi": _fmt_optional(cr_hi, digits=4) if ragas_enabled else "---",
+                "n_label_fail": str(int(block.get("n_label_failures", 0))),
+                "k_hi": int(k_hi),
+            }
+        )
+    return rows
+
+
+def _ogts_paper_context(ogts_data: dict[str, Any] | None) -> dict[str, Any]:
+    if not ogts_data or not isinstance(ogts_data.get("aggregate"), dict):
+        return {"ogts_available": False}
+
+    agg: dict[str, Any] = ogts_data["aggregate"]
+    order_pref = ["linear_retry", "iterative_repair", "ogts"]
+    strat_keys = [k for k in order_pref if k in agg]
+    if not strat_keys:
+        return {"ogts_available": False}
+
+    pretty = {
+        "linear_retry": ("Lin.", "linear retry ($k{=}5$, $T{=}0.8$)"),
+        "iterative_repair": ("Iter.", "iterative repair ($k{=}5$, $T{=}0.8$)"),
+        "ogts": ("OGTS", "OGTS ($d{=}3$, $b{=}3$, $T{=}0.8$)"),
+    }
+
+    summary_rows: list[dict[str, Any]] = []
+    for key in strat_keys:
+        block = agg[key]
+        n_tasks = int(block.get("n_tasks", 0))
+        n_passed = int(block.get("n_passed", 0))
+        mean_calls = float(block.get("mean_oracle_calls", 0.0))
+        short, full = pretty.get(key, (key, key))
+        summary_rows.append(
+            {
+                "strategy_short": _latex_escape_text(short),
+                "strategy_long": _latex_escape_text(full),
+                "pass_at_n": f"{n_passed}/{n_tasks}",
+                "pass_pct": _fmt(100.0 * float(block.get("pass_rate", 0.0)), digits=1),
+                "oracle_total": str(int(block.get("total_oracle_calls", 0))),
+                "mean_calls": _fmt(mean_calls, digits=1),
+            }
+        )
+
+    fam_src = agg[strat_keys[0]].get("by_family") or {}
+    families = sorted(str(k) for k in fam_src.keys())
+
+    fam_rows: list[dict[str, Any]] = []
+    lin_key = "linear_retry" if "linear_retry" in strat_keys else strat_keys[0]
+    ogs_key = "ogts" if "ogts" in strat_keys else strat_keys[-1]
+
+    for fam in families:
+        row_cells: list[str] = []
+        n_tasks_f: int | None = None
+        for sk in strat_keys:
+            fb = (agg[sk].get("by_family") or {}).get(fam)
+            if not fb:
+                row_cells.extend(["---", "---"])
+                continue
+            if n_tasks_f is None:
+                n_tasks_f = int(fb["n"])
+            row_cells.append(f"{int(fb['passed'])}/{int(fb['n'])}")
+            row_cells.append(str(int(fb["oracle_calls"])))
+
+        delta_tex = "---"
+        lin_b = ((agg.get(lin_key) or {}).get("by_family") or {}).get(fam)
+        ogs_b = ((agg.get(ogs_key) or {}).get("by_family") or {}).get(fam)
+        if isinstance(lin_b, dict) and isinstance(ogs_b, dict):
+            d = int(ogs_b["passed"]) - int(lin_b["passed"])
+            if d > 0:
+                delta_tex = f"+{d}"
+            else:
+                delta_tex = str(int(d))
+
+        fam_rows.append(
+            {
+                "family": _latex_escape_text(fam),
+                "n_tasks_f": str(int(n_tasks_f or 0)),
+                "cells": row_cells,
+                "delta_pass": _latex_escape_text(delta_tex),
+            }
+        )
+
+    col_spec = "lr" + ("rr" * len(strat_keys))
+    if lin_key in strat_keys and ogs_key in strat_keys and lin_key != ogs_key:
+        col_spec += "r"
+
+    headers_short = [pretty.get(sk, (sk, sk))[0] for sk in strat_keys]
+
+    return {
+        "ogts_available": True,
+        "ogts_summary_rows": summary_rows,
+        "ogts_family_rows": fam_rows,
+        "ogts_family_col_spec": col_spec,
+        "ogts_family_headers": [_latex_escape_text(h) for h in headers_short],
+        "ogts_show_delta": lin_key in strat_keys and ogs_key in strat_keys and lin_key != ogs_key,
+        "ogts_json_timestamp": _latex_escape_text(str(ogts_data.get("timestamp", ""))),
+    }
+
+
 def build_neurips_context(
     *,
     atlas_metrics: dict[str, Any],
@@ -155,6 +278,7 @@ def build_neurips_context(
     eval_json_path: Path | None,
     rag_db_display: str,
     queries_file_display: str,
+    ogts_aggregate: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Returns kwargs for ``render_neurips_rag_atlas_paper``."""
     atlas_tex = _atlas_metrics_tex(atlas_metrics)
@@ -164,6 +288,7 @@ def build_neurips_context(
     per_query_rows: list[dict[str, Any]] = []
     failure_rows: list[dict[str, Any]] = []
     example_rows: list[dict[str, Any]] = []
+    benchmark_segment_rows: list[dict[str, Any]] = []
     mrr = ""
     n_queries = ""
     n_with_gold = ""
@@ -180,6 +305,7 @@ def build_neurips_context(
         per_query_rows = _per_query_rows(eval_aggregate, ragas_enabled=ragas_enabled)
         failure_rows = _failure_rows(eval_aggregate)
         example_rows = _example_rows(eval_aggregate)
+        benchmark_segment_rows = _benchmark_segment_rows(eval_aggregate, ragas_enabled=ragas_enabled)
         ts = eval_aggregate.get("timestamp", "")
         n_queries = str(eval_aggregate.get("n_queries", ""))
         n_with_gold = str(eval_aggregate.get("n_with_gold", ""))
@@ -197,6 +323,8 @@ def build_neurips_context(
     queries_esc = _latex_escape_text(queries_file_display)
     reason_esc = _latex_escape_text(eval_skip_reason)
 
+    ogts_ctx = _ogts_paper_context(ogts_aggregate)
+
     return {
         "atlas": atlas_tex,
         "eval_use_ragas": ragas_enabled,
@@ -208,6 +336,7 @@ def build_neurips_context(
         "per_query_rows": per_query_rows,
         "failure_rows": failure_rows,
         "example_rows": example_rows,
+        "benchmark_segment_rows": benchmark_segment_rows,
         "eval_json_path": eval_json_esc,
         "rag_db_display": rag_esc,
         "queries_file_display": queries_esc,
@@ -223,6 +352,7 @@ def build_neurips_context(
             "(tests, linting, complexity, and reproducibility checks) complementary to "
             "retrieval metrics."
         ),
+        **ogts_ctx,
     }
 
 
