@@ -1,12 +1,15 @@
-# RAG AI Scientist — reviewer-facing README
+# Oracle-Grounded AI Scientist (OGAS) — reviewer-facing README
 
-This repository accompanies the manuscript **“RAG AI Scientist: Retrieval Grounding for Scientific Code Assistants, with an ATLAS Higgs-Challenge Replication Testbed.”** This document is written for **NeurIPS / ICML-style reviewers**: what is claimed, what is measured, how it is implemented, and how to reproduce it.
+This repository accompanies the manuscript **“Oracle-Grounded AI Scientist (OGAS): Retrieval Grounding for Scientific Code Assistants, with an ATLAS Higgs-Challenge Replication Testbed.”**  
+This document is written for reviewers at venues such as **NeurIPS / ICML workshops**: what is claimed, what is measured, how it is implemented, and how to reproduce it.
+
+**Naming note (repository paths vs venue):** several filenames retain legacy **`neurips`** prefixes (for example `run_neurips_pipeline.py`, `paper/neurips_rag_atlas.tex.j2`, `rag_queries_500_neurips_mirror.jsonl`). These refer to the **shared manuscript / PDF pipeline** developed for an evaluations-style submission and are **not** venue-specific logic: if your camera-ready target is the **ICML AI for Science Workshop** (or similar), treat them as the **workshop manuscript pipeline** unless you rename files repo-wide.
 
 ---
 
 ## One-sentence summary
 
-We evaluate a **retrieval-augmented scientific assistant** along three axes: **(i)** transparent retrieval metrics with explicit failure reporting, **(ii)** an **executable replication** of the 2014 ATLAS Higgs ML challenge as a consistency check between indexed documents and code, and **(iii)** **OGTS**, an execution-grounded benchmark where generated Python is checked by deterministic oracles (complementary to retrieval scores).
+We evaluate **Oracle-Grounded AI Scientist (OGAS)**, a framework that combines retrieval with **deterministic oracles** to improve scientific code correctness; notably, our **OGSR** strategy (**Oracle-Guided Sequential Refinement**) raises cumulative task success for **Llama-3.1-70B** from **58%** (linear retry at \(k{=}5\)) to **84%** under the same oracle-call budget reporting used in the paper (strict domain-specific micro-tasks).
 
 ---
 
@@ -16,7 +19,7 @@ We evaluate a **retrieval-augmented scientific assistant** along three axes: **(
 
 2. **Validation testbed (ATLAS Higgs Boson ML Challenge, 2014)** — Weighted training, sentinel missingness (\(-999 \rightarrow\) NaN), AMS with regulator \(b_r{=}10\), stratified K-fold reporting. Demonstrates that the **same references** the assistant indexes align with an executable pipeline (not a leaderboard claim on private test labels).
 
-3. **OGTS (Oracle-Guided Tree Search)** — \(N{=}50\) micro-tasks (AMS closed-form, weighted log-loss, nDCG@\(k\), AMS threshold scan) with **deterministic oracles** and JSONL task definitions. Compares **linear retry** (pass@\(k\)) vs **OGTS** under controlled budgets.
+3. **OGSR (Oracle-Guided Sequential Refinement)** — \(N{=}50\) micro-tasks (AMS closed-form, weighted log-loss, nDCG@\(k\), AMS threshold scan) with **deterministic oracles** and JSONL task definitions. Compares **linear retry** (pass@\(k\)) vs **OGSR** under controlled oracle-call budgets.
 
 4. **Reproducibility tooling** — Configuration-driven ingest (`configs/references.yaml`), scripts under `evals/` and `run_neurips_pipeline.py`, and LaTeX generation from `paper/neurips_rag_atlas.tex.j2`.
 
@@ -26,8 +29,8 @@ We evaluate a **retrieval-augmented scientific assistant** along three axes: **(
 
 - **Retrieval metrics are corpus-specific.** Numbers transfer only together with the **embedding checkpoint**, **chunking settings**, and **indexed snapshot** recorded in each eval JSON.
 - **Path-pattern relevance is a proxy** for “correct document family” when stable chunk IDs across re-ingests are unavailable.
-- **ATLAS validation AMS** is **not** the private competition leaderboard score; we report **stratified K-fold** metrics on the public training table for reproducibility.
-- **OGTS** targets **small scientific numerical utilities**, not full repository-scale software engineering.
+- **ATLAS validation AMS** is **not** the private competition leaderboard score; we report **stratified K-fold** metrics on the public training table as a **scientific consistency check** between indexed methodology and executable code—not as a competition leaderboard claim.
+- **OGSR** targets **small scientific numerical utilities**, not full repository-scale software engineering.
 
 ---
 
@@ -35,18 +38,19 @@ We evaluate a **retrieval-augmented scientific assistant** along three axes: **(
 
 | Path | Role |
 |------|------|
-| `paper/neurips_rag_atlas.tex.j2` | NeurIPS-style manuscript template (Jinja placeholders filled by `run_neurips_pipeline.py`) |
-| `run_neurips_pipeline.py` | Orchestrates retrieval eval (optional), ATLAS replication, paper render |
+| `paper/neurips_rag_atlas.tex.j2` | Manuscript template (Jinja placeholders filled by `run_neurips_pipeline.py`; legacy `neurips` filename—see note above) |
+| `run_neurips_pipeline.py` | Manuscript pipeline: retrieval eval (optional), ATLAS replication, PDF/LaTeX render |
 | `run_atlas_pipeline.py` | ATLAS challenge baseline (weighted boosting, AMS, figures, metrics JSON) |
 | `evals/run_retrieval_eval.py` | Main retrieval evaluation CLI |
 | `evals/retrieval_eval_lib.py` | Metrics + aggregation + optional RAGAS hooks |
 | `evals/judge_metrics.py` | Optional LLM-judge (OpenAI / OpenRouter paths documented in code) |
-| `evals/ogts/run_ogts_eval.py` | OGTS harness CLI |
-| `evals/ogts/strategies.py` | **Authoritative** implementation of linear retry vs OGTS |
+| `evals/ogts/run_ogsr_eval.py` | OGSR harness CLI (strategy flag `ogsr`; `ogts` kept as alias) |
+| `evals/ogts/strategies.py` | **Authoritative** implementation of linear retry vs OGSR |
 | `evals/ogts/data/ogts_50_tasks.jsonl` | Frozen 50-task suite |
 | `evals/README.md` | Retrieval harness details (RAGAS, embedding sweep, gold JSONL format) |
 | `configs/references.yaml` | Corpus manifest for indexing |
 | `croissant.json` | Dataset / artifact metadata (where applicable) |
+| `simulation_ogts.py` | Optional matplotlib sketch for the cost–success Pareto figure (`pareto_frontier.png`; legacy script name) |
 
 Pedagogical Jupyter workflows and CSV provenance remain documented under **`notebooks/README.md`** and **`data/PROVENANCE.md`** (orthogonal to the paper’s core claims).
 
@@ -84,7 +88,7 @@ Writes figures and **`output/atlas_challenge/metrics.json`** (and LaTeX bundles 
 
 ---
 
-## Evaluation axis 3 — OGTS (what reviewers should verify)
+## Evaluation axis 3 — OGSR (what reviewers should verify)
 
 ### Task format
 
@@ -107,43 +111,65 @@ For each task:
 
 So failures are “caught” **only** by executable tests; there is **no** prompt refinement from oracle output.
 
-### Strategy B — OGTS (as implemented in this repo)
+### Strategy B — OGSR (as implemented in this repo)
 
-Parameters: **depth** \(d\), **branch** \(b\), sampling temperature \(T\).
+Parameters: **depth** \(d\) (sequential refinement stages), **branch** \(b\) (parallel candidates **within** each stage), sampling temperature \(T\).
 
 For each depth level \(1 \ldots d\):
 
-1. **Expand:** Sample \(b\) **independent** candidate modules from the **current prompt** `ctx` (parallel siblings at this depth).
+1. **Expand:** Sample \(b\) **independent** candidate modules from the **current prompt** `ctx` (parallel siblings **at this stage only**).
 2. **Evaluate:** Run the oracle on **every** candidate. **Count each oracle run** (`oracle_calls` in logs).
 3. **Early exit:** If **any** candidate passes, stop immediately (success).
-4. **If none pass:** Sort candidates by oracle **score**, keep **only the single highest-scoring** failure.
+4. **Greedy collapse:** If none pass, sort candidates by oracle **score**, keep **only the single highest-scoring** failure.
 5. **Refine:** Set `ctx` to the **original task prompt** plus a short fixed suffix containing **`Status: <best_failure.status>`** (oracle status string only — not full tracebacks, not per-case diffs).
 6. Proceed to the next depth with this new `ctx`.
 
-**What is *not* done:** This is **not** beam search retaining multiple competing hypotheses across depths. Only **one** lineage survives refinement (the best-scoring failure at each depth). Alternative siblings are **discarded** for deeper search.
+**What is *not* done:** This is **not** beam search retaining multiple competing hypotheses across depths. Only **one** lineage survives refinement after each stage. Alternative siblings are **discarded** for deeper refinement—hence **greedy collapse**, not a retained beam of partial programs.
 
-**Why this still matters:** Parallel width \(b\) explores diverse corrections at each step; oracle scores gate which failure message informs the next prompt. The paper’s **nDCG family** example illustrates **near-perfect numeric overlap with systematic misuse of rank indexing** — invisible to lexical grounding but exposed by execution.
+**Why this still matters:** Parallel width \(b\) explores diverse corrections at each stage; oracle scores gate which failure message informs the next prompt. The paper’s **nDCG family** example illustrates **near-perfect numeric overlap with systematic misuse of rank indexing** — invisible to lexical grounding but exposed by execution.
 
-### Running OGTS
+### Running OGSR
 
 ```bash
 pip install openai   # OpenAI SDK; used also for OpenRouter-compatible base_url
 # Smoke (no API key):
-python evals/ogts/run_ogts_eval.py --generator dummy --max-tasks 2
+python evals/ogts/run_ogsr_eval.py --generator dummy --max-tasks 2
 
 # Example OpenRouter (see evals/ogts/generators.py for env vars & model IDs):
 export OPENROUTER_API_KEY='…'
-python evals/ogts/run_ogts_eval.py \
+python evals/ogts/run_ogsr_eval.py \
   --generator openai \
   --model anthropic/claude-3.7-sonnet \
   --tasks evals/ogts/data/ogts_50_tasks.jsonl \
   --k 5 --depth 3 --branch 3 \
-  --output evals/ogts/results/ogts_eval_run.json
+  --output evals/ogts/results/ogsr_eval_run.json
 ```
+
+(`--strategies ogsr` is the default alongside linear retry; `--strategies ogts` remains an **alias**.)
+
+### Illustrative Pareto plot (`simulation_ogts.py`)
+
+`simulation_ogts.py` is **not** part of the OGSR evaluation harness. It is a small **matplotlib helper** for an ablation-style figure: **oracle-call budget (horizontal)** vs **cumulative success rate (vertical)** when comparing **linear retry** (pass@\(k\) with independent tries) to **OGSR-style budgets** under a simplified probability model (comments reference **Appendix A.1** notation in the manuscript).
+
+![Pareto Frontier](pareto_frontier.png)
+
+- **Linear retry curve:** uses \(P_k = 1 - (1-p)^k\) with base success rate \(p\) (script default \(p=0.2\)).
+- **OGSR toy curve:** implements recursive “success-or-advance” bookkeeping from the appendix toy model (`prob_ogsr` in code — depth \(d\), branch \(b\), per-stage effective \(p_i\) capped by refinement factor \(r\)).
+- **Scatter points:** the script mixes **hard-coded empirical rates** from reported experiments (including **58%** linear \(k{=}5\) and **84%** OGSR \((d,b)=(3,3)\) for Llama-3.1-70B in the strict micro-task suite) with **values computed from the formulas** (e.g. linear \(k{=}10\), OGSR \((5,3)\)) so the dashed connector reads as a qualitative **cost–performance frontier**, not a rerun of `run_ogsr_eval.py`.
+
+Outputs **`pareto_frontier.png`** in the current working directory (typically the repo root).
+
+```bash
+pip install matplotlib            # if not already installed
+export MPLBACKEND=Agg             # optional: headless / CI / SSH without a display
+python simulation_ogts.py
+```
+
+Edit the `configs` list inside `simulate_pareto()` if table numbers or budgets change in the paper.
 
 ---
 
-## Full paper bundle (NeurIPS draft)
+## Manuscript pipeline (NeurIPS-style filenames)
 
 ```bash
 pip install -r evals/requirements-eval.txt
@@ -168,7 +194,7 @@ See comments in **`scripts/build_rag_and_paper.sh`** for `SKIP_INDEX`, `SKIP_EVA
 
 ## Limitations (explicit)
 
-- **OGTS refinement signal is intentionally minimal** (status string). Richer feedback (per-case oracle diffs) would likely change search effectiveness and is left to future work.
+- **OGSR refinement signal is intentionally minimal** (status string). Richer feedback (per-case oracle diffs) would likely change refinement effectiveness and is left to future work.
 - **50 tasks, four families** — generalization beyond these scientific micro-patterns is not claimed.
 - **RAGAS / LLM judges** introduce cost, variance, and provider dependence when enabled.
 - **Anonymized submission:** scrub absolute user paths and API keys from any JSON you bundle as supplementary material.

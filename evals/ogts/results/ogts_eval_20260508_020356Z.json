@@ -1,0 +1,93 @@
+{
+  "timestamp": "2026-05-08T02:03:56.551374+00:00",
+  "config": {
+    "generator": "dummy",
+    "model": null,
+    "openrouter": false,
+    "strategies": [
+      "linear_retry",
+      "ogsr"
+    ],
+    "k": 5,
+    "depth": 3,
+    "branch": 3,
+    "temperature": 0.8,
+    "n_tasks": 1,
+    "tasks_files": [
+      "evals/ogts/data/ogts_70_tasks.jsonl"
+    ]
+  },
+  "aggregate": {
+    "linear_retry": {
+      "n_tasks": 1,
+      "n_passed": 0,
+      "pass_rate": 0.0,
+      "total_oracle_calls": 5,
+      "mean_oracle_calls": 5.0,
+      "total_elapsed_s": 0.01,
+      "by_family": {
+        "AMS closed-form": {
+          "n": 1,
+          "passed": 0,
+          "oracle_calls": 5
+        }
+      }
+    },
+    "ogsr": {
+      "n_tasks": 1,
+      "n_passed": 0,
+      "pass_rate": 0.0,
+      "total_oracle_calls": 9,
+      "mean_oracle_calls": 9.0,
+      "total_elapsed_s": 0.01,
+      "by_family": {
+        "AMS closed-form": {
+          "n": 1,
+          "passed": 0,
+          "oracle_calls": 9
+        }
+      }
+    }
+  },
+  "wall_time_s": 0.01,
+  "per_task": [
+    {
+      "task_id": "ogts_001",
+      "task_title": "AMS closed-form",
+      "strategy": "linear_retry",
+      "passed": false,
+      "best_score": 0.0,
+      "best_status": "fail:missing_entrypoint:ams",
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 0.008,
+      "result": {
+        "ok": false,
+        "score": 0.0,
+        "status": "fail:missing_entrypoint:ams",
+        "details": {
+          "entrypoint": "ams"
+        }
+      }
+    },
+    {
+      "task_id": "ogts_001",
+      "task_title": "AMS closed-form",
+      "strategy": "ogsr",
+      "passed": false,
+      "best_score": 0.0,
+      "best_status": "fail:missing_entrypoint:ams",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 0.005,
+      "result": {
+        "ok": false,
+        "score": 0.0,
+        "status": "fail:missing_entrypoint:ams",
+        "details": {
+          "entrypoint": "ams"
+        }
+      }
+    }
+  ]
+}

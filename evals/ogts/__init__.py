@@ -1,2 +1,1 @@
-"""Oracle-Guided Tree Search (OGTS) execution-grounded evaluation harness."""
-
+"""Oracle-Guided Sequential Refinement (OGSR) execution-grounded evaluation harness."""

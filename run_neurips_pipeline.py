@@ -62,7 +62,7 @@ def main() -> int:
         "--reuse-ogts-json",
         type=Path,
         default=None,
-        help="Optional evals/ogts/results/*.json to populate OGTS tables from an executed benchmark run.",
+        help="Optional evals/ogts/results/*.json to populate OGSR benchmark tables from an executed run.",
     )
     p.add_argument("--rag-db", type=Path, default=None, help="Chroma persist dir for eval")
     p.add_argument(

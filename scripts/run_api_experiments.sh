@@ -56,7 +56,7 @@ fi
 
 if [[ "${SKIP_OGTS:-0}" != "1" ]]; then
   echo "[experiments] OGTS linear_retry + iterative_repair + ogts -> $OGTS_OUT"
-  "$PY" "$ROOT/evals/ogts/run_ogts_eval.py" \
+  "$PY" "$ROOT/evals/ogts/run_ogsr_eval.py" \
     --generator openai \
     --model "$OGTS_MODEL" \
     --tasks "$ROOT/evals/ogts/data/ogts_50_tasks.jsonl" \

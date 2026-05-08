@@ -15,7 +15,7 @@
     "temperature": 0.8,
     "n_tasks": 70,
     "tasks_files": [
-      "/mnt/c/Users/hugog/moonshotHiggs/evals/ogts/data/ogts_70_tasks.jsonl"
+      "evals/ogts/data/ogts_70_tasks.jsonl"
     ]
   },
   "aggregate": {

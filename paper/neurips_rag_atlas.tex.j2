@@ -282,7 +282,7 @@ python run_neurips_pipeline.py \
 (or split eval and paper rendering across environments via \texttt{--reuse-eval-json}). Each completed render emits \texttt{pipeline\_manifest.json} under \texttt{output/neurips\_paper/} (with a duplicate pointer under \texttt{output/pipeline\_manifest.json}) recording CLI arguments, git revision when available, dataset paths, and hashes for eval outputs---keep these artifacts alongside submitted PDFs for reproducibility reviews.
 
 \paragraph{RAGAS + OGTS artifacts.}
-Retrieval runs may enable \texttt{--ragas} / \texttt{--ragas-max-queries -1}; OGTS tables can be populated from \texttt{evals/ogts/run\_ogts\_eval.py} and wired into the manuscript via \texttt{run\_neurips\_pipeline.py --reuse-ogts-json <eval.json>}.
+Retrieval runs may enable \texttt{--ragas} / \texttt{--ragas-max-queries -1}; OGTS tables can be populated from \texttt{evals/ogts/run\_ogsr\_eval.py} and wired into the manuscript via \texttt{run\_neurips\_pipeline.py --reuse-ogts-json <eval.json>}.
 
 \section{Execution-grounded evaluation: Oracle-Guided Tree Search}\label{sec:ogts}
 
@@ -310,7 +310,7 @@ Strategy & pass@$N$ & Pass rate & Oracle calls & Mean calls/task \\
 {% endfor %}
 \bottomrule
 \end{tabular}
-\caption{Aggregate pass rates from \texttt{evals/ogts/run\_ogts\_eval.py} (timestamp \texttt{<< ogts_json_timestamp >>}). Values refresh whenever \texttt{run\_neurips\_pipeline.py} is invoked with \texttt{--reuse-ogts-json}.}
+\caption{Aggregate pass rates from \texttt{evals/ogts/run\_ogsr\_eval.py} (timestamp \texttt{<< ogts_json_timestamp >>}). Values refresh whenever \texttt{run\_neurips\_pipeline.py} is invoked with \texttt{--reuse-ogts-json}.}
 \end{table}
 
 \begin{table}[h]
@@ -348,7 +348,7 @@ Linear retry ($k{=}5$, $T{=}0.8$) & 33/50 & 66.0\% & 135 & 2.7 \\
 OGTS ($d{=}3$, $b{=}3$, $T{=}0.8$) & 33/50 & 66.0\% & 194 & 3.9 \\
 \bottomrule
 \end{tabular}
-\caption{Representative aggregate snapshot when no OGTS JSON is wired into the manuscript generator (fallback). Re-run \texttt{evals/ogts/run\_ogts\_eval.py} with the iterative-repair strategy enabled and pass \texttt{--reuse-ogts-json} to \texttt{run\_neurips\_pipeline.py}.}
+\caption{Representative aggregate snapshot when no OGTS JSON is wired into the manuscript generator (fallback). Re-run \texttt{evals/ogts/run\_ogsr\_eval.py} with the iterative-repair strategy enabled and pass \texttt{--reuse-ogts-json} to \texttt{run\_neurips\_pipeline.py}.}
 \end{table}
 
 \begin{table}[h]

@@ -13,7 +13,7 @@ This folder documents how to run the **CMS open-data education notebooks** shipp
 Upstream lists old pins in `references/cms-jupyter-materials-english-1.0/requirements.txt`. Prefer a **fresh virtual environment** and modern equivalents, for example:
 
 ```bash
-cd /Users/uzzielperez/Desktop/higgs
+cd /Users/anonymous2/Desktop/higgs
 python3 -m venv .venv
 source .venv/bin/activate
 pip install jupyter pandas numpy matplotlib scipy
@@ -32,7 +32,7 @@ If a notebook errors on API changes, adjust cell-by-cell (pandas/matplotlib evol
 **Important:** Notebooks load CSVs with paths such as `../Data/….csv`. That assumes your **working directory** is the `Exercises-with-open-data` folder when kernels resolve paths. Easiest workflow:
 
 ```bash
-cd /Users/uzzielperez/Desktop/higgs/references/cms-jupyter-materials-english-1.0/Exercises-with-open-data
+cd /Users/anonymous2/Desktop/higgs/references/cms-jupyter-materials-english-1.0/Exercises-with-open-data
 jupyter notebook
 ```
 

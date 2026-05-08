@@ -93,7 +93,7 @@ Then add to `~/.cursor/mcp.json`:
   "mcpServers": {
     "overleaf": {
       "command": "node",
-      "args": ["/Users/uzzielperez/tools/OverleafMCP/overleaf-mcp-server.js"]
+      "args": ["/Users/anonymous2/tools/OverleafMCP/overleaf-mcp-server.js"]
     }
   }
 }

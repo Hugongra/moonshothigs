@@ -3,7 +3,7 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "http://mlcommons.org/croissant/column",
-    "conformsTo": "http://mlcommons.org/croissant/conformsTo",
+    "conformsTo": "http://purl.org/dc/terms/conformsTo",
     "cr": "http://mlcommons.org/croissant/",
     "data": {
       "@id": "http://mlcommons.org/croissant/data",
@@ -52,14 +52,17 @@
   "description": "Execution-grounded evaluation suite for retrieval-augmented scientific code assistants. Contains two complementary benchmarks: (1) OGTS (Oracle-Guided Tree Search) — 50 deterministic micro-tasks across four families of domain-specific scientific computing problems (AMS closed-form, weighted log-loss, nDCG@k, threshold scan for AMS), each with 6 pre-computed oracle test cases and numeric tolerances; and (2) RAG Gold Queries — 500 retrieval evaluation queries with path-pattern relevance labels, difficulty tags (easy/medium/hard), and optional required_terms for lexical grounding, designed to evaluate retrieval quality over an indexed physics document corpus.",
   "url": "https://github.com/ANONYMOUS/rag-ai-scientist-ogts-benchmark",
   "license": "https://spdx.org/licenses/MIT.html",
-  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/RAI/1.0"
+  ],
   "version": "1.0.0",
   "datePublished": "2026-05-05",
   "creator": {
     "@type": "Organization",
     "name": "Anonymous (NeurIPS 2026 submission)"
   },
-  "citation": "Anonymous. RAG AI Scientist: Retrieval Grounding for Scientific Code Assistants, with an ATLAS Higgs-Challenge Replication Testbed. NeurIPS 2026 Evaluations & Datasets Track (submitted).",
+  "citeAs": "Anonymous. RAG AI Scientist: Retrieval Grounding for Scientific Code Assistants, with an ATLAS Higgs-Challenge Replication Testbed. NeurIPS 2026 Evaluations & Datasets Track (submitted).",
   "keywords": [
     "code generation evaluation",
     "oracle-guided tree search",
@@ -75,20 +78,18 @@
   "rai:dataUseCases": "Primary intended use: benchmarking LLM code-generation accuracy on domain-specific scientific computing tasks, comparing search strategies (linear retry vs. tree search) under oracle verification. Secondary: evaluating retrieval quality of RAG systems over indexed scientific corpora. Validity has been established for pass@k evaluation of Python code generation models and MRR/nDCG/Recall@k evaluation of vector-store retrieval. Not validated for: general-purpose code generation, natural language understanding, or tasks outside the physics/ML metrics domain.",
   "rai:dataSocialImpact": "Positive: promotes transparent, reproducible evaluation of AI coding assistants in scientific domains, helping researchers trust and verify AI-generated code. Encourages oracle-based verification over self-reported accuracy. Negative risks are minimal given the synthetic nature of the data; however, high pass rates on this benchmark should not be interpreted as evidence of general scientific coding competence.",
   "rai:hasSyntheticData": true,
+  "rai:dataCollection": "OGTS micro-tasks were procedurally generated (Python, fixed random seed) with numeric oracles derived from reference implementations. RAG gold queries were seeded from 10 expert-authored English prompts and deterministically paraphrased to 500 variants; path relevance labels are pattern-based heuristics aligned to the indexed ATLAS Higgs challenge documentation corpus.",
+  "rai:dataCollectionType": "Software Collection",
   "prov:wasDerivedFrom": [
-    {
-      "@id": "atlas-higgs-challenge-2014",
-      "url": "https://opendata.cern.ch/record/328",
-      "description": "ATLAS Higgs Boson Machine Learning Challenge 2014 documentation (source of AMS formula, evaluation methodology, and RAG query topics)"
-    }
+    "https://opendata.cern.ch/record/328"
   ],
   "prov:wasGeneratedBy": {
-    "description": "OGTS tasks: deterministic Python generation (seed=1337) using closed-form implementations of AMS, weighted log-loss, nDCG, and threshold scan. Each task's oracle payload contains 6 test cases with uniformly sampled random inputs and pre-computed expected outputs. RAG queries: 10 seed queries hand-authored by domain experts, expanded to 500 via deterministic paraphrase generation (evals/generate_rag_queries.py) with difficulty labels (easy/medium/hard) assigned by the generator based on query complexity. No human annotation was performed on the expanded set.",
-    "tools": "Python 3.11, NumPy, scikit-learn (for ATLAS pipeline validation)"
+    "description": "Data collection: deterministic code generation (seed=1337) for OGTS tasks; template-based paraphrase expansion for RAG queries from 10 seeds. Preprocessing: none on released JSONL artifacts beyond generation-time validation. Annotation: RAG relevance is defined by substring path patterns and optional lexical required_terms (no crowd labeling; expanded paraphrases were not human-reviewed). Tools: Python 3.11, NumPy, scikit-learn (optional ATLAS pipeline replication).",
+    "tools": "Python 3.11, NumPy, scikit-learn"
   },
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "@id": "ogts-tasks-file",
       "name": "ogts_50_tasks.jsonl",
       "description": "50 OGTS execution-grounded tasks with oracle test cases",
@@ -97,13 +98,13 @@
       "sha256": "c69982a39f19dd061ecfb3444224bd354018f1a78db8402746d30dd2c18a44d2"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "@id": "rag-queries-file",
       "name": "rag_queries_500_neurips_mirror.jsonl",
       "description": "500 retrieval evaluation queries with relevance labels and difficulty tags",
       "contentUrl": "evals/data/rag_queries_500_neurips_mirror.jsonl",
       "encodingFormat": "application/jsonlines",
-      "sha256": "f43a2b65dac9b36c810160eaff7d22493ed5b71551f9efe935e5a4927e4503c2"
+      "sha256": "3fe0fa8890431419b58e2fbd0613a4d64a246da306c111a6726c1adf5588472d"
     }
   ],
   "recordSet": [
@@ -112,7 +113,7 @@
       "@id": "ogts-tasks",
       "key": "ogts-tasks/id",
       "name": "ogts_tasks",
-      "description": "Each record is one execution-grounded micro-task with a prompt, entrypoint function name, oracle kind, and oracle payload containing test cases.",
+      "description": "Each record is one execution-grounded micro-task with a prompt, entrypoint function name, and oracle_kind. Full oracle payloads (cases, tolerances, and expected outputs) are JSON objects stored in the `oracle_payload` key of each line in ogts_50_tasks.jsonl; load the JSONL directly for oracle-grounded evaluation.",
       "field": [
         {
           "@type": "cr:Field",
@@ -122,7 +123,7 @@
           "dataType": "sc:Text",
           "source": {
             "fileObject": { "@id": "ogts-tasks-file" },
-            "extract": { "jsonPath": "$.id" }
+            "extract": { "jsonPath": "id" }
           }
         },
         {
@@ -133,7 +134,7 @@
           "dataType": "sc:Text",
           "source": {
             "fileObject": { "@id": "ogts-tasks-file" },
-            "extract": { "jsonPath": "$.title" }
+            "extract": { "jsonPath": "title" }
           }
         },
         {
@@ -144,7 +145,7 @@
           "dataType": "sc:Text",
           "source": {
             "fileObject": { "@id": "ogts-tasks-file" },
-            "extract": { "jsonPath": "$.prompt" }
+            "extract": { "jsonPath": "prompt" }
           }
         },
         {
@@ -155,7 +156,7 @@
           "dataType": "sc:Text",
           "source": {
             "fileObject": { "@id": "ogts-tasks-file" },
-            "extract": { "jsonPath": "$.entrypoint" }
+            "extract": { "jsonPath": "entrypoint" }
           }
         },
         {
@@ -166,18 +167,7 @@
           "dataType": "sc:Text",
           "source": {
             "fileObject": { "@id": "ogts-tasks-file" },
-            "extract": { "jsonPath": "$.oracle_kind" }
-          }
-        },
-        {
-          "@type": "cr:Field",
-          "@id": "ogts-tasks/oracle_payload",
-          "name": "oracle_payload",
-          "description": "JSON object with test cases (args, kwargs, expected) and tolerance settings",
-          "dataType": "sc:Text",
-          "source": {
-            "fileObject": { "@id": "ogts-tasks-file" },
-            "extract": { "jsonPath": "$.oracle_payload" }
+            "extract": { "jsonPath": "oracle_kind" }
           }
         }
       ]
@@ -197,7 +187,7 @@
           "dataType": "sc:Text",
           "source": {
             "fileObject": { "@id": "rag-queries-file" },
-            "extract": { "jsonPath": "$.id" }
+            "extract": { "jsonPath": "id" }
           }
         },
         {
@@ -208,7 +198,7 @@
           "dataType": "sc:Text",
           "source": {
             "fileObject": { "@id": "rag-queries-file" },
-            "extract": { "jsonPath": "$.query" }
+            "extract": { "jsonPath": "query" }
           }
         },
         {
@@ -219,7 +209,7 @@
           "dataType": "sc:Text",
           "source": {
             "fileObject": { "@id": "rag-queries-file" },
-            "extract": { "jsonPath": "$.difficulty" }
+            "extract": { "jsonPath": "difficulty" }
           }
         },
         {
@@ -228,9 +218,55 @@
           "name": "relevant_path_patterns",
           "description": "Substring patterns that must appear in retrieved chunk metadata for the chunk to be counted as relevant",
           "dataType": "sc:Text",
+          "repeated": true,
           "source": {
             "fileObject": { "@id": "rag-queries-file" },
-            "extract": { "jsonPath": "$.relevant_path_patterns" }
+            "extract": { "jsonPath": "relevant_path_patterns" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rag-queries/required_terms",
+          "name": "required_terms",
+          "description": "Optional lexical terms that should appear in concatenated top-k chunk text for groundedness checks",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileObject": { "@id": "rag-queries-file" },
+            "extract": { "jsonPath": "required_terms" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rag-queries/benchmark_segment",
+          "name": "benchmark_segment",
+          "description": "Stratification tag for query subsets (e.g., positive control segment)",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "rag-queries-file" },
+            "extract": { "jsonPath": "benchmark_segment" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rag-queries/seed_id",
+          "name": "seed_id",
+          "description": "Identifier of the hand-authored seed query this row was expanded from",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "rag-queries-file" },
+            "extract": { "jsonPath": "seed_id" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rag-queries/seed_run",
+          "name": "seed_run",
+          "description": "Optional pointer to the provenance run artifact used when generating this mirror file",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "rag-queries-file" },
+            "extract": { "jsonPath": "seed_run" }
           }
         }
       ]

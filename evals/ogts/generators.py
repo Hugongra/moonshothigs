@@ -376,10 +376,14 @@ class OpenAIGenerator:
 
     Optional OpenRouter attribution headers:
       - `OPENROUTER_HTTP_REFERER`, `OPENROUTER_TITLE`
+
+    ``seed``: when set, forwarded to ``chat.completions.create(seed=...)`` for reproducible
+    sampling (provider/model must support the parameter).
     """
 
     model: str = "gpt-4o-mini"
     openrouter: bool = False
+    seed: int | None = None
 
     def _use_openrouter(self) -> bool:
         if self.openrouter or _env_truthy("OGTS_USE_OPENROUTER"):
@@ -418,7 +422,7 @@ class OpenAIGenerator:
                 raise RuntimeError(
                     "Missing OPENAI_API_KEY for OpenAIGenerator (direct OpenAI). "
                     "Export OPENAI_API_KEY or put it in a .env file at the repository root "
-                    "(loaded automatically by evals/run_ogts_eval.py)."
+                    "(loaded automatically by evals/ogts/run_ogsr_eval.py)."
                 )
             client = OpenAI(api_key=api_key)
 
@@ -431,14 +435,17 @@ class OpenAIGenerator:
         resp = None
         for mid in models:
             try:
-                resp = client.chat.completions.create(
-                    model=mid,
-                    messages=[
+                create_kwargs: dict = {
+                    "model": mid,
+                    "messages": [
                         {"role": "system", "content": system},
                         {"role": "user", "content": prompt},
                     ],
-                    temperature=float(temperature),
-                )
+                    "temperature": float(temperature),
+                }
+                if self.seed is not None:
+                    create_kwargs["seed"] = int(self.seed)
+                resp = client.chat.completions.create(**create_kwargs)
                 if use_or and mid != self.model.strip():
                     _warn_openrouter_fallback(self.model.strip(), mid)
                 break

@@ -184,7 +184,7 @@ def _ogts_paper_context(ogts_data: dict[str, Any] | None) -> dict[str, Any]:
         return {"ogts_available": False}
 
     agg: dict[str, Any] = ogts_data["aggregate"]
-    order_pref = ["linear_retry", "iterative_repair", "ogts"]
+    order_pref = ["linear_retry", "iterative_repair", "ogsr", "ogts"]
     strat_keys = [k for k in order_pref if k in agg]
     if not strat_keys:
         return {"ogts_available": False}
@@ -192,7 +192,8 @@ def _ogts_paper_context(ogts_data: dict[str, Any] | None) -> dict[str, Any]:
     pretty = {
         "linear_retry": ("Lin.", "linear retry ($k{=}5$, $T{=}0.8$)"),
         "iterative_repair": ("Iter.", "iterative repair ($k{=}5$, $T{=}0.8$)"),
-        "ogts": ("OGTS", "OGTS ($d{=}3$, $b{=}3$, $T{=}0.8$)"),
+        "ogsr": ("OGSR", "OGSR ($d{=}3$, $b{=}3$, $T{=}0.8$)"),
+        "ogts": ("OGSR", "OGSR ($d{=}3$, $b{=}3$, $T{=}0.8$)"),
     }
 
     summary_rows: list[dict[str, Any]] = []
@@ -218,7 +219,7 @@ def _ogts_paper_context(ogts_data: dict[str, Any] | None) -> dict[str, Any]:
 
     fam_rows: list[dict[str, Any]] = []
     lin_key = "linear_retry" if "linear_retry" in strat_keys else strat_keys[0]
-    ogs_key = "ogts" if "ogts" in strat_keys else strat_keys[-1]
+    ogs_key = "ogsr" if "ogsr" in strat_keys else ("ogts" if "ogts" in strat_keys else strat_keys[-1])
 
     for fam in families:
         row_cells: list[str] = []

@@ -1,8 +1,10 @@
-# OGTS — Oracle-Guided Tree Search evaluation
+# OGSR — Oracle-Guided Sequential Refinement evaluation
 
-Execution-grounded evaluation harness for the RAG AI Scientist project.
-Instead of measuring *retrieval* quality, OGTS measures whether an LLM can
+Execution-grounded evaluation harness for the **Oracle-Grounded AI Scientist (OGAS)** project.
+Instead of measuring *retrieval* quality alone, this harness measures whether an LLM can
 **generate correct code** verified by deterministic oracles.
+
+The Python package path remains `evals/ogts/` for historical compatibility with frozen JSONL task IDs and results (`ogts_eval_*.json`).
 
 ## Task suite
 
@@ -20,9 +22,9 @@ deterministically: `python -c "from evals.ogts.task_suite import make_ogts_tasks
 
 ## Strategies
 
-- **`linear_retry`** (pass@k): sample k independent modules; return first pass.
-- **`ogts`** (Oracle-Guided Tree Search): at each of d depths, draw b branches;
-  run oracle on each; return first pass; otherwise refine prompt from best survivor.
+- **`linear_retry`** (pass@\(k\)): sample \(k\) independent modules; return first pass.
+- **`ogsr`** (**Oracle-Guided Sequential Refinement**): at each of \(d\) sequential refinement stages, draw \(b\) parallel candidates; run the oracle on each; return first pass; otherwise **greedy collapse** to the single best-scoring failure and refine the prompt once before the next stage.
+- **`ogts`** — CLI **alias** for `ogsr` (same implementation).
 
 ## Generators
 
@@ -37,15 +39,15 @@ deterministically: `python -c "from evals.ogts.task_suite import make_ogts_tasks
 
 ```bash
 # Smoke test (no API):
-python evals/ogts/run_ogts_eval.py --generator oracle --max-tasks 5
+python evals/ogts/run_ogsr_eval.py --generator oracle --max-tasks 5
 
 # Local benchmark with simulated bugs:
-python evals/ogts/run_ogts_eval.py --generator noisy --bug-rate 0.5
+python evals/ogts/run_ogsr_eval.py --generator noisy --bug-rate 0.5
 
 # Real evaluation:
-OPENAI_API_KEY=sk-... python evals/ogts/run_ogts_eval.py \
+OPENAI_API_KEY=sk-... python evals/ogts/run_ogsr_eval.py \
   --generator openai --model gpt-4o-mini \
-  --strategies linear_retry ogts \
+  --strategies linear_retry ogsr \
   --k 5 --depth 3 --branch 3 --temperature 0.8
 ```
 
@@ -59,6 +61,6 @@ Output: `evals/ogts/results/ogts_eval_*.json`
 | `oracles.py` | Deterministic oracle evaluation (numeric, JSON) |
 | `code_runner.py` | Write + import generated modules in isolation |
 | `generators.py` | Code generators (dummy, oracle, noisy, OpenAI) |
-| `strategies.py` | linear_retry and OGTS tree search |
+| `strategies.py` | linear_retry, iterative_repair, and OGSR (`ogsr`; `ogts` alias) |
 | `task_suite.py` | 50-task builder + JSONL I/O |
-| `run_ogts_eval.py` | CLI runner |
+| `run_ogsr_eval.py` | CLI runner |

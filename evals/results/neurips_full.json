@@ -1,9 +1,9 @@
 {
   "timestamp": "2026-05-03T00:55:16.517494+00:00",
   "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
-  "rag_db": "/Users/uzzielperez/Desktop/higgs/.cursor/rag_db",
+  "rag_db": "/Users/anonymous2/Desktop/higgs/.cursor/rag_db",
   "rag_chunk_count": 295,
-  "queries_file": "/Users/uzzielperez/Desktop/higgs/evals/data/rag_queries.jsonl",
+  "queries_file": "/Users/anonymous2/Desktop/higgs/evals/data/rag_queries.jsonl",
   "n_queries": 10,
   "n_with_gold": 10,
   "n_failures": 0,
@@ -83,9 +83,9 @@
         "10": true
       },
       "top_metadata_preview": [
-        "1207.7235v2.pdf /users/uzzielperez/desktop/higgs/references/1207.7235v2.pdf",
-        "atlas_higgs_challenge_scaffolding.md /users/uzzielperez/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
+        "1207.7235v2.pdf /users/anonymous2/desktop/higgs/references/1207.7235v2.pdf",
+        "atlas_higgs_challenge_scaffolding.md /users/anonymous2/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
       ],
       "top_snippets": [
         "The rates for the dominant backgrounds arising from production of W/Z+jets and top-quark pairs are estimated in data [28], while contributions from single-top and diboson production are estimated from simulation studies. The signal is then searched for as an excess in the BDT score distribution usin",
@@ -119,9 +119,9 @@
         "10": true
       },
       "top_metadata_preview": [
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
       ],
       "top_snippets": [
         "## **5 The** opendata.cern.ch **dataset**   The dataset made available to Challenge participants on the Kaggle platform (https://www. kaggle.com/c/higgs-boson) during the Challenge can now permanently be obtained from http://opendata.cern.ch/collection/ATLAS-Higgs-Challenge-2014 [5]. The following m",
@@ -155,9 +155,9 @@
         "10": true
       },
       "top_metadata_preview": [
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "atlas_higgs_challenge_scaffolding.md /users/uzzielperez/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md",
-        "readme.md /users/uzzielperez/desktop/higgs/readme.md"
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas_higgs_challenge_scaffolding.md /users/anonymous2/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md",
+        "readme.md /users/anonymous2/desktop/higgs/readme.md"
       ],
       "top_snippets": [
         "## **6 Conclusion**   In this note we provided background information for the Higgs boson machine learning challenge. All information for effectively participating in the Challenge is provided by the Kaggle web site and also now the opendata.cern.ch web site mentioned in the preamble; pointers to ad",
@@ -191,9 +191,9 @@
         "10": true
       },
       "top_metadata_preview": [
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
       ],
       "top_snippets": [
         "## **5 The** opendata.cern.ch **dataset**   The dataset made available to Challenge participants on the Kaggle platform (https://www. kaggle.com/c/higgs-boson) during the Challenge can now permanently be obtained from http://opendata.cern.ch/collection/ATLAS-Higgs-Challenge-2014 [5]. The following m",
@@ -225,9 +225,9 @@
         "10": false
       },
       "top_metadata_preview": [
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "atlas_higgs_challenge_scaffolding.md /users/uzzielperez/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas_higgs_challenge_scaffolding.md /users/anonymous2/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
       ],
       "top_snippets": [
         "## **References**   - [1] G. Aad et al., \"Observation of a new particle in the search for the Standard Model Higgs boson with the ATLAS detector at the LHC\", _Phys.Lett._ , vol. B716, pp. 1\u201329, 2012.   - [2] S. Chatrchyan et al., \"Observation of a new boson at a mass of 125 GeV with the CMS experime",
@@ -261,9 +261,9 @@
         "10": false
       },
       "top_metadata_preview": [
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf"
       ],
       "top_snippets": [
         "## **Learning to discover: the Higgs boson machine learning challenge**   ## Claire Adam-Bourdarios[a] , Glen Cowan[b] , C\u00b4ecile Germain[c] , Isabelle Guyon[d] , Bal\u00b4azs K\u00b4egl[a,c] , David Rousseau[a]   a LAL, IN2P3/CNRS & University Paris-Sud, France b Physics Department, Royal Holloway, University",
@@ -297,9 +297,9 @@
         "10": true
       },
       "top_metadata_preview": [
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "readme.md /users/uzzielperez/desktop/higgs/readme.md",
-        "atlas_higgs_challenge_scaffolding.md /users/uzzielperez/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md"
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "readme.md /users/anonymous2/desktop/higgs/readme.md",
+        "atlas_higgs_challenge_scaffolding.md /users/anonymous2/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md"
       ],
       "top_snippets": [
         "## **6 Conclusion**   In this note we provided background information for the Higgs boson machine learning challenge. All information for effectively participating in the Challenge is provided by the Kaggle web site and also now the opendata.cern.ch web site mentioned in the preamble; pointers to ad",
@@ -331,9 +331,9 @@
         "10": true
       },
       "top_metadata_preview": [
-        "atlas_higgs_challenge_scaffolding.md /users/uzzielperez/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "higgs_csv_methodology.md /users/uzzielperez/desktop/higgs/docs/higgs_csv_methodology.md"
+        "atlas_higgs_challenge_scaffolding.md /users/anonymous2/desktop/higgs/docs/atlas_higgs_challenge_scaffolding.md",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "higgs_csv_methodology.md /users/anonymous2/desktop/higgs/docs/higgs_csv_methodology.md"
       ],
       "top_snippets": [
         "# ATLAS Higgs Boson Machine Learning Challenge (2014) \u2014 analysis scaffolding  This note ties **`run_atlas_pipeline.py`** to the **ATLAS Higgs Challenge** setup documented on [Kaggle](https://www.kaggle.com/c/higgs-boson-competition-2014) and companion materials (including **`references/atlas-higgs-c",
@@ -365,9 +365,9 @@
         "10": true
       },
       "top_metadata_preview": [
-        "readme.md /users/uzzielperez/desktop/higgs/references/higgsexample20112012/readme.md",
-        "atlas-higgs-challenge-2014.pdf /users/uzzielperez/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
-        "1207.7235v2.pdf /users/uzzielperez/desktop/higgs/references/1207.7235v2.pdf"
+        "readme.md /users/anonymous2/desktop/higgs/references/higgsexample20112012/readme.md",
+        "atlas-higgs-challenge-2014.pdf /users/anonymous2/desktop/higgs/references/atlas-higgs-challenge-2014.pdf",
+        "1207.7235v2.pdf /users/anonymous2/desktop/higgs/references/1207.7235v2.pdf"
       ],
       "top_snippets": [
         "# HiggsExample20112012 adapted for github by [F. Blekman](http://we.vub.ac.be/freya-blekman), [@freyablekman](https://twitter.com/freyablekman)  This example guides the user to reproducing the discovery of the Higgs boson using the 2011 and 2012 datasets, in the four-lepton final states. It contains",
@@ -399,9 +399,9 @@
         "10": true
       },
       "top_metadata_preview": [
-        "1207.7235v2.pdf /users/uzzielperez/desktop/higgs/references/1207.7235v2.pdf",
-        "1207.7235v2.pdf /users/uzzielperez/desktop/higgs/references/1207.7235v2.pdf",
-        "1207.7235v2.pdf /users/uzzielperez/desktop/higgs/references/1207.7235v2.pdf"
+        "1207.7235v2.pdf /users/anonymous2/desktop/higgs/references/1207.7235v2.pdf",
+        "1207.7235v2.pdf /users/anonymous2/desktop/higgs/references/1207.7235v2.pdf",
+        "1207.7235v2.pdf /users/anonymous2/desktop/higgs/references/1207.7235v2.pdf"
       ],
       "top_snippets": [
         "The event selection requires two pairs of same-flavour, oppositely charged leptons. The pair with invariant mass closest to the Z boson mass is required to have a mass in the range 40\u2013 120 GeV and the other pair is required to have a mass in the range 12\u2013120 GeV. The ZZ background is evaluated from ",

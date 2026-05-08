@@ -13,7 +13,7 @@
     "branch": 3,
     "temperature": 0.8,
     "n_tasks": 50,
-    "tasks_file": "/mnt/c/Users/hugog/moonshotHiggs/evals/ogts/data/ogts_50_tasks.jsonl"
+    "tasks_file": "evals/ogts/data/ogts_50_tasks.jsonl"
   },
   "aggregate": {
     "linear_retry": {

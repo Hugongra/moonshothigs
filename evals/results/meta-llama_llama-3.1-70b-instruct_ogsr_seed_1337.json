@@ -1,29 +1,30 @@
 {
-  "timestamp": "2026-05-07T01:59:17.000744+00:00",
+  "timestamp": "2026-05-08T03:46:52.124415+00:00",
   "config": {
-    "generator": "oracle",
-    "model": null,
+    "generator": "openai",
+    "model": "meta-llama/llama-3.1-70b-instruct",
     "openrouter": false,
     "strategies": [
-      "linear_retry"
+      "ogsr"
     ],
-    "k": 1,
+    "k": 5,
     "depth": 3,
     "branch": 3,
     "temperature": 0.8,
+    "seed": 1337,
     "n_tasks": 70,
     "tasks_files": [
       "evals/ogts/data/ogts_70_tasks.jsonl"
     ]
   },
   "aggregate": {
-    "linear_retry": {
+    "ogsr": {
       "n_tasks": 70,
-      "n_passed": 70,
-      "pass_rate": 1.0,
-      "total_oracle_calls": 70,
-      "mean_oracle_calls": 1.0,
-      "total_elapsed_s": 0.21,
+      "n_passed": 62,
+      "pass_rate": 0.8857,
+      "total_oracle_calls": 235,
+      "mean_oracle_calls": 3.36,
+      "total_elapsed_s": 638.48,
       "by_family": {
         "AMS closed-form": {
           "n": 14,
@@ -33,17 +34,17 @@
         "Weighted log-loss": {
           "n": 12,
           "passed": 12,
-          "oracle_calls": 12
+          "oracle_calls": 49
         },
         "nDCG@k (binary)": {
           "n": 12,
           "passed": 12,
-          "oracle_calls": 12
+          "oracle_calls": 50
         },
         "Threshold scan for AMS": {
           "n": 12,
-          "passed": 12,
-          "oracle_calls": 12
+          "passed": 4,
+          "oracle_calls": 92
         },
         "Hamming Distance": {
           "n": 1,
@@ -88,7 +89,7 @@
         "Consensus Sequence": {
           "n": 1,
           "passed": 1,
-          "oracle_calls": 1
+          "oracle_calls": 2
         },
         "Ti/Tv Ratio": {
           "n": 1,
@@ -118,7 +119,7 @@
         "Motif Finder": {
           "n": 1,
           "passed": 1,
-          "oracle_calls": 1
+          "oracle_calls": 2
         },
         "Melting Temperature": {
           "n": 1,
@@ -138,7 +139,7 @@
         "Restriction Fragments": {
           "n": 1,
           "passed": 1,
-          "oracle_calls": 1
+          "oracle_calls": 9
         },
         "Molecular Weight": {
           "n": 1,
@@ -148,18 +149,18 @@
       }
     }
   },
-  "wall_time_s": 0.22,
+  "wall_time_s": 638.49,
   "per_task": [
     {
       "task_id": "ogts_001",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.003,
+      "elapsed_s": 4.25,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -180,13 +181,13 @@
     {
       "task_id": "ogts_002",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.005,
+      "elapsed_s": 1.253,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -207,13 +208,13 @@
     {
       "task_id": "ogts_003",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 1.168,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -234,13 +235,13 @@
     {
       "task_id": "ogts_004",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 1.179,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -261,13 +262,13 @@
     {
       "task_id": "ogts_005",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 1.188,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -288,13 +289,13 @@
     {
       "task_id": "ogts_006",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 1.221,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -315,13 +316,13 @@
     {
       "task_id": "ogts_007",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.003,
+      "elapsed_s": 1.246,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -342,13 +343,13 @@
     {
       "task_id": "ogts_008",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.004,
+      "elapsed_s": 1.454,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -369,13 +370,13 @@
     {
       "task_id": "ogts_009",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.003,
+      "elapsed_s": 1.154,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -396,13 +397,13 @@
     {
       "task_id": "ogts_010",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.003,
+      "elapsed_s": 1.16,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -423,13 +424,13 @@
     {
       "task_id": "ogts_011",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.001,
+      "elapsed_s": 1.174,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -450,13 +451,13 @@
     {
       "task_id": "ogts_012",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 1.191,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -477,13 +478,13 @@
     {
       "task_id": "ogts_013",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.004,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 5.445,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -504,13 +505,13 @@
     {
       "task_id": "ogts_014",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.002,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 5.66,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -531,13 +532,13 @@
     {
       "task_id": "ogts_015",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 6.151,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -558,13 +559,13 @@
     {
       "task_id": "ogts_016",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 6.149,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -585,13 +586,13 @@
     {
       "task_id": "ogts_017",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 5.941,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -612,13 +613,13 @@
     {
       "task_id": "ogts_018",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 5.454,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -639,13 +640,13 @@
     {
       "task_id": "ogts_019",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.004,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 5.487,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -666,13 +667,13 @@
     {
       "task_id": "ogts_020",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.002,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 5.665,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -693,13 +694,13 @@
     {
       "task_id": "ogts_021",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.002,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 5.978,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -720,13 +721,13 @@
     {
       "task_id": "ogts_022",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 6.114,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -747,13 +748,13 @@
     {
       "task_id": "ogts_023",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 5.556,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -774,13 +775,13 @@
     {
       "task_id": "ogts_024",
       "task_title": "Weighted log-loss",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 5,
+      "attempts": 5,
+      "elapsed_s": 8.455,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -801,13 +802,13 @@
     {
       "task_id": "ogts_025",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.001,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 6.099,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -828,13 +829,13 @@
     {
       "task_id": "ogts_026",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.001,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 6.385,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -855,13 +856,13 @@
     {
       "task_id": "ogts_027",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.002,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 6.582,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -882,13 +883,13 @@
     {
       "task_id": "ogts_028",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 7.036,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -909,13 +910,13 @@
     {
       "task_id": "ogts_029",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.002,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 6.125,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -936,13 +937,13 @@
     {
       "task_id": "ogts_030",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 7.849,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -963,13 +964,13 @@
     {
       "task_id": "ogts_031",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 8.051,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -990,13 +991,13 @@
     {
       "task_id": "ogts_032",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 8.569,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1017,13 +1018,13 @@
     {
       "task_id": "ogts_033",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.002,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 7.777,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1044,13 +1045,13 @@
     {
       "task_id": "ogts_034",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.002,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 8.324,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1071,13 +1072,13 @@
     {
       "task_id": "ogts_035",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.001,
+      "oracle_calls": 6,
+      "attempts": 6,
+      "elapsed_s": 14.659,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1098,13 +1099,13 @@
     {
       "task_id": "ogts_036",
       "task_title": "nDCG@k (binary)",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.001,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 6.982,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1125,24 +1126,37 @@
     {
       "task_id": "ogts_037",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
-      "passed": true,
-      "best_score": 1.0,
-      "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.007,
+      "strategy": "ogsr",
+      "passed": false,
+      "best_score": 0.9716666666666667,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 27.657,
       "result": {
-        "ok": true,
-        "score": 1.0,
-        "status": "pass",
+        "ok": false,
+        "score": 0.9716666666666667,
+        "status": "fail:oracle_mismatch",
         "details": {
-          "failures": [],
+          "failures": [
+            {
+              "case": 2,
+              "expected": 0.13,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 3,
+              "expected": 0.06,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
           "scores": [
             1.0,
             1.0,
-            1.0,
-            1.0,
+            0.88,
+            0.95,
             1.0,
             1.0
           ]
@@ -1152,13 +1166,13 @@
     {
       "task_id": "ogts_038",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.005,
+      "oracle_calls": 4,
+      "attempts": 4,
+      "elapsed_s": 17.692,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1179,25 +1193,32 @@
     {
       "task_id": "ogts_039",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
-      "passed": true,
-      "best_score": 1.0,
-      "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.005,
+      "strategy": "ogsr",
+      "passed": false,
+      "best_score": 0.9716666666666667,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 37.588,
       "result": {
-        "ok": true,
-        "score": 1.0,
-        "status": "pass",
+        "ok": false,
+        "score": 0.9716666666666667,
+        "status": "fail:oracle_mismatch",
         "details": {
-          "failures": [],
+          "failures": [
+            {
+              "case": 4,
+              "expected": 0.18,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
           "scores": [
             1.0,
             1.0,
             1.0,
             1.0,
-            1.0,
+            0.8300000000000001,
             1.0
           ]
         }
@@ -1206,25 +1227,44 @@
     {
       "task_id": "ogts_040",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
-      "passed": true,
-      "best_score": 1.0,
-      "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.008,
+      "strategy": "ogsr",
+      "passed": false,
+      "best_score": 0.9833333333333334,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 38.327,
       "result": {
-        "ok": true,
-        "score": 1.0,
-        "status": "pass",
+        "ok": false,
+        "score": 0.9833333333333334,
+        "status": "fail:oracle_mismatch",
         "details": {
-          "failures": [],
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.06,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 3,
+              "expected": 0.02,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 4,
+              "expected": 0.05,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
           "scores": [
+            0.95,
             1.0,
             1.0,
-            1.0,
-            1.0,
-            1.0,
+            0.99,
+            0.96,
             1.0
           ]
         }
@@ -1233,13 +1273,13 @@
     {
       "task_id": "ogts_041",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.005,
+      "oracle_calls": 8,
+      "attempts": 8,
+      "elapsed_s": 30.627,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1260,26 +1300,51 @@
     {
       "task_id": "ogts_042",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
-      "passed": true,
-      "best_score": 1.0,
-      "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.008,
+      "strategy": "ogsr",
+      "passed": false,
+      "best_score": 0.9183333333333333,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 32.552,
       "result": {
-        "ok": true,
-        "score": 1.0,
-        "status": "pass",
+        "ok": false,
+        "score": 0.9183333333333333,
+        "status": "fail:oracle_mismatch",
         "details": {
-          "failures": [],
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.14,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 2,
+              "expected": 0.05,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 4,
+              "expected": 0.31,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 5,
+              "expected": 0.03,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
           "scores": [
+            0.87,
             1.0,
+            0.96,
             1.0,
-            1.0,
-            1.0,
-            1.0,
-            1.0
+            0.7,
+            0.98
           ]
         }
       }
@@ -1287,26 +1352,57 @@
     {
       "task_id": "ogts_043",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
-      "passed": true,
-      "best_score": 1.0,
-      "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.006,
+      "strategy": "ogsr",
+      "passed": false,
+      "best_score": 0.9266666666666666,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 34.771,
       "result": {
-        "ok": true,
-        "score": 1.0,
-        "status": "pass",
+        "ok": false,
+        "score": 0.9266666666666666,
+        "status": "fail:oracle_mismatch",
         "details": {
-          "failures": [],
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.04,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 1,
+              "expected": 0.05,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 2,
+              "expected": 0.04,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 3,
+              "expected": 0.15,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 5,
+              "expected": 0.21,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
           "scores": [
+            0.97,
+            0.96,
+            0.97,
+            0.86,
             1.0,
-            1.0,
-            1.0,
-            1.0,
-            1.0,
-            1.0
+            0.8
           ]
         }
       }
@@ -1314,13 +1410,13 @@
     {
       "task_id": "ogts_044",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.008,
+      "oracle_calls": 7,
+      "attempts": 7,
+      "elapsed_s": 28.001,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1341,23 +1437,36 @@
     {
       "task_id": "ogts_045",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
-      "passed": true,
-      "best_score": 1.0,
-      "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.006,
+      "strategy": "ogsr",
+      "passed": false,
+      "best_score": 0.98,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 38.593,
       "result": {
-        "ok": true,
-        "score": 1.0,
-        "status": "pass",
+        "ok": false,
+        "score": 0.98,
+        "status": "fail:oracle_mismatch",
         "details": {
-          "failures": [],
+          "failures": [
+            {
+              "case": 1,
+              "expected": 0.06,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 2,
+              "expected": 0.08,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
           "scores": [
             1.0,
-            1.0,
-            1.0,
+            0.95,
+            0.9299999999999999,
             1.0,
             1.0,
             1.0
@@ -1368,26 +1477,39 @@
     {
       "task_id": "ogts_046",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
-      "passed": true,
-      "best_score": 1.0,
-      "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.007,
+      "strategy": "ogsr",
+      "passed": false,
+      "best_score": 0.9616666666666666,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 40.032,
       "result": {
-        "ok": true,
-        "score": 1.0,
-        "status": "pass",
+        "ok": false,
+        "score": 0.9616666666666666,
+        "status": "fail:oracle_mismatch",
         "details": {
-          "failures": [],
+          "failures": [
+            {
+              "case": 0,
+              "expected": 0.15,
+              "got": 0.01,
+              "tol": 1e-12
+            },
+            {
+              "case": 5,
+              "expected": 0.1,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
           "scores": [
+            0.86,
             1.0,
             1.0,
             1.0,
             1.0,
-            1.0,
-            1.0
+            0.91
           ]
         }
       }
@@ -1395,25 +1517,32 @@
     {
       "task_id": "ogts_047",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
-      "passed": true,
-      "best_score": 1.0,
-      "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.006,
+      "strategy": "ogsr",
+      "passed": false,
+      "best_score": 0.9683333333333334,
+      "best_status": "fail:oracle_mismatch",
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 40.721,
       "result": {
-        "ok": true,
-        "score": 1.0,
-        "status": "pass",
+        "ok": false,
+        "score": 0.9683333333333334,
+        "status": "fail:oracle_mismatch",
         "details": {
-          "failures": [],
+          "failures": [
+            {
+              "case": 4,
+              "expected": 0.2,
+              "got": 0.01,
+              "tol": 1e-12
+            }
+          ],
           "scores": [
             1.0,
             1.0,
             1.0,
             1.0,
-            1.0,
+            0.81,
             1.0
           ]
         }
@@ -1422,13 +1551,13 @@
     {
       "task_id": "ogts_048",
       "task_title": "Threshold scan for AMS",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.006,
+      "elapsed_s": 4.463,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1449,13 +1578,13 @@
     {
       "task_id": "ogts_049",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.003,
+      "elapsed_s": 2.048,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1476,13 +1605,13 @@
     {
       "task_id": "ogts_050",
       "task_title": "AMS closed-form",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 2.711,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1503,13 +1632,13 @@
     {
       "task_id": "bio_001",
       "task_title": "Hamming Distance",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 1.19,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1530,13 +1659,13 @@
     {
       "task_id": "bio_002",
       "task_title": "Edit Distance",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.001,
+      "elapsed_s": 2.531,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1558,13 +1687,13 @@
     {
       "task_id": "bio_003",
       "task_title": "Needleman-Wunsch Score",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.005,
+      "elapsed_s": 5.15,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1585,13 +1714,13 @@
     {
       "task_id": "bio_004",
       "task_title": "Smith-Waterman Score",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 4.357,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1612,13 +1741,13 @@
     {
       "task_id": "bio_005",
       "task_title": "LCS Length",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 3.704,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1640,13 +1769,13 @@
     {
       "task_id": "bio_006",
       "task_title": "Reverse Complement",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.001,
+      "elapsed_s": 2.808,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1668,13 +1797,13 @@
     {
       "task_id": "bio_007",
       "task_title": "Sequence Identity",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 3.29,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1695,13 +1824,13 @@
     {
       "task_id": "bio_008",
       "task_title": "K-mer Count",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.001,
+      "elapsed_s": 2.416,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1723,13 +1852,13 @@
     {
       "task_id": "bio_009",
       "task_title": "Consensus Sequence",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.001,
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 3.692,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1750,13 +1879,13 @@
     {
       "task_id": "bio_010",
       "task_title": "Ti/Tv Ratio",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 4.917,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1778,13 +1907,13 @@
     {
       "task_id": "bio_011",
       "task_title": "GC Content",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.001,
+      "elapsed_s": 1.813,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1806,13 +1935,13 @@
     {
       "task_id": "bio_012",
       "task_title": "DNA Translation",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.001,
+      "elapsed_s": 12.176,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1834,13 +1963,13 @@
     {
       "task_id": "bio_013",
       "task_title": "Mean Phred Quality",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 1.075,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1862,13 +1991,13 @@
     {
       "task_id": "bio_014",
       "task_title": "N50 Statistic",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 2.489,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1890,13 +2019,13 @@
     {
       "task_id": "bio_015",
       "task_title": "Motif Finder",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.001,
+      "oracle_calls": 2,
+      "attempts": 2,
+      "elapsed_s": 3.07,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1918,13 +2047,13 @@
     {
       "task_id": "bio_016",
       "task_title": "Melting Temperature",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 2.816,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1946,13 +2075,13 @@
     {
       "task_id": "bio_017",
       "task_title": "Validate DNA",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 2.091,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -1974,13 +2103,13 @@
     {
       "task_id": "bio_018",
       "task_title": "Codon Frequency",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.002,
+      "elapsed_s": 2.055,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -2002,13 +2131,13 @@
     {
       "task_id": "bio_019",
       "task_title": "Restriction Fragments",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
-      "oracle_calls": 1,
-      "attempts": 1,
-      "elapsed_s": 0.003,
+      "oracle_calls": 9,
+      "attempts": 9,
+      "elapsed_s": 14.278,
       "result": {
         "ok": true,
         "score": 1.0,
@@ -2030,13 +2159,13 @@
     {
       "task_id": "bio_020",
       "task_title": "Molecular Weight",
-      "strategy": "linear_retry",
+      "strategy": "ogsr",
       "passed": true,
       "best_score": 1.0,
       "best_status": "pass",
       "oracle_calls": 1,
       "attempts": 1,
-      "elapsed_s": 0.003,
+      "elapsed_s": 2.652,
       "result": {
         "ok": true,
         "score": 1.0,

@@ -134,7 +134,7 @@ def iterative_repair(
     )
 
 
-def ogts(
+def ogsr(
     *,
     task: OgtsTask,
     gen: CodeGenerator,
@@ -143,14 +143,15 @@ def ogts(
     temperature: float,
 ) -> tuple[AttemptResult | None, RunStats]:
     """
-    Oracle-Guided Tree Search (OGTS):
-      - For each depth step, sample `branch` candidates.
-      - Run oracle on every candidate.
+    Oracle-Guided Sequential Refinement (OGSR):
+      - For each depth step, sample `branch` candidate completions **in parallel** from the current prompt.
+      - Run the oracle on every candidate at this depth.
       - If any pass, return the first passing candidate.
-      - Otherwise select the highest-scoring survivor and append a short failure context
-        (here: status string) to the prompt for the next depth.
+      - Otherwise pick the single highest-scoring failure (**greedy collapse**) and refine the prompt once before the next depth.
 
-    Note: we keep the “context” simple (status + a fixed instruction) to stay deterministic
+      OGSR is **sequential depth refinement**, not beam search: only **one** failure lineage survives per depth.
+
+    Note: we keep the refinement signal minimal (status + fixed instruction) to stay deterministic
     and avoid leaking oracle internals.
     """
     oracle_calls = 0
@@ -199,3 +200,6 @@ def ogts(
         best_status=str(best.status) if best else "fail:no_attempts",
     )
 
+
+# Backward-compatible alias (historical CLI flag `--strategies ogts`).
+ogts = ogsr
